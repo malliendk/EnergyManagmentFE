@@ -20,7 +20,7 @@ export class CreateRequirementComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.requirement = {id: 0, name: '', description: '', isSuccessfullyTested : false, storyName: ''};
+    this.requirement = {id: 0, name: '', description: '', storyName: '', isSuccessfullyTested : false, isBuilt : false};
   }
 
   create(){

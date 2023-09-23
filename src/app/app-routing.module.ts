@@ -13,8 +13,8 @@ import {CreateStoryComponent} from "./create-story/create-story.component";
 const routes: Routes = [
   {path: '', component: RequirementsComponent},
   {path: 'requirements', component: RequirementsComponent},
-  {path: 'scenarioRequirements/create', component: CreateRequirementComponent},
-  {path: 'scenarioRequirements/:id', component: RequirementComponent},
+  {path: 'requirements/create', component: CreateRequirementComponent},
+  {path: 'requirements/:id', component: RequirementComponent},
   {path: 'scenarios', component: ScenariosComponent},
   {path: 'scenarios/create', component: CreateScenarioComponent},
   {path: 'scenarios/:id', component: ScenarioComponent},

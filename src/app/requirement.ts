@@ -4,6 +4,7 @@ export interface Requirement {
   id : number
   name: string
   description: string
-  isSuccessfullyTested: boolean
   storyName: string
+  isSuccessfullyTested: boolean
+  isBuilt : boolean
 }

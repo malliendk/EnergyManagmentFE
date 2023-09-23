@@ -23,9 +23,11 @@
               <div class="col-md-3 text-muted">Beschrijving:</div>
               <div class="col-md-9">
                 <span *ngIf="!editMode"> {{ scenario.description }}</span>
-                <input *ngIf="editMode" type="text" class="form-control" name="description" [(ngModel)]="scenario.description">
+                <input *ngIf="editMode" type="text" class="form-control" name="description"
+                       [(ngModel)]="scenario.description">
               </div>
             </div>
+
 
             <div class="row mb-3">
               <div class="col-md-3 text-muted">Succesvol getest</div>
@@ -39,47 +41,89 @@
               <div class="col-md-3 text-muted">Story</div>
               <a class="col-md-9" href="/stories/{{story.id}}">{{scenario.storyName}}</a>
               <br>
-
               <br>
-              <h4>Gerelateerde requirements</h4>
-              <table *ngIf="!editMode" class="table table-striped">
-                <thead>
-                <th>Naam</th>
-                <th>Beschrijving</th>
-                <th>Succesvol getest</th>
-                </thead>
-                <tbody>
-                <tr *ngFor="let requirement of scenarioRequirements">
-                  <td>{{requirement.name}}</td>
-                  <td>{{requirement.description}}</td>
-                  <td>
+              <br>
+              <div *ngIf="!editMode" class="container">
+                <h5>Gerelateerde requirements</h5>
+                <table class="table table-striped">
+                  <thead>
+                  <th>Naam</th>
+                  <th>Beschrijving</th>
+                  <th>Gebouwd</th>
+                  <th>Succesvol getest</th>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let requirement of scenarioRequirements">
+                    <td>{{requirement.name}}</td>
+                    <td>{{requirement.description}}</td>
+                    <td>
+              <span class="badge" [ngClass]="requirement.isBuilt ? 'badge-success' : 'badge-danger'">
+                {{requirement.isBuilt ? 'Ja' : 'Nee'}}</span>
+                    </td>
+                    <td>
               <span class="badge" [ngClass]="requirement.isSuccessfullyTested ? 'badge-success' : 'badge-danger'">
-                {{requirement.isSuccessfullyTested ? 'Ja' : 'Nee'}}</span>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-              <br>
+                {{requirement.isSuccessfullyTested ? 'Ja' : 'Nee'}}
+              </span>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div *ngIf="editMode" class="container mt-3 rounded p-3">
+                <h5 class="text-muted">Voeg requirements toe</h5>
+                <br>
+                <br>
+                <div class="container-fluid">
+                  <div class="row">
+                    <!-- Left Box -->
+                    <div class="col-5 pr-0 d-flex align-items-center justify-content-center"> <!-- Added flex classes here -->
+                      <div> <!-- Wrap content in a div -->
+                        <p class="text-muted">Requirements</p>
+                        <select class="form-select text-muted custom-select-height rounded-lg" multiple aria-label="multiple select requirements">
+                          <option *ngFor="let requirement of storyRequirements">{{requirement.name}}</option>
+                        </select>
+                      </div>
+                    </div>
 
-              <div *ngIf="editMode" class="container">
-                <div class="row">
-                  <div class="col-5">
-                    <select *ngFor="let requirement of storyRequirements" id="requirementSelector">
-                      <option>{{requirement.name}}</option>
-                    </select>
+                    <!-- Arrows -->
+                    <div class="col-2 d-flex flex-column justify-content-center align-items-center">
+                      <div class="d-flex flex-column align-items-center w-100"> <!-- Added a container to center the arrows -->
+                        <button class="btn btn-outline-secondary mb-3">
+                          <i class="bi bi-arrow-right">>></i>
+                        </button>
+                        <button class="btn btn-outline-secondary">
+                          <i class="bi bi-arrow-left"><<</i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Right Box -->
+                    <div class="col-5 pl-0 d-flex align-items-center justify-content-center"> <!-- Added flex classes here -->
+                      <div> <!-- Wrap content in a div -->
+                        <p class="text-muted">Scenarios</p>
+                        <select class="form-select text-muted custom-select-height rounded-lg" multiple aria-label="multiple select scenarios">
+                          <option *ngFor="let requirement of scenarioRequirements">{{requirement.name}}</option>
+                        </select>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
 
+
+
+
+
+              </div>
             </div>
-            <div class="card-footer text-muted">
-              <button *ngIf="!editMode" class="btn btn-outline-primary" (click)="toggleEditMode()">Edit</button>
-              <button *ngIf="editMode" class="btn btn-outline-primary" (click)="saveChanges(this.scenario.id)">Opslaan</button>
-<!--              <button class="btn btn-outline-danger ml-2">Delete</button>-->
-            </div>
+          </div>
+          <div class="card-footer text-muted">
+            <button *ngIf="!editMode" class="btn btn-outline-primary" (click)="toggleEditMode()">Edit</button>
+            <button *ngIf="editMode" class="btn btn-outline-primary" (click)="saveChanges(this.scenario.id)">Opslaan
+            </button>
+            <!--              <button class="btn btn-outline-danger ml-2">Delete</button>-->
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+

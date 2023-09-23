@@ -6,7 +6,8 @@
         <th>ID</th>
         <th>Name</th>
         <th>Description</th>
-        <th>Successfully Tested</th>
+        <th>Gebouwd</th>
+        <th>Succesvol getest</th>
       </tr>
       </thead>
       <tbody>
@@ -15,6 +16,11 @@
         <td>{{ requirement.id }}</td>
         <td>{{ requirement.name }}</td>
         <td>{{ requirement.description }}</td>
+        <td>
+          <span class="badge" [ngClass]="requirement.isBuilt ? 'badge-success' : 'badge-danger'">
+            {{requirement.isBuilt ? 'Ja' : 'Nee'}}
+          </span>
+        </td>
         <td>
           <span class="badge" [ngClass]="requirement.isSuccessfullyTested ? 'badge-success' : 'badge-danger'">
             {{ requirement.isSuccessfullyTested ? 'Ja' : 'Nee'}}

@@ -30,32 +30,39 @@ export class ScenarioComponent implements OnInit{
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'))
     this.findScenario(id)
-    this.findAllByScenario(id)
+
   }
 
   findScenario(id: number) {
     this.scenarioService.find(id)
       .subscribe(scenario => {
         this.scenario = scenario;
-        this.findStoryByName(this.scenario.storyName)
-      })
+        this.findStoryByName(this.scenario.storyName);
+        this.findAllByScenario(id)
+      });
   }
 
+  findStoryByName(name: string) {
+    this.storyService.findByName(name)
+      .subscribe(story => {
+        this.story = story;
+        this.findAllByStory(this.story.id);
+      });
+  }
 
   findAllByStory(id: number){
     return this.requirementService.findAllByStory(id)
-      .subscribe(requirements => this.storyRequirements = requirements)
+      .subscribe(requirements => {
+        this.storyRequirements = requirements;
+      });
   }
+
 
   findAllByScenario(id: number) {
     this.requirementService.findAllByScenario(id)
       .subscribe(requirements => this.scenarioRequirements = requirements)
   }
 
-  findStoryByName(name: string) {
-    this.storyService.findByName(name)
-      .subscribe(story => this.story = story)
-  }
 
   saveChanges(id : number){
     this.scenarioService.update(this.scenario, id)
@@ -65,6 +72,7 @@ export class ScenarioComponent implements OnInit{
 
   toggleEditMode() {
     this.editMode = !this.editMode
+    window.scroll(0, 0);
   }
 
 

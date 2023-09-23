@@ -38,7 +38,7 @@
         </div>
         <div class="card-footer text-muted">
           <button *ngIf="!isEditing" class="btn btn-outline-primary" (click)="toggleEditMode()">Edit</button>
-<!--          <button *ngIf="!isEditing" class="btn btn-outline-danger ml-2" (click)="delete()">Delete</button>-->
+          <button *ngIf="!isEditing" class="btn btn-outline-danger ml-2" (click)="delete()">Delete</button>
           <button *ngIf="isEditing" class="btn btn-outline-primary" (click)="saveChanges(this.requirement.id)">Opslaan</button>
         </div>
       </div>

@@ -1,3 +1,11 @@
 .clickable {
   cursor: pointer;
 }
+
+.container .form-select.custom-select-height {
+  height: 100%;
+  min-height: 20rem; /* Adjust this based on your needs */
+  padding: 1.25rem 1rem; /* Adjust padding to balance whitespace */
+  font-size: 1rem; /* Adjust font-size if necessary */
+  overflow-y: auto; /* Allow scrolling if there are more items than the box can show */
+}

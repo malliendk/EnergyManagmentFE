@@ -50,4 +50,12 @@ export class RequirementComponent implements OnInit{
   toggleEditMode(){
     this.isEditing = !this.isEditing;
   }
+
+  delete() {
+    this.requirementService.delete(this.requirement.id)
+      .subscribe(() => {
+        this.requirementService.findAll();
+        window.location.reload();
+      })
+  }
 }
