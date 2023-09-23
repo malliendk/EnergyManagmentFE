@@ -1,0 +1,30 @@
+<div *ngIf="requirements">
+  <div class="container">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Successfully Tested</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="clickable" *ngFor="let requirement of requirements"
+          routerLink="/requirements/{{requirement.id}}">
+        <td>{{ requirement.id }}</td>
+        <td>{{ requirement.name }}</td>
+        <td>{{ requirement.description }}</td>
+        <td>
+          <span class="badge" [ngClass]="requirement.isSuccessfullyTested ? 'badge-success' : 'badge-danger'">
+            {{ requirement.isSuccessfullyTested ? 'Ja' : 'Nee'}}
+          </span>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <br>
+    <button type="button" class="btn btn-primary" routerLink="/requirements/create">Requirement toevoegen</button>
+  </div>
+</div>
+

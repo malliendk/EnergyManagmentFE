@@ -1,0 +1,23 @@
+<h3>Stories</h3>
+<br>
+<div class="container">
+  <table class="table table-striped">
+    <thead>
+    <th>Naam</th>
+    <th>Beschrijving</th>
+    <th>Alle requirements succesvol getest</th>
+    </thead>
+    <tbody>
+    <tr class="clickable" *ngFor="let story of stories" routerLink="/stories/{{story.id}}">
+      <td>{{story.name}}</td>
+      <td>{{story.description}}</td>
+      <td>
+        <span class="badge" [ngClass]="story.isAllRequirementsSuccessfullyTested ? 'badge-success' : 'badge-danger'">
+          {{story.isAllRequirementsSuccessfullyTested ? 'Ja' : 'Nee'}}
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <button type="button" class="btn btn-primary" routerLink="story/create">story aanmaken</button>
+</div>

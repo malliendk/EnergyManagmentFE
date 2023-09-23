@@ -1,0 +1,85 @@
+<div *ngIf="scenario">
+  <div *ngIf="scenarioRequirements">
+    <div *ngIf="story">
+      <div class="container mt-5">
+        <div class="card">
+          <div class="card-header bg-primary text-white">
+            <h3>Scenario Details</h3>
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-3 text-muted">Id:</div>
+              <div class="col-md-9"> {{ scenario.id }}</div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-3 text-muted">Naam:</div>
+              <div class="col-md-9">
+                <span *ngIf="!editMode">{{ scenario.name }}</span>
+                <input *ngIf="editMode" type="text" class="form-control" name="name" [(ngModel)]="scenario.name">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-3 text-muted">Beschrijving:</div>
+              <div class="col-md-9">
+                <span *ngIf="!editMode"> {{ scenario.description }}</span>
+                <input *ngIf="editMode" type="text" class="form-control" name="description" [(ngModel)]="scenario.description">
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-3 text-muted">Succesvol getest</div>
+              <div class="col-md-9">
+          <span class="badge" [ngClass]="scenario.isSuccessfullyTested ? 'badge-success' : 'badge-danger'">
+            {{ scenario.isSuccessfullyTested ? 'Ja' : 'Nee' }}
+          </span>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-3 text-muted">Story</div>
+              <a class="col-md-9" href="/stories/{{story.id}}">{{scenario.storyName}}</a>
+              <br>
+
+              <br>
+              <h4>Gerelateerde requirements</h4>
+              <table *ngIf="!editMode" class="table table-striped">
+                <thead>
+                <th>Naam</th>
+                <th>Beschrijving</th>
+                <th>Succesvol getest</th>
+                </thead>
+                <tbody>
+                <tr *ngFor="let requirement of scenarioRequirements">
+                  <td>{{requirement.name}}</td>
+                  <td>{{requirement.description}}</td>
+                  <td>
+              <span class="badge" [ngClass]="requirement.isSuccessfullyTested ? 'badge-success' : 'badge-danger'">
+                {{requirement.isSuccessfullyTested ? 'Ja' : 'Nee'}}</span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+              <br>
+
+              <div *ngIf="editMode" class="container">
+                <div class="row">
+                  <div class="col-5">
+                    <select *ngFor="let requirement of storyRequirements" id="requirementSelector">
+                      <option>{{requirement.name}}</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="card-footer text-muted">
+              <button *ngIf="!editMode" class="btn btn-outline-primary" (click)="toggleEditMode()">Edit</button>
+              <button *ngIf="editMode" class="btn btn-outline-primary" (click)="saveChanges(this.scenario.id)">Opslaan</button>
+<!--              <button class="btn btn-outline-danger ml-2">Delete</button>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

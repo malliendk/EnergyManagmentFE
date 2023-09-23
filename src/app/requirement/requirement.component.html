@@ -1,0 +1,50 @@
+<div *ngIf="requirement" xmlns="http://www.w3.org/1999/html">
+  <div class="container mt-5">
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h3>Requirement Details</h3>
+      </div>
+      <div class="card-body">
+
+        <div class="row mb-3">
+          <div class="col-md-3 text-muted">Name:</div>
+          <div class="col-md-9">
+            <span *ngIf="!isEditing"> {{ requirement.name }}</span>
+            <input *ngIf="isEditing" type="text" class="form-control" name="name" [(ngModel)]="requirement.name">
+        </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-3 text-muted">Description:</div>
+          <div class="col-md-9">
+            <span *ngIf="!isEditing"> {{ requirement.description }}</span>
+            <input *ngIf="isEditing" type="text" class="form-control" name="description" [(ngModel)]="requirement.description">
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-3 text-muted">Successfully Tested:</div>
+          <div class="col-md-9">
+          <span class="badge" [ngClass]="requirement.isSuccessfullyTested ? 'badge-success' : 'badge-danger'">
+            {{ requirement.isSuccessfullyTested ? 'Ja' : 'Nee' }}
+          </span>
+          </div>
+        </div>
+        <div *ngIf="story">
+          <div class="row mb-3">
+            <div class="col-md-3 text-muted">Story:</div>
+            <a class="col-md-9" href="/stories/{{story.id}}">{{ requirement.storyName }}</a>
+          </div>
+        </div>
+        <div class="card-footer text-muted">
+          <button *ngIf="!isEditing" class="btn btn-outline-primary" (click)="toggleEditMode()">Edit</button>
+<!--          <button *ngIf="!isEditing" class="btn btn-outline-danger ml-2" (click)="delete()">Delete</button>-->
+          <button *ngIf="isEditing" class="btn btn-outline-primary" (click)="saveChanges(this.requirement.id)">Opslaan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
