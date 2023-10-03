@@ -29,8 +29,16 @@ export class RequirementService {
     return this.http.get<Requirement[]>(this.baseUrl + `api/requirements/scenario/${id}`)
   }
 
+  findNamesByScenario(id: number){
+    return this.http.get<string[]>(this.baseUrl + `api/requirements/scenario/names/${id}`)
+  }
+
   findAllByStory(id: number) {
     return this.http.get<Requirement[]>(this.baseUrl + `api/requirements/story/${id}`)
+  }
+
+  findNamesByStory(id: number) {
+    return this.http.get<string[]>(this.baseUrl + `api/requirements/story/names/${id}`)
   }
 
   update(requirement: Requirement, id: number) {

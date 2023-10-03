@@ -30,32 +30,15 @@
           </div>
         </div>
         <br>
-        <div class="row">
-          <div class="col">
-            <br>
-            <h4>Requirements</h4>
-            <br>
-            <div *ngIf="requirements">
-            <table class="table table-striped" id="storyRequirementsTable">
-              <thead>
-              <th>Naam</th>
-              <th>Beschrijving</th>
-              <th>Succesvol getest</th>
-              </thead>
-              <tbody>
-              <tr class="clickable" *ngFor="let requirement of requirements" routerLink="/requirements/{{requirement.id}}">
-                <td>{{requirement.name}}</td>
-                <td>{{requirement.description}}</td>
-                <td>
-                  <span class="badge" [ngClass]="requirement.isSuccessfullyTested ? 'badge-success' : 'badge-danger'">
-                    {{requirement.isSuccessfullyTested ? 'Ja' : 'Nee'}}
-                  </span>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-            </div>
+        <div class="row mb-3">
+          <div class="col-md-9">
+            <button *ngIf="!editMode" class="btn btn-success"
+                    (click)="verifyAllRequirementsTested(story.id)">Verifieer requirements
+            </button>
           </div>
+        </div>
+        <br>
+        <div class="row">
           <div class="col">
             <br>
             <h4>Scenarios</h4>
@@ -78,6 +61,31 @@
               </tr>
               </tbody>
             </table>
+          </div>
+          <div class="col">
+            <br>
+            <h4>Requirements</h4>
+            <br>
+            <div *ngIf="requirements">
+              <table class="table table-striped" id="storyRequirementsTable">
+                <thead>
+                <th>Naam</th>
+                <th>Beschrijving</th>
+                <th>Succesvol getest</th>
+                </thead>
+                <tbody>
+                <tr class="clickable" *ngFor="let requirement of requirements" routerLink="/requirements/{{requirement.id}}">
+                  <td>{{requirement.name}}</td>
+                  <td>{{requirement.description}}</td>
+                  <td>
+                  <span class="badge" [ngClass]="requirement.isSuccessfullyTested ? 'badge-success' : 'badge-danger'">
+                    {{requirement.isSuccessfullyTested ? 'Ja' : 'Nee'}}
+                  </span>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

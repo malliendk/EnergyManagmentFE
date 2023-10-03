@@ -27,11 +27,17 @@ export class StoryService {
     return this.http.get<Story[]>(this.baseUrl + "api/stories/all");
   }
 
+  findAllNames() {
+    return this.http.get<string[]>(this.baseUrl + "api/stories/names/all")
+  }
+
   update(story: Story, id: number) {
     return this.http.put<Story>(this.baseUrl + `api/stories/${id}`, story)
   }
 
-  compareLists(storyId: number){
+  verifyAllRequirementsTested(storyId: number){
     return this.http.get(this.baseUrl + `api/stories/compare/${storyId}`)
   }
+
+
 }

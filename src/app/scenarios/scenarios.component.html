@@ -1,24 +1,28 @@
 <div *ngIf="scenarios">
-  <table class="table table-striped">
-    <thead>
-    <th>Naam</th>
-    <th>Beschrijving</th>
-    <th>Story</th>
-    <th>Succevol getest</th>
-    </thead>
-    <tbody>
-    <ng-container *ngFor="let scenario of scenarios">
-      <tr>
-        <td class="clickable" [routerLink]="'/scenarios/' + scenario.id">{{scenario.name}}</td>
-        <td class="clickable" [routerLink]="'/scenarios/' + scenario.id">{{scenario.description}}</td>
-        <td><a [routerLink]="['/stories', scenario.storyId]">{{scenario.storyName}}</a></td>
-        <td class="clickable" [routerLink]="'/scenarios/' + scenario.id">
+  <div class="container mt-lg-5 container-fluid">
+    <table class="table table-striped table-shadow table-responsive w-100">
+      <thead>
+      <th>Naam</th>
+      <th>Beschrijving</th>
+      <th>Story</th>
+      <th>Succevol getest</th>
+      </thead>
+      <tbody>
+      <ng-container *ngFor="let scenario of scenarios">
+        <tr>
+          <td class="clickable" [routerLink]="'/scenarios/' + scenario.id">{{scenario.name}}</td>
+          <td class="clickable" [routerLink]="'/scenarios/' + scenario.id">{{scenario.description}}</td>
+          <td><a [routerLink]="['/stories', scenario.storyId]">{{scenario.storyName}}</a></td>
+          <td class="clickable" [routerLink]="'/scenarios/' + scenario.id">
             <span class="badge" [ngClass]="scenario.isSuccessfullyTested ? 'badge-success' : 'badge-danger'">
               {{scenario.isSuccessfullyTested ? 'Ja' : 'Nee'}}
             </span>
-        </td>
-      </tr>
-    </ng-container>
-    </tbody>
-  </table>
+          </td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+    <button class="btn btn-primary" routerLink="/scenarios/create">Scenario aanmaken</button>
+  </div>
 </div>
+

@@ -17,9 +17,12 @@ export class ScenarioComponent implements OnInit{
   scenario!: Scenario
   story!: Story
   scenarioRequirements: Requirement[] = []
-  storyRequirements? : Requirement[] = []
+  scenarioRequirementNames : string[] = []
+  storyRequirementNames : string[] = []
 
   editMode = false
+  selectedStoryRequirements : string[] = [];
+  selectedScenarioRequirements : string[] = [];
 
   constructor(private scenarioService: ScenarioService,
               private requirementService: RequirementService,
@@ -38,7 +41,8 @@ export class ScenarioComponent implements OnInit{
       .subscribe(scenario => {
         this.scenario = scenario;
         this.findStoryByName(this.scenario.storyName);
-        this.findAllByScenario(id)
+        this.findAllRequirementsByScenario(id)
+        this.findRequirementNamesByScenario(id)
       });
   }
 
@@ -46,28 +50,45 @@ export class ScenarioComponent implements OnInit{
     this.storyService.findByName(name)
       .subscribe(story => {
         this.story = story;
-        this.findAllByStory(this.story.id);
-      });
-  }
-
-  findAllByStory(id: number){
-    return this.requirementService.findAllByStory(id)
-      .subscribe(requirements => {
-        this.storyRequirements = requirements;
+        this.findRequirementNamesByStory(this.story.id);
       });
   }
 
 
-  findAllByScenario(id: number) {
+  findRequirementNamesByStory(id: number){
+    return this.requirementService.findNamesByStory(id)
+      .subscribe(names => this.storyRequirementNames = names.filter(
+        name => !this.scenarioRequirementNames.includes(name)
+      ))
+  }
+
+  findAllRequirementsByScenario(id: number) {
     this.requirementService.findAllByScenario(id)
       .subscribe(requirements => this.scenarioRequirements = requirements)
   }
 
+  findRequirementNamesByScenario(id: number){
+    return this.requirementService.findNamesByScenario(id)
+      .subscribe(names => this.scenarioRequirementNames = names)
+  }
 
-  saveChanges(id : number){
+  moveToScenarios() {
+    this.scenarioRequirementNames.push(...this.selectedStoryRequirements)
+    this.storyRequirementNames = this.storyRequirementNames.filter(name => !this.selectedStoryRequirements.includes(name));
+    this.scenario.requirementNames = this.scenarioRequirementNames
+    this.selectedStoryRequirements = []
+  }
+
+  moveToRequirements() {
+    this.storyRequirementNames.push(...this.selectedScenarioRequirements);
+    this.scenarioRequirementNames = this.scenarioRequirementNames.filter(name => !this.selectedScenarioRequirements.includes(name));
+    this.scenario.requirementNames = this.scenarioRequirementNames
+    this.selectedScenarioRequirements = [];
+  }
+
+  saveChanges(scenario: Scenario, id : number){
     this.scenarioService.update(this.scenario, id)
-      .subscribe(scenario => this.scenario = scenario)
-    this.toggleEditMode()
+      .subscribe(scenario => {this.scenario = scenario, window.location.reload()})
   }
 
   toggleEditMode() {
@@ -75,6 +96,11 @@ export class ScenarioComponent implements OnInit{
     window.scroll(0, 0);
   }
 
-
-
+  markScenarioTested(scenario : Scenario, id: number) {
+    this.scenarioService.markScenarioTested(scenario, id)
+      .subscribe(scenario => {
+        this.scenario = scenario
+        window.location.reload()
+      })
+  }
 }

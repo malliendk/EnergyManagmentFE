@@ -58,4 +58,13 @@ export class StoryComponent implements OnInit {
     this.editMode = !this.editMode;
     window.scroll(0, 0);
   }
+
+  verifyAllRequirementsTested(id: number) {
+    this.storyService.verifyAllRequirementsTested(id)
+      .subscribe(response => {
+        if(response===true){
+          window.location.reload()
+        }
+      })
+  }
 }

@@ -1,4 +1,3 @@
-import {Story} from "./story";
 
 export interface Requirement {
   id : number

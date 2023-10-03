@@ -7,6 +7,7 @@ import { Scenario } from "./scenario";
 })
 export class ScenarioService {
 
+
   baseUrl = "http://localhost:8080/"
 
   constructor(private http: HttpClient) { }
@@ -17,6 +18,10 @@ export class ScenarioService {
 
   find(id: number){
     return this.http.get<Scenario>(this.baseUrl + `api/scenarios/${id}`);
+  }
+
+  findByName(name: string) {
+    return this.http.get<Scenario>(this.baseUrl + `api/scenarios/name/${name}`)
   }
 
   findAll(){
@@ -30,5 +35,11 @@ export class ScenarioService {
   update(scenario: Scenario, id: number) {
     return this.http.put<Scenario>(this.baseUrl + `api/scenarios/${id}`, scenario)
   }
+
+  markScenarioTested(scenario: Scenario, id: number) {
+    return this.http.put<Scenario>(this.baseUrl + `api/scenarios/tested/${id}`, scenario)
+  }
+  
+  
 }
 

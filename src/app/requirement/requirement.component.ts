@@ -41,10 +41,10 @@ export class RequirementComponent implements OnInit{
       .subscribe(story => this.story = story)
   }
 
-  saveChanges(id: number){
+  saveChanges(requirement: Requirement, id: number){
     this.requirementService.update(this.requirement, id)
       .subscribe(requirement => this.requirement = requirement)
-    this.toggleEditMode()
+    window.location.reload()
   }
 
   toggleEditMode(){
