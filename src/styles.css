@@ -2,6 +2,10 @@
   cursor: pointer;
 }
 
+.clickable:hover{
+  background-color: #00d0ff;
+}
+
 .container .form-select.custom-select-height {
   height: 100%;
   min-height: 20rem; /* Adjust this based on your needs */
@@ -38,12 +42,12 @@
   background-color: #e1eefb; /* Hover effect */
 }
 
-
 .card-header-bg{
   background-image: linear-gradient(#007bff, #00d0ff);
 }
+
 .table-shadow{
-  box-shadow: 0px 6px 25px 0 rgb(0, 0, 0.5);
+  box-shadow: 0 6px 25px 0 rgb(0, 0, 0.5);
 }
 
 
