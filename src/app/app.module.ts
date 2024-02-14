@@ -1,41 +1,30 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
-import { RequirementComponent } from './requirement/requirement.component';
-import { StoryComponent } from './story/story.component';
-import { ScenarioComponent } from './scenario/scenario.component';
-import { RequirementsComponent } from './requirements/requirements.component';
-import { CreateRequirementComponent } from './create-requirement/create-requirement.component';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {AppComponent} from './app.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { AppRoutingModule } from './app-routing.module';
+import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule} from "@angular/common/http";
-import { ScenariosComponent } from './scenarios/scenarios.component';
-import { CreateScenarioComponent } from './create-scenario/create-scenario.component';
-import { StoriesComponent } from './stories/stories.component';
-import { CreateStoryComponent } from './create-story/create-story.component';
+import {AccountComponent} from './account/account.component';
+import {NgxChartsModule} from "@swimlane/ngx-charts";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    RequirementComponent,
-    StoryComponent,
-    ScenarioComponent,
-    RequirementsComponent,
-    CreateRequirementComponent,
-    ScenariosComponent,
-    CreateScenarioComponent,
-    StoriesComponent,
-    CreateStoryComponent
+    AccountComponent,
   ],
-    imports: [
-        BrowserModule,
-        FormsModule,
-        AppRoutingModule,
-        HttpClientModule,
-        ReactiveFormsModule
-    ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    NgxChartsModule,
+    BrowserAnimationsModule,
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
