@@ -1,0 +1,35 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="card-header">
+      <button class="btn btn-outline-primary" id="getSupervisorNameButton"
+              (click)="getSuperVisorByName(supervisorName.value)">Get dashboards of</button>
+      <input type="text" class="form-control" id="inputForSupervisorName" #supervisorName>
+      <div class="row">
+        <h2 class="col">Logged in as: {{this.dashboard.supervisorName}}</h2>
+        <h4 class="col">Other credentials</h4>
+      </div>
+      <div class="mt-5 container-fluid">
+        <div class="card bg-light" *ngFor="let dashboard of dashboards; let i = index">
+          <div class="row">
+            <div class="col">
+              <h4>Locality: {{dashboard.location}}</h4>
+              <h4>Total number of accounts: {{dashboard.numberOfAccounts}}</h4>
+              <h4>Mean of account supplies: {{dashboard.supplyMean}}</h4>
+            </div>
+            <div class="col">
+              <ngx-charts-pie-chart
+                [view]="[300, 300]"
+                [results]="chartResults"
+                [customColors]="chartColors"
+                [gradient]="chartGradient"
+                [legend]="showChartLegend"
+                [legendPosition]="legendPosition">
+              </ngx-charts-pie-chart>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

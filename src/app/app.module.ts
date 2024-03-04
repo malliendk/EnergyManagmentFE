@@ -7,12 +7,14 @@ import {HttpClientModule} from "@angular/common/http";
 import {AccountComponent} from './account/account.component';
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { SupervisorDashboardComponent } from './supervisor-dashboard/supervisor-dashboard.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AccountComponent,
+    SupervisorDashboardComponent,
   ],
   imports: [
     BrowserModule,

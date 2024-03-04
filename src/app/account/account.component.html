@@ -8,9 +8,8 @@
     <button class="btn btn-primary me-2" (click)="generateAccounts(this.numberOfAccountToGenerate)"
             id="generateAccounts">Generate accounts</button>
     <input type="number" class="form-control inputWidth" [(ngModel)]="numberOfAccountToGenerate" id="numberOfAccountsToGenerateInput"
-    placeholder="number of accounts">
+           placeholder="number of accounts">
   </div>
-
   <div class="mt-5">
     <div class="row">
       <div class="col">
@@ -72,9 +71,9 @@
   <div class="row mt-5">
     <div class="col" *ngFor="let chartResults of chartResultsHistory; let i = index">
       <ngx-charts-bar-vertical
-        [view]="[200, 700]"
+        [view]="[150, 600]"
         [results]="chartResults"
-        [customColors]="customColors"
+        [customColors]="chartColors"
         [gradient]="gradient"
         [xAxis]="true"
         [yAxis]="true"

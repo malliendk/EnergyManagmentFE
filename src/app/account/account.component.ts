@@ -22,9 +22,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   //start chart variables
   chartResults: any = []
   chartResultsHistory: any[] = [];
-
-
-  customColors = [
+  chartColors = [
     {
       name: 'shortage',
       value: '#FF0000FF'
@@ -38,7 +36,6 @@ export class AccountComponent implements OnInit, OnDestroy {
       value: '#663399FF'
     },
   ]
-
   gradient = true;
   yAxisMaxValue = 0;
 
@@ -126,6 +123,9 @@ export class AccountComponent implements OnInit, OnDestroy {
         "value": this.surplusAccounts.length
       }
     ];
+    if (this.chartResultsHistory.length === 12) {
+      this.chartResultsHistory = [];
+    }
   }
 
   addChartToHistory() {
