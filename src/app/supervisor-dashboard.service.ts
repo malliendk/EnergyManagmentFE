@@ -12,6 +12,6 @@ export class SupervisorDashboardService {
   }
 
   getSupervisorDashboard(supervisorName: string) {
-    return this.http.get<SupervisorDashboard[]>(`${this.baseUrl + 'supervisor' + supervisorName}` )
+    return this.http.get<SupervisorDashboard[]>(`${this.baseUrl + 'supervisor/' + supervisorName}` )
   }
 }

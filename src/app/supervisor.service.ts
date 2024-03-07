@@ -7,10 +7,10 @@ import {Supervisor} from "./supervisor";
 })
 export class SupervisorService {
 
-  baseUrl = 'http://localhost:8080/api/v1/dashboard/';
+  baseUrl = 'http://localhost:8080/api/v1/supervisor/dashboard/';
   constructor(private http: HttpClient) { }
 
-  findByName(name: string) {
-    return this.http.get<Supervisor>(`${this.baseUrl + name}`)
+  findByLastName(lastName: string) {
+    return this.http.get<Supervisor>(`${this.baseUrl + lastName}`)
   }
 }

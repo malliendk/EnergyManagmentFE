@@ -1,6 +1,7 @@
 export interface SupervisorDashboard {
 
-  supervisorName: string;
+  firstName: string;
+  lastName: string;
   numberOfAccounts: number;
   numberOfShortageAccounts: number;
   numberOfOptimalAccounts: number;

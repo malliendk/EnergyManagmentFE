@@ -4,6 +4,8 @@ import {SupervisorDashboard} from "../supervisorDashboard";
 import {Supervisor} from "../supervisor";
 import {SupervisorService} from "../supervisor.service";
 import {LegendPosition} from "@swimlane/ngx-charts";
+import {ActivatedRoute} from "@angular/router";
+import {FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-supervisor-dashboard',
@@ -15,6 +17,10 @@ export class SupervisorDashboardComponent implements OnInit{
   supervisor!: Supervisor
   dashboard!: SupervisorDashboard;
   dashboards: SupervisorDashboard[] = []
+
+  // form = new FormGroup({
+  //   supervisorName = new FormControl('supervisor name')
+  // });
 
   chartResults!: any[];
   chartColors = [
@@ -36,20 +42,29 @@ export class SupervisorDashboardComponent implements OnInit{
   legendPosition: LegendPosition = LegendPosition.Right
 
   constructor(private dashboardService: SupervisorDashboardService,
-              private supervisorService: SupervisorService) {
+              private supervisorService: SupervisorService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.getSupervisorDashboard(this.dashboard.supervisorName);
   }
 
-  private getSupervisorDashboard(supervisorName: string) {
-    this.dashboardService.getSupervisorDashboard(supervisorName)
-      .subscribe(dashboards => this.dashboards = dashboards)
+  getSupervisorDashboard(lastName: string) {
+    this.dashboardService.getSupervisorDashboard(lastName)
+      .subscribe(dashboards => {
+        this.dashboards = dashboards;
+        }
+      )
   }
 
-  private getSuperVisorByName(supervisorName: string) {
-    this.supervisorService.findByName(supervisorName)
+  getSupervisorByName(supervisorName: string) {
+    this.supervisorService.findByLastName(supervisorName)
       .subscribe(supervisor => this.supervisor = supervisor)
   }
+
+  // formatSupervisorName(supervisorName: string) {
+  //   const firstName = supervisorName.substring(0, supervisorName.indexOf(' '));
+  //   const lastName = supervisorName.substring(supervisorName.indexOf(' ') +1);
+  //   return `${firstName}' '${lastName}`;
+  // }
 }

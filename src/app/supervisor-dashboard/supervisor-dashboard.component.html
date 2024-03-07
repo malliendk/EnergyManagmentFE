@@ -2,10 +2,10 @@
   <div class="card">
     <div class="card-header">
       <button class="btn btn-outline-primary" id="getSupervisorNameButton"
-              (click)="getSuperVisorByName(supervisorName.value)">Get dashboards of</button>
-      <input type="text" class="form-control" id="inputForSupervisorName" #supervisorName>
+              (click)="getSupervisorDashboard(supervisorLastName.value)">Get dashboards of</button>
+      <input type="text" class="form-control" id="inputForSupervisorName" #supervisorLastName>
       <div class="row">
-        <h2 class="col">Logged in as: {{this.dashboard.supervisorName}}</h2>
+        <h2 class="col">Logged in as: {{this.dashboard.firstName}} {{this.dashboard.lastName}}</h2>
         <h4 class="col">Other credentials</h4>
       </div>
       <div class="mt-5 container-fluid">
