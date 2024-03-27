@@ -1,5 +1,9 @@
 export interface Supervisor {
 
-  id: number;
-  name: string;
+  id: number
+  firstName: string
+  lastName: string
+  profilePicUri: string
+  distributorName: string
+  localityNames: string[];
 }

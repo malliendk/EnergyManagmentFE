@@ -1,21 +1,26 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Account} from "./account";
+import {Account} from "../account";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
 
-  baseUrl = 'http://localhost:8080/api/v1/accounts';
+  baseUrl = 'http://localhost:8080/api/v1/account';
   constructor(private http: HttpClient) { }
 
   generateAccounts(numberOfAccounts: number | null) {
     return this.http.post<Account[]>(this.baseUrl, { numberOfAccounts });
   }
-  getAllAccounts() {
+  findAll() {
     return this.http.get<Account[]>(this.baseUrl);
   }
+
+  findAllByLocality(localityName: string) {
+    return this.http.get<Account[]>(`${this.baseUrl} + '/' + ${localityName}`)
+  }
+
   getShortageAccounts() {
     return this.http.get<Account[]>(`${this.baseUrl}/shortage`);
   }

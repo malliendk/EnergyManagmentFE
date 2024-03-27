@@ -1,0 +1,11 @@
+.navbar{
+  box-shadow: 0 2px 10px 0;
+  background-color: #cc0303;
+}
+
+.side-bar {
+  width: 1.0444%; /* equivalent to half of col-1 (1/24th of the total width) */
+  background-color: gold;
+  min-height: 100vh;
+  float: left; /* to ensure the div takes the specified width */
+}

@@ -1,0 +1,12 @@
+<div class="container">
+  <div *ngFor="let distributor of distributors">
+  <div class="card">
+    <div class="card-header">
+      <img [src]="distributor.logoUri" alt="{{distributor.name}} logo" (click)="navigateToDistributor(distributor.name)">
+    </div>
+    <div class="card-body">
+      <p>{{distributor.name}}</p>
+    </div>
+  </div>
+</div>
+</div>

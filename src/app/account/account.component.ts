@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Account} from "../account";
-import {AccountService} from "../account.service";
+import {AccountService} from "../services/account.service";
 import {interval, Subscription, switchMap} from "rxjs";
 
 @Component({
@@ -54,7 +54,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   }
 
     getAll() {
-    return this.accountService.getAllAccounts()
+    return this.accountService.findAll()
       .subscribe(accounts => {
         this.accounts = accounts;
         this.getShortageAccounts();
@@ -146,7 +146,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       })
 
     this.subscription = interval(1000).pipe(
-      switchMap(() => this.accountService.getAllAccounts())
+      switchMap(() => this.accountService.findAll())
     ).subscribe(accounts => {
       this.accounts = accounts;
       this.getShortageAccounts();
