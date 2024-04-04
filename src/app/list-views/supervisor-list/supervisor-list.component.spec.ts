@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { SupervisorListComponent } from './supervisor-list.component';
+import {SupervisorListComponent} from './supervisor-list.component';
 
 describe('SupervisorTableComponent', () => {
   let component: SupervisorListComponent;
