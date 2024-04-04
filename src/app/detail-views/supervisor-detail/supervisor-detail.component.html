@@ -1,0 +1,9 @@
+<div *ngIf="supervisor.image">
+  <div class="d-flex justify-content-center mt-lg-5">
+    <img [src]="supervisor.image" [alt]="supervisor.firstName +' '+ supervisor.lastName + 'image'">
+  </div>
+  <div class="mt-4">
+    <app-localty-list [supervisorName]="supervisor.lastName"></app-localty-list>
+  </div>
+</div>
+

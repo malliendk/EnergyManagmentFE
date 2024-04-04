@@ -3,5 +3,5 @@ export interface Account {
   name: string;
   supplyType: string;
   supplyAmount: number;
-  location: string;
+  localityName: string
 }

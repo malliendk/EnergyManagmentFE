@@ -1,25 +1,26 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Supervisor} from "../../supervisor";
 import {SupervisorService} from "../../services/supervisor.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
-  selector: 'app-supervisor-table',
+  selector: 'app-supervisor-list',
   templateUrl: './supervisor-list.component.html',
   styleUrls: ['./supervisor-list.component.css']
 })
-export class SupervisorListComponent implements OnInit{
+export class SupervisorListComponent implements OnInit {
 
-  @Input() supervisors: Supervisor[] = [];
+  supervisors: Supervisor[] = [];
+  @Input() distributorName!: string;
 
   constructor(private supervisorService: SupervisorService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit(): void {
-    const distributorName = this.route.snapshot.paramMap.get('distributorName');
-    if (distributorName != null){
-        this.findAllByDistributorName(distributorName)
+    if (this.distributorName) {
+      this.findAllByDistributorName(this.distributorName);
     } else {
       this.findAll();
     }
@@ -27,11 +28,35 @@ export class SupervisorListComponent implements OnInit{
 
   findAll() {
     this.supervisorService.findAll()
-      .subscribe(supervisors => this.supervisors = supervisors);
+      .subscribe({
+        next: supervisors => {
+          supervisors.forEach(supervisor => this.getImage(supervisor));
+          this.supervisors = supervisors;
+        }
+        , error: error => {
+          //TODO: handle error
+        }
+      });
   }
 
   findAllByDistributorName(distributorName: string) {
     this.supervisorService.findAllByDistributorName(distributorName)
-      .subscribe(supervisors => this.supervisors = supervisors)
+      .subscribe(
+        supervisors => {
+          supervisors.forEach(supervisor => this.getImage(supervisor));
+          this.supervisors = supervisors;
+        })
+  }
+
+  getImage(supervisor: Supervisor) {
+    this.supervisorService.getImage(supervisor.firstName + supervisor.lastName)
+      .subscribe(blob => {
+          supervisor.image = URL.createObjectURL(blob)
+        }
+      )
+  }
+
+  navigateTo(supervisorId: number) {
+    this.router.navigate([supervisorId], {relativeTo: this.route});
   }
 }

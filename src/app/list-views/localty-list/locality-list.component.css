@@ -1,0 +1,15 @@
+.card {
+  width: 15vw;
+  height: 35vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.card img {
+  width: 15vw;
+  height: 25vh;
+}
+
+img:hover {
+  cursor: pointer;
+}

@@ -1,9 +1,8 @@
-import {Account} from "./account";
-
 export interface Locality {
   id: number;
   name: string;
-  imageUrl: string;
+  image: string;
+  networkLoad: number;
   supervisorNames: string[];
   accountsIds: number[];
 }

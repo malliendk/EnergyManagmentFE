@@ -1,19 +1,23 @@
-<div class="container-fluid">
-  <div class="row">
-    <nav class="navbar navbar-shadow navbar-expand-lg navbar-dark w-100">
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-item nav-link active" href="">Energy Management</a>
-          <a class="nav-item nav-link active" href="dashboard">Supervisor Dashboard</a>
+<nav class="navbar navbar-shadow navbar-expand-lg navbar-dark w-100">
+  <div class="container">
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="">Energy Management</a>
+        <a class="nav-item nav-link active" href="/locality">Account Dashboard</a>
+<!--        <div *ngIf="gameMode === 'distributor'">-->
+<!--          <a class="nav-item nav-link active" href="">Energy Management</a>-->
+<!--          <a class="nav-item nav-link active" href="/supervisor">Supervisor Dashboard</a>-->
+<!--        </div>-->
+<!--        <div *ngIf="gameMode === 'supervisor'">-->
+<!--          <a class="nav-item nav-link active" href="">Energy Management</a>-->
+<!--          <a class="nav-item nav-link active" href="/locality">Locality Dashboard</a>-->
+<!--        </div>-->
+<!--        <div *ngIf="gameMode === 'locality'">-->
+<!--          <a class="nav-item nav-link active" href="">Energy Management</a>-->
+<!--          <a class="nav-item nav-link active" href="/locality">Account Dashboard</a>-->
         </div>
       </div>
-    </nav>
-    <div class="side-bar navbar-shadow"></div>
-    <div class="col">
-      <br>
-      <div class="container">
-        <router-outlet></router-outlet>
-      </div>
     </div>
-  </div>
-</div>
+</nav>
+
+

@@ -24,7 +24,7 @@
             <tbody>
             <tr *ngFor="let account of shortageAccounts">
               <td>{{account.supplyAmount}}</td>
-              <td>{{account.location}}</td>
+              <td>{{account.localityName}}</td>
             </tr>
             </tbody>
           </table>
@@ -42,7 +42,7 @@
             <tbody>
             <tr *ngFor="let account of optimalAccounts">
               <td>{{account.supplyAmount}}</td>
-              <td>{{account.location}}</td>
+              <td>{{account.localityName}}</td>
             </tr>
             </tbody>
           </table>
@@ -60,7 +60,7 @@
             <tbody>
             <tr *ngFor="let account of surplusAccounts">
               <td>{{account.supplyAmount}}</td>
-              <td>{{account.location}}</td>
+              <td>{{account.localityName}}</td>
             </tr>
             </tbody>
           </table>

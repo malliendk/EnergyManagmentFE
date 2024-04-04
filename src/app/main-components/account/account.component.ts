@@ -1,7 +1,8 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Account} from "../account";
-import {AccountService} from "../services/account.service";
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Account} from "../../account";
+import {AccountService} from "../../services/account.service";
 import {interval, Subscription, switchMap} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-account',
@@ -11,6 +12,10 @@ import {interval, Subscription, switchMap} from "rxjs";
 export class AccountComponent implements OnInit, OnDestroy {
 
   accounts: Account[] = [];
+  @Input() supplyType!: string;
+  localityName?: string;
+  distributorName? :string;
+
   shortageAccounts: Account[] = [];
   optimalAccounts: Account[] = [];
   surplusAccounts: Account[] = [];
@@ -19,7 +24,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   private subscription!: Subscription | null;
 
-  //start chart variables
+
   chartResults: any = []
   chartResultsHistory: any[] = [];
   chartColors = [
@@ -39,54 +44,41 @@ export class AccountComponent implements OnInit, OnDestroy {
   gradient = true;
   yAxisMaxValue = 0;
 
-  //end chart variables
 
-
-  constructor(private accountService: AccountService) {
+  constructor(private accountService: AccountService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    this.getAll();
+    if (this.localityName) {
+      this.findAllByLocality(this.localityName);
+    } else if (this.distributorName) {
+      this.findAllByDistributor(this.distributorName);
+    } else {
+      this.findAll();
+    }
   }
 
   ngOnDestroy(): void {
     this.stopOptimizeSupply();
   }
 
-    getAll() {
-    return this.accountService.findAll()
+  findAll() {
+    this.accountService.findAll()
       .subscribe(accounts => {
         this.accounts = accounts;
-        this.getShortageAccounts();
-        this.getOptimalAccounts();
-        this.getSurplusAccounts();
+        this.updateChartData(accounts);
       });
   }
 
-  getShortageAccounts() {
-    this.accountService.getShortageAccounts()
-      .subscribe(shortageAccounts => {
-        this.shortageAccounts = shortageAccounts;
-        this.updateChartData();
-      })
+  findAllByLocality(localityName: string) {
+    this.accountService.findAllByLocality(localityName)
+      .subscribe(accounts => this.accounts = accounts);
   }
 
-  getOptimalAccounts() {
-    this.accountService.getOptimalAccounts()
-      .subscribe(optimalAccounts => {
-        this.optimalAccounts = optimalAccounts;
-        this.updateChartData();
-      })
-  }
-
-  getSurplusAccounts() {
-    this.accountService.getSurplusAccounts()
-      .subscribe(surplusAccounts => {
-        this.surplusAccounts = surplusAccounts;
-        this.updateChartData();
-        this.addChartToHistory();
-        this.calculateYAxisMax();
-      })
+  findAllByDistributor(distributorName: string) {
+    this.accountService.findAllByDistributor(distributorName)
+      .subscribe(accounts => this.accounts = accounts);
   }
 
   generateAccounts(numberOfAccounts: number | null) {
@@ -95,7 +87,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       .subscribe(accounts => {
         this.accounts.push(...accounts);
         this.numberOfAccountToGenerate = null
-        this.getAll();
+        this.findAll();
       });
   }
 
@@ -104,28 +96,33 @@ export class AccountComponent implements OnInit, OnDestroy {
       .subscribe(accounts => {
         this.accounts = accounts;
         this.chartResultsHistory = [];
-        this.getAll();
+        this.findAll();
       })
   }
 
-  updateChartData() {
+  updateChartData(accounts: Account[]) {
+    const shortageAccounts = accounts.filter(account => account.supplyType === 'shortage');
+    this.shortageAccounts = shortageAccounts;
+    const optimalAccounts = accounts.filter(account => account.supplyType === 'optimal');
+    this.optimalAccounts = accounts;
+    const surplusAccounts = accounts.filter(account => account.supplyType === 'surplus');
+    this.surplusAccounts = surplusAccounts;
     this.chartResults = [
       {
         "name": "shortage",
-        "value": this.shortageAccounts.length
+        "value": shortageAccounts.length
       },
       {
         "name": "optimal",
-        "value": this.optimalAccounts.length
+        "value": optimalAccounts.length
       },
       {
         "name": "surplus",
-        "value": this.surplusAccounts.length
+        "value": surplusAccounts.length
       }
     ];
-    if (this.chartResultsHistory.length === 12) {
-      this.chartResultsHistory = [];
-    }
+    this.addChartToHistory();
+    this.calculateYAxisMax();
   }
 
   addChartToHistory() {
@@ -144,14 +141,11 @@ export class AccountComponent implements OnInit, OnDestroy {
       .subscribe(response => {
         console.log("subscribed, process started")
       })
-
     this.subscription = interval(1000).pipe(
       switchMap(() => this.accountService.findAll())
     ).subscribe(accounts => {
       this.accounts = accounts;
-      this.getShortageAccounts();
-      this.getOptimalAccounts();
-      this.getSurplusAccounts();
+      this.updateChartData(accounts);
     })
   }
 

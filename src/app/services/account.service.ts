@@ -7,42 +7,35 @@ import {Account} from "../account";
 })
 export class AccountService {
 
-  baseUrl = 'http://localhost:8080/api/v1/account';
+  basePrefix = 'http://localhost:8080/api/v1/account';
+
   constructor(private http: HttpClient) { }
 
   generateAccounts(numberOfAccounts: number | null) {
-    return this.http.post<Account[]>(this.baseUrl, { numberOfAccounts });
+    return this.http.post<Account[]>( this.basePrefix+'/', { numberOfAccounts });
   }
   findAll() {
-    return this.http.get<Account[]>(this.baseUrl);
+    return this.http.get<Account[]>(this.basePrefix);
   }
 
   findAllByLocality(localityName: string) {
-    return this.http.get<Account[]>(`${this.baseUrl} + '/' + ${localityName}`)
+    return this.http.get<Account[]>(`${this.basePrefix} + '/' + ${localityName}`);
   }
 
-  getShortageAccounts() {
-    return this.http.get<Account[]>(`${this.baseUrl}/shortage`);
-  }
-
-  getOptimalAccounts() {
-    return this.http.get<Account[]>(`${this.baseUrl}/optimal`);
-  }
-
-  getSurplusAccounts() {
-    return this.http.get<Account[]>(`${this.baseUrl}/surplus`);
+  findAllByDistributor(distributorName: string) {
+    return this.http.get<Account[]>(`${this.basePrefix} + '/' + ${distributorName}`);
   }
 
   resetAccounts() {
-    return this.http.get<Account[]>(`${this.baseUrl}/reset`);
+    return this.http.get<Account[]>(`${this.basePrefix}/reset`);
   }
 
   startOptimizeSupply() {
     console.log("button has been pressed and method executed")
-    return this.http.put<Account[]>(`${this.baseUrl}/optimize/start`, {});
+    return this.http.put<Account[]>(`${this.basePrefix}/optimize/start`, {});
   }
 
   stopOptimizeSupply() {
-    return this.http.put(`${this.baseUrl}/optimize/stop`, {})
+    return this.http.put(`${this.basePrefix}/optimize/stop`, {})
   }
 }

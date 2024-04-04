@@ -7,21 +7,18 @@ import {Locality} from "../../locality";
 import {Account} from "../../account";
 import {LocalityService} from "../../services/locality.service";
 import {AccountService} from "../../services/account.service";
+import {ToastrService} from "ngx-toastr";
 
 @Component({
   selector: 'app-supervisor-dashboard',
-  templateUrl: './supervisor-dashboard.component.html',
-  styleUrls: ['./supervisor-dashboard.component.css']
+  templateUrl: './main-dashboard.component.html',
+  styleUrls: ['./main-dashboard.component.css']
 })
-export class SupervisorDashboardComponent implements OnInit {
+export class MainDashboardComponent implements OnInit {
 
   supervisor!: Supervisor;
   localities: Locality[] = [];
   accounts: Account[] = [];
-
-  shortageAccounts: Account[] = [];
-  optimalAccounts: Account[] = [];
-  surplusAccounts: Account[] = [];
 
   charts!: Map<string, Account[]>[];
 
@@ -47,7 +44,8 @@ export class SupervisorDashboardComponent implements OnInit {
   constructor(private supervisorService: SupervisorService,
               private localityService: LocalityService,
               private accountService: AccountService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private toastr: ToastrService) {
   }
 
   ngOnInit(): void {
@@ -55,27 +53,38 @@ export class SupervisorDashboardComponent implements OnInit {
     if (supervisorName != null) {
       this.findSupervisor(supervisorName);
     } else {
-      console.log('supervisor name not found');
+      this.toastr.warning("Your dashboards couldn't be loaded", "Supervisor not present in URL");
     }
   }
 
   findSupervisor(lastName: string) {
     this.supervisorService.findByLastName(lastName)
-      .subscribe(supervisor => {
-        this.supervisor = supervisor;
-        this.findLocalitiesBySupervisor(lastName);
+      .subscribe({
+        next: supervisor => {
+          this.supervisor = supervisor;
+          this.findLocalitiesBySupervisor(lastName);
+        },
+        error: error => {
+          this.toastr.error("Supervisor with this name does not exist", error.title().toString())
+        }
       })
   }
 
   findLocalitiesBySupervisor(supervisorLastName: string) {
-    this.localityService.findAllBySupervisorName(supervisorLastName)
-      .subscribe(localities => {
-        this.localities = localities;
-        localities.forEach(locality => {
-          this.findAccountsByLocality(locality.name);
-        });
+    this.localityService.findAllBySupervisor(supervisorLastName)
+      .subscribe({
+        next: (localities) => {
+          this.localities = localities;
+          localities.forEach(locality => {
+            this.findAccountsByLocality(locality.name);
+          });
+        },
+        error: (error) => {
+          this.toastr.error("Localities couldn't be found", error.title.toString());
+        }
       });
   }
+
 
   findAccountsByLocality(localityName: string) {
     this.accountService.findAllByLocality(localityName)

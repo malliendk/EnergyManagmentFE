@@ -1,17 +1,17 @@
-<div class="container mt-5">
-  <div *ngFor="let supervisor of supervisors">
-    <div class="card">
-      <div class="card-header">
-        <img [src]="supervisor.profilePicUri"
-             alt="'profile picture of '+ supervisor.firstName + ' ' + supervisor.lastName">
+<div class="row">
+  <div class="col-md-6" *ngFor="let supervisor of supervisors">
+        <div *ngIf="supervisor.image">
+      <div class="card mt-5">
+        <div class="card-img-top">
+          <img [src]="supervisor.image" (click)="navigateTo(supervisor.id)"
+               alt="{{supervisor.firstName}} {{supervisor.lastName}} profile picture">
+        </div>
         <div class="card-body">
-          <p>{{supervisor.firstName}} {{supervisor.lastName}}</p>
-          <div class="container">
-            <p>Areas of operation</p>
-            <p *ngFor="let locality of supervisor.localityNames">{{locality}}</p>
-          </div>
+          <h4>{{supervisor.firstName}} {{supervisor.lastName}}</h4>
+          <p class="card-text">This is text</p>
         </div>
       </div>
     </div>
   </div>
 </div>
+

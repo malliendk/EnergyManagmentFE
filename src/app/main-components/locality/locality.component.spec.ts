@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { LocalityComponent } from './locality.component';
+import {LocalityComponent} from './locality.component';
 
 describe('LocalityComponent', () => {
   let component: LocalityComponent;

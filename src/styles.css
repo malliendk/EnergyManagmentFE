@@ -1,0 +1,10 @@
+.container {
+  width: 80% !important;
+}
+
+.card {
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+

@@ -8,10 +8,9 @@ import {ActivatedRoute, Router} from "@angular/router";
   templateUrl: './distributor-list.component.html',
   styleUrls: ['./distributor-list.component.css']
 })
-export class DistributorViewComponent implements OnInit{
+export class DistributorListComponent implements OnInit{
 
   distributors: Distributor[] = [];
-
 
   constructor(private distributorService: DistributorService,
               private router: Router,
@@ -24,10 +23,21 @@ export class DistributorViewComponent implements OnInit{
 
   findAll() {
     this.distributorService.findAll()
-      .subscribe(distributors => this.distributors = distributors);
+      .subscribe(distributors => {
+        distributors.forEach(distributor => this.getImage(distributor))
+        this.distributors = distributors;
+      });
   }
 
-  navigateToDistributor(distributorName: string) {
-    this.router.navigate([distributorName], { relativeTo: this.route})
+  getImage(distributor: Distributor) {
+    this.distributorService.getImage(distributor.name)
+      .subscribe(blob => {
+        distributor.image = URL.createObjectURL(blob);
+      });
+  }
+
+
+  navigateToDistributor(distributorId: number) {
+    this.router.navigate([distributorId], { relativeTo: this.route});
   }
 }

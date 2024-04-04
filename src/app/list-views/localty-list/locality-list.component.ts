@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {LocalityService} from "../../services/locality.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Locality} from "../../locality";
 
 @Component({
@@ -11,15 +11,16 @@ import {Locality} from "../../locality";
 export class LocalityListComponent implements OnInit{
 
   localities : Locality[] = [];
+  @Input() supervisorName = '';
 
   constructor(private localityService: LocalityService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit(): void {
-    const supervisorName = this.route.snapshot.paramMap.get('supervisorName');
-    if (supervisorName != null) {
-      this.findAllBySupervisorName(supervisorName);
+    if (this.supervisorName) {
+      this.findAllBySupervisor(this.supervisorName);
     } else {
       this.findAll();
     }
@@ -27,11 +28,28 @@ export class LocalityListComponent implements OnInit{
 
   findAll() {
     this.localityService.findAll()
-      .subscribe(response => this.localities = response)
+      .subscribe(localities => {
+        localities.forEach(locality => this.getImage(locality));
+        this.localities = localities;
+      })
   }
 
-  findAllBySupervisorName(supervisorName: string) {
-    return this.localityService.findAllBySupervisorName(supervisorName)
-      .subscribe(response => this.localities = response)
+  findAllBySupervisor(lastName: string) {
+    return this.localityService.findAllBySupervisor(lastName)
+      .subscribe(localities => {
+        localities.forEach(locality => this.getImage(locality));
+        this.localities = localities;
+      });
+  }
+
+  getImage(localty: Locality) {
+    this.localityService.getImage(localty.name)
+      .subscribe(blob => {
+        localty.image = URL.createObjectURL(blob);
+      })
+  }
+
+  navigateTo(localityId: number) {
+    this.router.navigate([localityId], { relativeTo: this.route});
   }
 }

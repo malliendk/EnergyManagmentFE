@@ -3,7 +3,7 @@ export interface Supervisor {
   id: number
   firstName: string
   lastName: string
-  profilePicUri: string
+  image: string
   distributorName: string
   localityNames: string[];
 }

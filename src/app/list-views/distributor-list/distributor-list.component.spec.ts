@@ -1,18 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DistributorViewComponent } from './distributor-list.component';
+import {DistributorListComponent} from './distributor-list.component';
 
 describe('DistributorViewComponent', () => {
-  let component: DistributorViewComponent;
-  let fixture: ComponentFixture<DistributorViewComponent>;
+  let component: DistributorListComponent;
+  let fixture: ComponentFixture<DistributorListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DistributorViewComponent ]
+      declarations: [ DistributorListComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DistributorViewComponent);
+    fixture = TestBed.createComponent(DistributorListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

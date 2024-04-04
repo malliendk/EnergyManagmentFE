@@ -1,7 +1,7 @@
 export interface Distributor {
   id: number;
   name: string;
-  logoUri: string;
+  image: string;
   supervisorNames: string[];
   accountIds: number[];
 }
