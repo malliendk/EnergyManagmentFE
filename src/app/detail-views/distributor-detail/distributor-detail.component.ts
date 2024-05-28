@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DistributorService} from "../../services/distributor.service";
-import {Distributor} from "../../distributor";
+import {Distributor} from "../../dtos/distributor";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({

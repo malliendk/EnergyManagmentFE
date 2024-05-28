@@ -10,6 +10,8 @@ import {GameMode} from "../gameMode";
 export class ChooseGameModeComponent {
 
   GameMode = GameMode;
+  difficultyLevel = false;
+  
 
   constructor(private gameModeService: GameModeService) {
   }

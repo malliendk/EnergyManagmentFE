@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Supervisor} from "../../supervisor";
+import {Supervisor} from "../../dtos/supervisor";
 import {SupervisorService} from "../../services/supervisor.service";
 import {ActivatedRoute} from "@angular/router";
 

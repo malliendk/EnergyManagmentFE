@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Supervisor} from "../../supervisor";
+import {Supervisor} from "../../dtos/supervisor";
 import {SupervisorService} from "../../services/supervisor.service";
 import {LegendPosition} from "@swimlane/ngx-charts";
 import {ActivatedRoute} from "@angular/router";
-import {Locality} from "../../locality";
-import {Account} from "../../account";
+import {Locality} from "../../dtos/locality";
+import {Account} from "../../dtos/account";
 import {LocalityService} from "../../services/locality.service";
 import {AccountService} from "../../services/account.service";
 import {ToastrService} from "ngx-toastr";

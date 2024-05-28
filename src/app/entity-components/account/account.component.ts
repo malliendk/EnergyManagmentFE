@@ -1,5 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Account} from "../../account";
+import {Account} from "../../dtos/account";
 import {AccountService} from "../../services/account.service";
 import {interval, Subscription, switchMap} from "rxjs";
 import {ActivatedRoute} from "@angular/router";

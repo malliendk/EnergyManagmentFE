@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Locality} from "../locality";
+import {Locality} from "../dtos/locality";
 import {Observable} from "rxjs";
 
 @Injectable({

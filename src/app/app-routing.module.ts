@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
-import {AccountComponent} from "./main-components/account/account.component";
-import {LocalityComponent} from "./main-components/locality/locality.component";
-import {SupervisorComponent} from "./main-components/supervisor/supervisor.component";
-import {DistributorComponent} from "./main-components/distributor/distributor.component";
+import {AccountComponent} from "./entity-components/account/account.component";
+import {LocalityComponent} from "./entity-components/locality/locality.component";
+import {SupervisorComponent} from "./entity-components/supervisor/supervisor.component";
+import {DistributorComponent} from "./entity-components/distributor/distributor.component";
 import {DistributorDetailComponent} from "./detail-views/distributor-detail/distributor-detail.component";
 import {SupervisorDetailComponent} from "./detail-views/supervisor-detail/supervisor-detail.component";
 import {LocalityDetailComponent} from "./detail-views/locality-detail/locality-detail.component";

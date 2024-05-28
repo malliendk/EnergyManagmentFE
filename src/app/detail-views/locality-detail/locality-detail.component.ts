@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LocalityService} from "../../services/locality.service";
 import {ActivatedRoute} from "@angular/router";
-import {Locality} from "../../locality";
+import {Locality} from "../../dtos/locality";
 
 @Component({
   selector: 'app-locality-detail',
