@@ -7,4 +7,26 @@
   border-radius: 10px;
 }
 
+.btn {
+  width: 60%;
+  align-self: center;
+  border-width: 2px !important;
+  border-radius: 5rem !important;
+}
+
+.btn-outline-purple {
+  background-color: rebeccapurple;
+}
+
+.li {
+  float: left;
+
+}
+.ri {
+  float: right;
+}
+
+
+
+
 

@@ -1,13 +1,17 @@
-<div class="row">
-  <div class="col-md-4" *ngFor="let locality of localities">
-    <div class="card mt-5" (click)="navigateTo(locality.id)">
-      <div class="card-img-top">
-        <img [src]="locality.image" [alt]="locality.name + 'logo'" (click)="navigateTo(locality.id)">
-      </div>
-      <div class="card-body">
-        <h4>{{locality.name}}</h4>
-        <p class="card-text">This is text</p>
+<div *ngIf="!showLocalityDetails">
+  <div class="row">
+    <div class="col-md-4" *ngFor="let locality of localities">
+      <div class="card mt-5" (click)="toggleLocalityDetails(locality.id, locality.name)">
+        <div class="card-img-top">
+          <img [src]="locality.image" [alt]="locality.name + 'logo'">
+        </div>
+        <div class="card-body">
+          <h4>{{ locality.name }}</h4>
+        </div>
       </div>
     </div>
   </div>
+</div>
+<div *ngIf="showLocalityDetails">
+  <app-locality-detail [localityId]="localityId"></app-locality-detail>
 </div>

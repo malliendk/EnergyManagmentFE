@@ -4,5 +4,15 @@
   </div>
   <div class="card-body">
     <h4>{{locality.name}}</h4>
+    <h4>Supervisors:</h4>
+    <h4 *ngFor="let supervisorName in locality.supervisorNames">
+      {{supervisorName}}
+    </h4>
+    <h4>Inhabitants with solar panels: {{locality.accountsIds.length}}</h4>
+    <br>
+    <h4>Starts out with:</h4>
+    <h5>Coal plant</h5>
+    <h5>Gas plant</h5>
+    <h5>Other starting load sources: {{locality.startingSourcesAmount}}</h5>
   </div>
 </div>

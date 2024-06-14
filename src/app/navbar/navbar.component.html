@@ -1,23 +1,20 @@
-<nav class="navbar navbar-shadow navbar-expand-lg navbar-dark w-100">
-  <div class="container">
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-item nav-link active" href="">Energy Management</a>
-        <a class="nav-item nav-link active" href="/locality">Account Dashboard</a>
-<!--        <div *ngIf="gameMode === 'distributor'">-->
-<!--          <a class="nav-item nav-link active" href="">Energy Management</a>-->
-<!--          <a class="nav-item nav-link active" href="/supervisor">Supervisor Dashboard</a>-->
-<!--        </div>-->
-<!--        <div *ngIf="gameMode === 'supervisor'">-->
-<!--          <a class="nav-item nav-link active" href="">Energy Management</a>-->
-<!--          <a class="nav-item nav-link active" href="/locality">Locality Dashboard</a>-->
-<!--        </div>-->
-<!--        <div *ngIf="gameMode === 'locality'">-->
-<!--          <a class="nav-item nav-link active" href="">Energy Management</a>-->
-<!--          <a class="nav-item nav-link active" href="/locality">Account Dashboard</a>-->
-        </div>
-      </div>
-    </div>
-</nav>
+<!--<nav class=" navbar-collapse navbar-expand-lg navbar-dark">-->
+<div class="nav-demo navbar-expand-lg">
+  <div class="nav-demo-items li">Home</div>
+  <div class="nav-demo-items li">Energy Dashboard</div>
+  <div class="nav-demo-items li">Contact</div>
+  <div class="nav-demo-items ri popularity">{{popularity}}</div>
+  <div class="nav-demo-items ri funds">{{funds| currency: 'USD'}}</div>
+</div>
 
 
+<!--  <div class="funds-popularity">-->
+<!--    <div class="row">-->
+<!--      <div class="col funds">-->
+<!--        <p>{{ funds | currency: 'USD' }}</p>-->
+<!--      </div>-->
+<!--      <div class="col popularity">-->
+<!--        <p>{{ popularity }}p</p>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->

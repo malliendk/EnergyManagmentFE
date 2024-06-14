@@ -1,5 +1,5 @@
-<app-navbar></app-navbar>
-<app-sidebar></app-sidebar>
+<app-navbar [funds]="mockGameDto.funds" [popularity]="mockGameDto.popularity"></app-navbar>
+<app-gridload-dashboard [mockGameDto]="mockGameDto"></app-gridload-dashboard>
 <div class=" container mt-3">
   <router-outlet></router-outlet>
 </div>

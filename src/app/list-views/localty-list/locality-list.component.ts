@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {LocalityService} from "../../services/locality.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Locality} from "../../dtos/locality";
@@ -11,11 +11,12 @@ import {Locality} from "../../dtos/locality";
 export class LocalityListComponent implements OnInit{
 
   localities : Locality[] = [];
+  localityId?: number;
+  showLocalityDetails = false;
   @Input() supervisorName = '';
+  @Output() localitySelected = new EventEmitter<string>();
 
-  constructor(private localityService: LocalityService,
-              private route: ActivatedRoute,
-              private router: Router) {
+  constructor(private localityService: LocalityService) {
   }
 
   ngOnInit(): void {
@@ -42,14 +43,16 @@ export class LocalityListComponent implements OnInit{
       });
   }
 
-  getImage(localty: Locality) {
-    this.localityService.getImage(localty.name)
+  getImage(locality: Locality) {
+    this.localityService.getImage(locality.name)
       .subscribe(blob => {
-        localty.image = URL.createObjectURL(blob);
+        locality.image = URL.createObjectURL(blob);
       })
   }
 
-  navigateTo(localityId: number) {
-    this.router.navigate([localityId], { relativeTo: this.route});
+  toggleLocalityDetails(localityId: number, localityName: string) {
+    this.showLocalityDetails = true;
+    this.localityId = localityId;
+    this.localitySelected.emit(localityName);
   }
 }

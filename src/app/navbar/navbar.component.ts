@@ -1,23 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {GameModeService} from "../services/game-mode.service";
+import {Component, Input, OnInit} from '@angular/core';
+import {GameDtoService} from "../services/game-dto.service";
+import {GameDto} from "../dtos/gameDto";
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit{
+export class NavbarComponent {
 
-  gameMode!: string;
-
-  constructor(private gameModeService: GameModeService) {
-  }
-
-  ngOnInit(): void {
-    this.gameModeService.currentGameMode.subscribe(gameMode => {
-      this.gameMode = gameMode
-    })
-  }
+  @Input() funds?: number;
+  @Input() popularity?: number;
 
 
 }

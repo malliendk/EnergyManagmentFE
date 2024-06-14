@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {LocalityService} from "../../services/locality.service";
 import {ActivatedRoute} from "@angular/router";
 import {Locality} from "../../dtos/locality";
@@ -11,6 +11,7 @@ import {Locality} from "../../dtos/locality";
 export class LocalityDetailComponent implements OnInit {
 
   locality!: Locality;
+  @Input() localityId?: number;
 
 
   constructor(private localityService: LocalityService,
