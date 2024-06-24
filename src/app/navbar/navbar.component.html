@@ -1,20 +1,16 @@
-<!--<nav class=" navbar-collapse navbar-expand-lg navbar-dark">-->
-<div class="nav-demo navbar-expand-lg">
+
+<div class="nav-demo navbar-expand-lg d-flex">
   <div class="nav-demo-items li">Home</div>
   <div class="nav-demo-items li">Energy Dashboard</div>
   <div class="nav-demo-items li">Contact</div>
-  <div class="nav-demo-items ri popularity">{{popularity}}</div>
-  <div class="nav-demo-items ri funds">{{funds| currency: 'USD'}}</div>
+  <app-clock class="nav-demo-items justify-content-center"></app-clock>
+  <div class="nav-demo-items justify-content-end popularity">{{popularity}}</div>
+  <div class="nav-demo-items justify-content-end funds">{{funds| currency: 'USD'}}</div>
 </div>
 
+<!--<div class="side-bar">-->
+<!--  <p class="side-bar-block">Here's something</p>-->
+<!--  <p class="side-bar-block">Here's too</p>-->
+<!--  <p class="side-bar-block">Here's something</p>-->
+<!--</div>-->
 
-<!--  <div class="funds-popularity">-->
-<!--    <div class="row">-->
-<!--      <div class="col funds">-->
-<!--        <p>{{ funds | currency: 'USD' }}</p>-->
-<!--      </div>-->
-<!--      <div class="col popularity">-->
-<!--        <p>{{ popularity }}p</p>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->

@@ -4,6 +4,7 @@ import { InitiateGameDto } from "../dtos/initiateGameDto";
 import { DifficultyLevel } from "../difficultyLevel";
 import { GameDtoService } from "../services/game-dto.service";
 import { Router } from "@angular/router";
+import {ClockService} from "../services/clock.service";
 
 
 @Component({
@@ -31,7 +32,8 @@ export class GameModeSelectComponent implements OnInit {
   }
 
   constructor(private gameDtoService: GameDtoService,
-              private router: Router) {
+              private router: Router,
+              private clockService: ClockService) {
   }
 
   ngOnInit() {
@@ -79,6 +81,7 @@ export class GameModeSelectComponent implements OnInit {
         this.router.navigate(['game-mode-select'])
           .then(() => {
             console.log(`Game initiated with ${JSON.stringify(gameDto)}`);
+            this.clockService.startTimer();
           });
       });
   }

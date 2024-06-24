@@ -30,6 +30,8 @@ import { ModalComponent } from './modal/modal.component';
 import { GameInterfaceComponent } from './game-interface/game-interface.component';
 import { GridloadDashboardTableComponent } from './gridload-dashboard-table/gridload-dashboard-table.component';
 import { GridloadDashboardChartComponent } from './gridload-dashboard-chart/gridload-dashboard-chart.component';
+import { ClockComponent } from './clock/clock.component';
+import { GridloadDashboardButtonsComponent } from './gridload-dashboard-buttons/gridload-dashboard-buttons.component';
 
 
 
@@ -59,6 +61,8 @@ import { GridloadDashboardChartComponent } from './gridload-dashboard-chart/grid
     GameInterfaceComponent,
     GridloadDashboardTableComponent,
     GridloadDashboardChartComponent,
+    ClockComponent,
+    GridloadDashboardButtonsComponent,
 
   ],
   imports: [

@@ -5,4 +5,6 @@ export interface LoadSource{
   description: string;
   gridLoad: number;
   price: number;
+  color: string;
+  image: string;
 }

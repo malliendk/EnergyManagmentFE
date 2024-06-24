@@ -1,11 +1,11 @@
 .nav-demo {
   overflow: hidden;
-  background-image: linear-gradient(to right, #cc0303 60%, #ffffff, #ffffff);
-  border-bottom: solid 1px #cc0303;
+  background-image: linear-gradient(to right, #136301 60%, #ffffff, #ffffff);
+  border-bottom: solid 1px #136301;
 }
 
 .nav-demo-items {
-  padding: 15px 3em;
+  padding: 10px 2em;
   color: white;
   text-align: center;
   text-decoration: none;
@@ -18,15 +18,25 @@
 }
 
 .popularity {
-  margin-right: 16px;
   font-weight: bold;
   font-size: large;
   color: #b902d3;
 }
 
 .side-bar {
-  width: 1.0444%; /* equivalent to half of col-1 (1/24th of the total width) */
-  background-color: gold;
-  min-height: 100vh;
-  float: left; /* to ensure the div takes the specified width */
+  width: 1%; /* equivalent to half of col-1 (1/24th of the total width) */
+  min-height: 50vh;
+  float: left;
+  box-shadow: 1px 1px 5px black;
+  background-color: antiquewhite;
+}
+
+.side-bar-block {
+  width: 5em;
+  height: 5em;
+  margin-top: 1em;
+  margin-bottom: 3em;
+  position: relative;
+  box-shadow: 1px 1px 5px black;
+  background-color: antiquewhite;
 }
