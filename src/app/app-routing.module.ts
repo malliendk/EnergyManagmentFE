@@ -10,10 +10,14 @@ import {LocalityDetailComponent} from "./detail-views/locality-detail/locality-d
 import {GameModeSelectComponent} from "./game-mode-select/game-mode-select.component";
 import {AppComponent} from "./app.component";
 import {GameInterfaceComponent} from "./game-interface/game-interface.component";
+import {TownhallDashboardComponent} from "./townhall-dashboard/townhall-dashboard.component";
+import {FactoryDashboardComponent} from "./factory-dashboard/factory-dashboard.component";
 
 
 const routes: Routes = [
   {path: 'game', component: GameInterfaceComponent},
+  {path: 'game/townhall', component: TownhallDashboardComponent},
+  {path: 'game/factories', component: FactoryDashboardComponent},
   {path: 'game-mode-select', component: GameModeSelectComponent},
   {path: 'distributor', component: DistributorComponent},
   {path: 'distributor/:id', component: DistributorDetailComponent},

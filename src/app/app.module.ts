@@ -32,6 +32,11 @@ import { GridloadDashboardTableComponent } from './gridload-dashboard-table/grid
 import { GridloadDashboardChartComponent } from './gridload-dashboard-chart/gridload-dashboard-chart.component';
 import { ClockComponent } from './clock/clock.component';
 import { GridloadDashboardButtonsComponent } from './gridload-dashboard-buttons/gridload-dashboard-buttons.component';
+import { TownhallDashboardComponent } from './townhall-dashboard/townhall-dashboard.component';
+import { LoadsourceListComponent } from './loadsource-list/loadsource-list.component';
+import { SideBarComponent } from './side-bar/side-bar.component';
+import { FactoryDashboardComponent } from './factory-dashboard/factory-dashboard.component';
+import { SliderComponent } from './slider/slider.component';
 
 
 
@@ -63,6 +68,12 @@ import { GridloadDashboardButtonsComponent } from './gridload-dashboard-buttons/
     GridloadDashboardChartComponent,
     ClockComponent,
     GridloadDashboardButtonsComponent,
+    TownhallDashboardComponent,
+    LoadsourceListComponent,
+    SideBarComponent,
+    FactoryDashboardComponent,
+    LoadsourceListComponent,
+    SliderComponent,
 
   ],
   imports: [

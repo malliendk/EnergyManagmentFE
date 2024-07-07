@@ -1,6 +1,5 @@
-<app-navbar [funds]="mockGameDto.funds" [popularity]="mockGameDto.popularity"></app-navbar>
+<app-navbar></app-navbar>
 <app-gridload-dashboard [mockGameDto]="mockGameDto"></app-gridload-dashboard>
-<div class=" container mt-3">
-  <app-game-interface [mockGameDto]="mockGameDto"></app-game-interface>
-  <router-outlet></router-outlet>
-</div>
+<app-side-bar></app-side-bar>
+<router-outlet></router-outlet>
+

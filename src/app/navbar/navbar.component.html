@@ -1,16 +1,18 @@
-
-<div class="nav-demo navbar-expand-lg d-flex">
-  <div class="nav-demo-items li">Home</div>
-  <div class="nav-demo-items li">Energy Dashboard</div>
-  <div class="nav-demo-items li">Contact</div>
-  <app-clock class="nav-demo-items justify-content-center"></app-clock>
-  <div class="nav-demo-items justify-content-end popularity">{{popularity}}</div>
-  <div class="nav-demo-items justify-content-end funds">{{funds| currency: 'USD'}}</div>
+<div class="nav-demo navbar-expand-lg">
+  <div class="d-flex justify-content-start">
+    <div class="nav-demo-items">Home</div>
+    <div class="nav-demo-items">Energy Dashboard</div>
+    <div class="nav-demo-items">Contact</div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <app-clock class="d-flex nav-demo-items justify-content-center"></app-clock>
+  </div>
+  <div class="d-flex justify-content-end">
+    <div class="nav-demo-items funds">{{ mockGameDto.funds| currency: 'USD' }}</div>
+    <div class="nav-demo-items popularity">{{ mockGameDto.popularity }}</div>
+    <div class="nav-demo-items environmental-score">{{ mockGameDto.environmentalScore }}</div>
+  </div>
 </div>
 
-<!--<div class="side-bar">-->
-<!--  <p class="side-bar-block">Here's something</p>-->
-<!--  <p class="side-bar-block">Here's too</p>-->
-<!--  <p class="side-bar-block">Here's something</p>-->
-<!--</div>-->
+
 

@@ -1,42 +1,16 @@
 .nav-demo {
+  display: flex;
+  justify-content: space-between;
   overflow: hidden;
-  background-image: linear-gradient(to right, #136301 60%, #ffffff, #ffffff);
-  border-bottom: solid 1px #136301;
+  background-image: linear-gradient(to right, #209f01 60%, #ffffff, #ffffff);
+  border-bottom: solid 1px #209f01;
 }
 
 .nav-demo-items {
-  padding: 10px 2em;
+  padding: 1.3vh 2em;
   color: white;
   text-align: center;
   text-decoration: none;
 }
 
-.funds {
-  font-weight: bold;
-  font-size: large;
-  color: #dfc700;
-}
 
-.popularity {
-  font-weight: bold;
-  font-size: large;
-  color: #b902d3;
-}
-
-.side-bar {
-  width: 1%; /* equivalent to half of col-1 (1/24th of the total width) */
-  min-height: 50vh;
-  float: left;
-  box-shadow: 1px 1px 5px black;
-  background-color: antiquewhite;
-}
-
-.side-bar-block {
-  width: 5em;
-  height: 5em;
-  margin-top: 1em;
-  margin-bottom: 3em;
-  position: relative;
-  box-shadow: 1px 1px 5px black;
-  background-color: antiquewhite;
-}

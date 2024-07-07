@@ -2,21 +2,18 @@
   width: 80% !important;
 }
 
+.dashboard-container {
+  height: 92vh;
+  margin: 1.5% 4% 1.5% 4%;
+  background-color: white;
+}
+
 .card {
   cursor: pointer;
   border-radius: 10px;
 }
 
-.btn {
-  width: 60%;
-  align-self: center;
-  border-width: 2px !important;
-  border-radius: 5rem !important;
-}
 
-.btn-outline-purple {
-  background-color: rebeccapurple;
-}
 
 .li {
   float: left;
@@ -26,6 +23,36 @@
   float: right;
 }
 
+
+.funds {
+  font-weight: bold;
+  font-size: large;
+  color: #dfc700 !important;
+}
+
+.grid-load-total {
+  font-weight: bold;
+  font-size: large;
+  color: #ae0000 !important;
+}
+
+.popularity {
+  font-weight: bold;
+  font-size: large;
+  color: #b902d3 !important;
+  background-color: white;
+  border-radius: 50px;
+}
+
+.environmental-score {
+  font-weight: bold;
+  font-size: large;
+  color: #209f01 !important;
+}
+
+.row {
+  margin: 0;
+}
 
 
 
