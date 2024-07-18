@@ -54,6 +54,15 @@
   margin: 0;
 }
 
+.col {
+  margin: 0
+}
+
+.fill-container {
+  max-height: 100%;
+  max-width: 100%;
+}
+
 
 
 

@@ -12,12 +12,14 @@ import {AppComponent} from "./app.component";
 import {GameInterfaceComponent} from "./game-interface/game-interface.component";
 import {TownhallDashboardComponent} from "./townhall-dashboard/townhall-dashboard.component";
 import {FactoryDashboardComponent} from "./factory-dashboard/factory-dashboard.component";
+import {LoadsourceDashboardComponent} from "./loadsource-dashboard/loadsource-dashboard.component";
 
 
 const routes: Routes = [
   {path: 'game', component: GameInterfaceComponent},
   {path: 'game/townhall', component: TownhallDashboardComponent},
   {path: 'game/factories', component: FactoryDashboardComponent},
+  {path: 'game/sources', component: LoadsourceDashboardComponent},
   {path: 'game-mode-select', component: GameModeSelectComponent},
   {path: 'distributor', component: DistributorComponent},
   {path: 'distributor/:id', component: DistributorDetailComponent},

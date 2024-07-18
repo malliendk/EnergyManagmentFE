@@ -2,15 +2,20 @@
   display: flex;
   justify-content: space-between;
   overflow: hidden;
-  background-image: linear-gradient(to right, #209f01 60%, #ffffff, #ffffff);
+  background-image: linear-gradient(to right, #004098 60%, #ffffff);
   border-bottom: solid 1px #209f01;
+  box-shadow: 1px 1px 10px 1px;
 }
 
 .nav-demo-items {
-  padding: 1.3vh 2em;
+  padding: 0.5vh 2em;
   color: white;
   text-align: center;
   text-decoration: none;
+}
+
+.nav-demo-items:hover {
+  cursor: pointer;
 }
 
 

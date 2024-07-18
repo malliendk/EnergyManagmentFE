@@ -31,12 +31,15 @@ import { GameInterfaceComponent } from './game-interface/game-interface.componen
 import { GridloadDashboardTableComponent } from './gridload-dashboard-table/gridload-dashboard-table.component';
 import { GridloadDashboardChartComponent } from './gridload-dashboard-chart/gridload-dashboard-chart.component';
 import { ClockComponent } from './clock/clock.component';
-import { GridloadDashboardButtonsComponent } from './gridload-dashboard-buttons/gridload-dashboard-buttons.component';
 import { TownhallDashboardComponent } from './townhall-dashboard/townhall-dashboard.component';
-import { LoadsourceListComponent } from './loadsource-list/loadsource-list.component';
+import { LoadsourceDashboardComponent } from './loadsource-dashboard/loadsource-dashboard.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { FactoryDashboardComponent } from './factory-dashboard/factory-dashboard.component';
 import { SliderComponent } from './slider/slider.component';
+import { BorderBlockComponent } from './border-block/border-block.component';
+import { ChartBarHorizontalComponent } from './chart-bar-horizontal/chart-bar-horizontal.component';
+import { ChartPieComponent } from './chart-pie/chart-pie.component';
+import { ChartBarVerticalComponent } from './chart-bar-vertical/chart-bar-vertical.component';
 
 
 
@@ -67,13 +70,16 @@ import { SliderComponent } from './slider/slider.component';
     GridloadDashboardTableComponent,
     GridloadDashboardChartComponent,
     ClockComponent,
-    GridloadDashboardButtonsComponent,
     TownhallDashboardComponent,
-    LoadsourceListComponent,
+    LoadsourceDashboardComponent,
     SideBarComponent,
     FactoryDashboardComponent,
-    LoadsourceListComponent,
+    LoadsourceDashboardComponent,
     SliderComponent,
+    BorderBlockComponent,
+    ChartBarHorizontalComponent,
+    ChartPieComponent,
+    ChartBarVerticalComponent,
 
   ],
   imports: [
