@@ -1,0 +1,43 @@
+<div id="single-expanded" *ngIf="isSingleExpanded" [ngClass]="singleExpandedCss">
+  <div>
+    <button type="button" class="btn-collapse" (click)="toggleCollapseForSingle()">
+      {{ isCollapsed ? '<' : '>' }}
+    </button>
+    <div *ngIf="!isCollapsed" [ngClass]="fading">
+      <button type="button" class="btn-toggle-view" (click)="toggleDoubleExpand()">
+        {{ isDoubleExpanded ? '>>' : '<<' }}
+      </button>
+      <button type="button" class="btn-toggle-view" (click)="toggleSingleView()" [disabled]="isDoubleExpanded">
+        {{ singleDashboardView == 'table' ? '<' : '>' }}
+      </button>
+    <div class="custom-container d-flex justify-content-center">
+      <app-gridload-dahsboard-table *ngIf="singleDashboardView=='table'" [mockGameDto]="mockGameDto">
+      </app-gridload-dahsboard-table>
+        <app-gridload-dashboard-chart *ngIf="singleDashboardView=='chart'" [mockGameDto]="mockGameDto">
+        </app-gridload-dashboard-chart>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="board-double-expanded" *ngIf="isDoubleExpanded" [ngClass]="doubleExpandedCss">
+  <button type="button" class="btn-collapse" (click)="toggleCollapseForDouble()">
+    {{ isCollapsed ? '<' : '>' }}
+  </button>
+  <div *ngIf="!isCollapsed" [ngClass]="fading">
+    <button *ngIf="!isCollapsed" type="button" [ngClass]="btnToggleView" (click)="toggleDoubleExpand()">
+      {{ isDoubleExpanded ? '>>' : '<<' }}
+    </button>
+    <div class="custom-container">
+    <div class="row">
+      <div class="col">
+        <app-gridload-dahsboard-table [mockGameDto]="mockGameDto" ></app-gridload-dahsboard-table>
+      </div>
+      <div class="col">
+        <app-gridload-dashboard-chart [mockGameDto]="mockGameDto" ></app-gridload-dashboard-chart>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+

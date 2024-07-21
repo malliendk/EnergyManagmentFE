@@ -63,6 +63,21 @@
   max-width: 100%;
 }
 
+.red {
+  background-color: #cc0303;
+}
+
+.green {
+  background-color: #209f01;
+}
+
+.purple {
+  background-color: #663399FF;
+}
+
+.transparent {
+  background-color: transparent;
+}
 
 
 

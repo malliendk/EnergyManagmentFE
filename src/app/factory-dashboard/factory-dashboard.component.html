@@ -1,0 +1,70 @@
+<div class="dashboard-container">
+  <div class="switcher">
+    <div class="stats">
+      <div class="funds align-self-center">{{ mockGameDto.funds | currency: 'USD' }}</div>
+      <app-chart-bar-horizontal
+        [showYAxis]="showYAxis"
+        [xScaleMax]="fundsScaleMax"
+        [showGridLines]="showGridLines"
+        [chartVariableNames]="fundsVariableName"
+        [chartColorValues]="fundsColor"
+        [chartResultValues]="fundsChartResults">
+      </app-chart-bar-horizontal>
+      <div class="grid-load-total align-self-center">{{ mockGameDto.totalGridLoad }}</div>
+      <app-chart-bar-horizontal
+        [showYAxis]="showYAxis"
+        [xScaleMax]="gridLoadScaleMax"
+        [showGridLines]="showGridLines"
+        [chartVariableNames]="gridLoadVariableName"
+        [chartColorValues]="totalGridLoadColor"
+        [chartResultValues]="gridLoadChartResults">
+      </app-chart-bar-horizontal>
+    </div>
+    <div class="slider-space">
+      <div class="slider-container" [ngStyle]="{'background-image' : cssFactoryContainer1BackgroundColor}">
+        <input type="range" min="{{sliderMinValue}}" max="{{sliderMaxValue}}" value="{{coalPlant.gridLoad}}"
+               step="{{sliderStepValue}}" id="range-slider" class="slider" [(ngModel)]="coalPlant.gridLoad"
+               #coalPlantLoad (input)="calculateNewValues(coalPlant, coalPlantGridLoadStartingValue, coalPlantLoad)">
+      </div>
+      <div class="button-container">
+        <div class="red-button"></div>
+      </div>
+      <div class="slider-container" [ngStyle]="{'background-image' : cssFactoryContainer2BackgroundColor}">
+        <input type="range" min="{{sliderMinValue}}" max="{{sliderMaxValue}}" value="{{gasPlant.gridLoad}}"
+               step="{{sliderStepValue}}" id="range-slider2" class="slider" [(ngModel)]="gasPlant.gridLoad"
+               #gasPlantLoad (input)="calculateNewValues(gasPlant, gasPlantGridLoadStartingValue, gasPlantLoad)">
+      </div>
+    </div>
+  </div>
+  <div class="factory-display row">
+    <div class="col-4">
+      <div class="card">
+        <img [src]="coalPlant.image" alt="{{coalPlant.image}}" class="card-img-top">
+        <div class="card-header">
+          <h5>{{ coalPlant.name }}</h5>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item">{{ coalPlant.gridLoad }}</li>
+          <li class="list-group-item">{{ coalPlant.price }}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-4">
+      <div class="card">
+        <img [src]="gasPlant.image" alt="{{gasPlant.image}}" class="card-img-top">
+        <div class="card-header">
+          <h5>{{ gasPlant.name }}</h5>
+        </div>
+        <ul class="list-group">
+          <li class="list-group-item">{{ gasPlant.gridLoad }}</li>
+          <li class="list-group-item">{{ gasPlant.price }}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

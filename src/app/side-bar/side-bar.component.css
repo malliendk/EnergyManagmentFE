@@ -1,0 +1,18 @@
+.side-bar {
+  width: 20px;
+  margin-right: 5%;
+  min-height: 50vh;
+  float: left;
+  box-shadow: 1px 1px 5px black;
+  background-color: antiquewhite;
+}
+
+.side-bar-block {
+  height: 4em;
+  width: 4em;
+  margin-top: 1em;
+  margin-bottom: 3em;
+  position: relative;
+  box-shadow: 1px 1px 5px black;
+  background-color: antiquewhite;
+}

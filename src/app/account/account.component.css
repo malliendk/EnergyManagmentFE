@@ -1,0 +1,22 @@
+.container-fluid{
+  max-width: 100%;
+}
+
+.shortageHeader{
+  background-color: red;
+  color: white;
+}
+
+.optimalHeader{
+  background-color: green;
+  color: white;
+}
+
+.surplusHeader{
+  background-color: rebeccapurple;
+  color: white;
+}
+
+.inputWidth{
+  width: 250px;
+}

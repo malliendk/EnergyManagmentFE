@@ -1,0 +1,80 @@
+.outer-leaflet {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-image: url("/assets/photos/town_hall.png");
+  padding: 5% 3% 3% 3%;
+  border-radius: 10px;
+  box-shadow: 2px 2px 20px 3px;
+}
+
+.top-layer {
+  display: flex;
+  height: 20%;
+  width: 100%;
+  background-color: #49311d;
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px #322313;
+}
+
+.middle-layer {
+  display: flex;
+  justify-content: space-around;
+  height: 60%;
+  width: 100%;
+}
+
+.bottom-layer {
+  height: 15%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.middle-layer-box{
+  display: flex;
+  height: 100%;
+  background-color: antiquewhite;
+  border-radius: 3px;
+  box-shadow: 1px 1px 10px 3px #322313;
+}
+
+.middle-layer-box:nth-child(1) {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.middle-layer-box:nth-child(2) {
+  flex-direction: row !important;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.treasury-nav-box {
+  display: flex;
+  justify-content: space-around;
+  padding: 3% 3% 3% 3%;
+  background-color: #49311d;
+  border-radius: 20px;
+  box-shadow: 1px 1px 10px #322313;
+}
+
+
+.btn-sandy-brown {
+  color: white;
+  background-color: #976231;
+  border: 2px ridge #976231;
+  border-radius: 15px;
+}
+
+.btn-sandy-brown:hover {
+  background-color: #a67033;
+}
+
+
+
+

@@ -1,0 +1,89 @@
+<div class="container-fluid">
+  <div class="mt-5">
+    <button class="btn btn-primary" (click)="startOptimizeSupply()" id="startOptimizeSupplyButton">Optimize energy supply</button>
+    <button class="btn btn-primary" (click)="stopOptimizeSupply()" id="stopOptimizeSupplyButton">Stop optimizing energy supply</button>
+  </div>
+  <div class="mt-lg-3 d-flex">
+    <button class="btn btn-primary me-3" (click)="resetAccounts()" id="resetAccounts">Reset accounts</button>
+    <button class="btn btn-primary me-2" (click)="generateAccounts(this.numberOfAccountToGenerate)"
+            id="generateAccounts">Generate accounts</button>
+    <input type="number" class="form-control inputWidth" [(ngModel)]="numberOfAccountToGenerate" id="numberOfAccountsToGenerateInput"
+           placeholder="number of accounts">
+  </div>
+  <div class="mt-5">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-header shortageHeader">Shortage</div>
+          <table class="table" id="tableShortageAccounts" aria-description="table showing existing accounts with a
+    shortage on energy supply for their demand">
+            <thead>
+            <th>Supply amount</th>
+            <th>Location</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let account of shortageAccounts">
+              <td>{{account.supplyAmount}}</td>
+              <td>{{account.localityName}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-header optimalHeader">Optimal</div>
+          <table class="table" id="tableOptimalAccounts" aria-description="table showing existing accounts with an
+    optimal supply for their demand">
+            <thead>
+            <th>Supply amount</th>
+            <th>Location</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let account of optimalAccounts">
+              <td>{{account.supplyAmount}}</td>
+              <td>{{account.localityName}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <div class="card-header surplusHeader">Surplus</div>
+          <table class="table" id="tableSurplusAccounts" aria-description="table showing existing accounts with a
+    surplus in their energy supply">
+            <thead>
+            <th>Supply amount</th>
+            <th>Location</th>
+            </thead>
+            <tbody>
+            <tr *ngFor="let account of surplusAccounts">
+              <td>{{account.supplyAmount}}</td>
+              <td>{{account.localityName}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col" *ngFor="let chartResults of chartResultsHistory; let i = index">
+      <ngx-charts-bar-vertical
+        [view]="[150, 600]"
+        [results]="chartResults"
+        [customColors]="chartColors"
+        [gradient]="gradient"
+        [xAxis]="true"
+        [yAxis]="true"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="true"
+        [xAxisLabel]="'Supply type'"
+        [yAxisLabel]="'Number of accounts'"
+        [yScaleMax]="yAxisMaxValue">
+      </ngx-charts-bar-vertical>
+    </div>
+  </div>
+</div>
+

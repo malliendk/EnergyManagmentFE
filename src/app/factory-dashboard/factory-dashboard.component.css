@@ -1,0 +1,159 @@
+.switcher {
+  display: flex;
+  flex-direction: column;
+  height: 25%;
+  background-color: #e1e1e1;
+  border: 1px solid black;
+  box-shadow: -1px -1px 8px 2px;
+}
+
+.factory-display {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 70%;
+  border: 1px solid black;
+  background-image: url("/assets/photos/power-plant-background.png");
+  background-size: cover;
+  background-position: center;
+  box-shadow: 1px 1px 10px 3px;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  height: 30%;
+  width: 100%;
+}
+
+.deco-border {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 10%;
+  width: 100%;
+}
+
+.border-block {
+  height: 90%;
+  width: 4%;
+  background-image: linear-gradient(45deg, #b8c5d6, whitesmoke, #b8c5d6);
+  border: 4px ridge #D3DDEA;
+  box-shadow: 1px 1px 1px;
+}
+
+.border-block:first-child {
+  border-left: none;
+}
+
+.border-block:last-child {
+  border-right: none;
+}
+
+.slider-space {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 65%;
+  width: 100%;
+}
+
+.card {
+  display: flex;
+  justify-content: center;
+  height: 70%;
+  background-color: antiquewhite;
+  border: 15px solid silver;
+  box-shadow: 1px 1px 10px 5px;
+}
+
+.card-img-top {
+  padding: 5% 5% 5% 5%;
+  border-radius: 70px;
+}
+
+.red-button {
+  height: 7vh;
+  width: 3.7vw;
+  border-radius: 50%;
+  background-image: radial-gradient(circle, #e1200f, #A10E0E 70%); /* Maintained radial gradient */
+  border: 4px dotted #c3250b;
+  box-shadow:
+    1px 1px 2px 1px ;
+  cursor: pointer;  /* Cursor indicates button */
+  outline: none;  /* Remove focus border on click */
+  transition: all 0.1s ease;  /* Smooth transition for interactions */
+}
+
+.red-button:active {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.3),  /* Less intense outer shadow when pressed */
+    0 1px 2px #8B0C0C inset;  /* Less intense and smaller inset shadow when pressed */
+  transform: translateY(2px);  /* Simulate button being pressed */
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+  width: 10%;
+  border: 5px ridge;
+  box-shadow: 2px 2px 5px 3px #454545;
+  border-radius: 25px;
+  background-image: conic-gradient(#7c7c7c, ghostwhite, #8e8e8e, ghostwhite, #7c7c7c, ghostwhite, #7c7c7c);
+}
+
+
+.list-group {
+  border-radius: 0;
+  background-color: rgba(240, 195, 136, 0.60);
+}
+
+.list-group-item {
+  border-radius: 15px;
+  background-image: linear-gradient(rgba(240, 195, 136, 0.60),
+  antiquewhite,
+  rgba(240, 195, 136, 0.60));
+}
+
+.slider-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60%;
+  width: 30%;
+  border: 5px ridge;
+  box-shadow: 1px 1px 3px 1px;
+}
+
+.slider {
+  appearance: none;
+  height: 1.5vh;
+  width: 20vw;
+  background: linear-gradient(
+    silver, #818181 50%, silver);
+  border-radius: 15px;
+  box-shadow: 1px 1px 5px;
+  border: 1px solid grey;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  height: 5vh;
+  width: 2.5vw;
+  background:
+    conic-gradient(	#4b4b4b 10deg, #777 45deg, #9f9f9f 105deg,
+    rgba(101, 101, 101, 0.99) 140deg, #AAA 185deg, #666 210deg, #999 245deg, #777 285deg, #4b4b4b),
+    radial-gradient(#9c9c9c, #444 45%, #555 50%, #222 55%, rgba(140, 120, 83, 0.99) 57.5%, gold 100%);
+  background-blend-mode: overlay;
+  cursor: pointer;
+  box-shadow: 1px 1px 5px 1px;
+  border-radius: 50%;
+}
+
+
+
+
+
+

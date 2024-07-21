@@ -1,0 +1,51 @@
+<div *ngIf="componentView=='income'" class="d-flex mb-4">
+  <div class="income"></div>
+</div>
+<div *ngIf="componentView == 'taxes'" class="side-deco-taxes">
+  <div class="info-container">
+    <div></div>
+    <p>poep</p>
+    <p>poep</p>
+    <p>poep</p>
+  </div>
+</div>
+<div *ngIf="componentView == 'tutorial'">
+  <div class="info-container">
+    <div class="card">
+      <p class="card-header d-flex justify-content-center">
+        How to play
+      </p>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <p class="mb-1">{{ goalInfo }}</p>
+          <p>{{ solarPanelInfo }}</p>
+        </li>
+        <li class="list-group-item d-flex">
+          <div class="legend-block red"></div>
+          <div>
+            <p>{{ shortageInfo }}</p>
+            <p>{{ shortageGoldInfo }}</p>
+          </div>
+        </li>
+        <li class="list-group-item d-flex">
+          <div class="legend-block green"></div>
+          <div>
+            <p>{{ optimalInfo }}</p>
+            <p>{{ optimalGoldInfo }}</p>
+          </div>
+        </li>
+        <li class="list-group-item d-flex">
+          <div class="legend-block purple"></div>
+          <div>
+            <p>{{ surplusInfo }}</p>
+            <p>{{ surplusGoldInfo }}</p>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <p class="mb-1">{{ campaignInfo }}</p>
+          <p>{{ popularityInfo }}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

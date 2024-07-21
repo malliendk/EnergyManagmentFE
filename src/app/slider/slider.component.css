@@ -1,0 +1,27 @@
+.slider {
+  appearance: none;
+  height: 1.5vh;
+  width: 17.5vw;
+  background: linear-gradient(
+    silver, #818181 50%, silver);
+  border-radius: 15px;
+  box-shadow: 1px 1px 5px;
+}
+
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  height: 5vh;
+  width: 2.5vw;
+  background:
+    radial-gradient(#9c9c9c, #444 45%, #555 50%, #222 55%, rgba(140, 120, 83, 0.99) 57.5%, gold 100%);
+  cursor: pointer;
+  box-shadow: 1px 1px 5px 1px;
+  border-radius: 50%;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px; /* Set a specific slider handle width */
+  height: 25px; /* Slider handle height */
+  background: #04AA6D; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}

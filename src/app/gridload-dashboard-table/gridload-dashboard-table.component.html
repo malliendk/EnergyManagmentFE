@@ -1,0 +1,11 @@
+<table class="table">
+  <thead class="dashboard-table-header">
+  <th>{{ tableTitle }}</th>
+  <th>{{ mockGameDto.totalGridLoad }}/{{ maxLoad }}</th>
+  </thead>
+  <br>
+  <tr *ngFor="let source of mockGameDto.sources">
+    <td>{{ source.name }}</td>
+    <td>{{ source.gridLoad }}</td>
+  </tr>
+</table>

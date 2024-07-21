@@ -1,0 +1,10 @@
+.background-container {
+  display: flex;
+  background-color: antiquewhite;
+}
+
+.background-container > * {
+  border: 1px solid black;
+}
+
+

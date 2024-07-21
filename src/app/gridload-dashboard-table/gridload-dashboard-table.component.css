@@ -1,0 +1,20 @@
+td {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  font-style: italic;
+}
+
+.dashboard-table-header {
+  background-color: transparent;
+  font-weight: bolder;
+  font-size: 1.2em;
+  padding-bottom: 20px;
+  border-bottom: 2px solid black;
+}
+
+ {
+  border-bottom: 1px solid black;
+  margin-bottom: 100px;
+
+}
+

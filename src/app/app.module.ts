@@ -40,6 +40,8 @@ import { BorderBlockComponent } from './border-block/border-block.component';
 import { ChartBarHorizontalComponent } from './chart-bar-horizontal/chart-bar-horizontal.component';
 import { ChartPieComponent } from './chart-pie/chart-pie.component';
 import { ChartBarVerticalComponent } from './chart-bar-vertical/chart-bar-vertical.component';
+import { TownhallInfoComponent } from './townhall-info/townhall-info.component';
+import { TownhallChartBoxComponent } from './townhall-chart-box/townhall-chart-box.component';
 
 
 
@@ -80,6 +82,8 @@ import { ChartBarVerticalComponent } from './chart-bar-vertical/chart-bar-vertic
     ChartBarHorizontalComponent,
     ChartPieComponent,
     ChartBarVerticalComponent,
+    TownhallInfoComponent,
+    TownhallChartBoxComponent,
 
   ],
   imports: [

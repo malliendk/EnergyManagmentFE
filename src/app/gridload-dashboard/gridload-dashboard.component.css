@@ -1,0 +1,149 @@
+.dashboard {
+  display: block;
+  float: right;
+  margin-left: 1.5%;
+  min-height: 60vh;
+  background-image: linear-gradient(45deg, white, lightblue, ghostwhite, silver, ghostwhite);
+  box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.7);
+}
+
+.collapsed {
+  width: 1.1%;
+}
+
+.single-expanded {
+  width: 15%;
+}
+
+.double-expanded {
+  width: 25%;
+}
+
+
+@keyframes to-collapse {
+  to {width: 1.1%}
+}
+
+@keyframes collapse-to-single {
+  from {width: 1.1%;}
+  to {width: 15%;}
+}
+
+@keyframes collapsed-to-double {
+  from {width: 1.1%}
+  to {width: 25%;}
+}
+
+@keyframes single-to-double {
+  from {width: 15%;}
+  to {width: 25%;}
+}
+
+@keyframes double-to-single {
+  from {width: 25%;}
+  to {width: 15%;}
+}
+
+.collapse {
+  animation-name: to-collapse;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+.expand-to-single {
+  animation-name: collapse-to-single;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+.expand-to-double {
+  animation-name: single-to-double;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+.collapse-to-single {
+  animation-name: double-to-single;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+.collapsed-to-double {
+  animation-name: collapsed-to-double;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+
+@keyframes fade-in {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes fade-out {
+  from {opacity: 1;}
+  to {opacity: 0;}
+}
+
+.fade-out {
+  animation-name: fade-out;
+  animation-duration: 200ms;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.fade-in {
+  animation-name: fade-in;
+  animation-duration: 0.3s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 2s, opacity 2s linear;
+}
+
+.btn-toggle-view {
+  width: 2em;
+  height: 2em;
+  margin: 0.1em 0.1em;
+  font-size: 1.6em;
+  font-weight: lighter;
+  background-color: transparent;
+  border-style: ridge;
+  border-width: 4px;
+  border-color: silver;
+}
+
+.btn-collapse {
+  width: 1em;
+  height: 2em;
+  margin-top: 0.1em;
+  float: right;
+  overflow: visible;
+  background-color: transparent;
+  font-size: 1.6em;
+  font-weight: lighter;
+  border-style: ridge;
+  border-width: 4px 0 4px 4px;
+  border-color: silver;
+}
+
+.btn-toggle-view:disabled {
+  opacity: 0.5;
+}
+
+.custom-container {
+  padding: 10% 10% 10% 10%;
+}
+
+
+
+

@@ -1,0 +1,15 @@
+<div class="chart-container">
+  <ngx-charts-bar-vertical-stacked *ngIf="isInitialized"
+    [results]="chartResults"
+    [gradient]="gradient"  [scheme]="colorScheme"
+    [customColors]="customColors"
+    [xAxis]="xAxis"
+    [yAxis]="yAxis"
+    [yScaleMax]="yAxisMaxValue"
+    [legend]="showLegend"
+    [legendPosition]="legendPosition"
+    [tooltipDisabled]="false">
+  </ngx-charts-bar-vertical-stacked>
+</div>
+
+

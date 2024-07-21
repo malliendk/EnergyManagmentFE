@@ -1,0 +1,39 @@
+.info-container {
+  margin: 1.5vh 1.5vw 1.5vh 1.5vw;
+  display: flex;
+  flex-direction: column;
+}
+
+.side-deco-taxes {
+  width: 2%;
+  background-image: linear-gradient(#cc0303 50%, #663399FF 50%);
+}
+
+.income {
+  height: 50vh;
+  width: 0.5vw;
+  background-color: #209f01;
+}
+
+.legend-block {
+  height: 3.8vh;
+  width: 1.5vw;
+  margin-right: 2%;
+  border: 1px solid rgba(60, 60, 60, 0.8);
+}
+
+.list-group-item {
+  padding: 3% 3%;
+}
+
+p {
+  margin: 0;
+  font-size: 1.3vh;
+}
+
+.card {
+  width: 20vw;
+  box-shadow: 1px 1px 5px 1px #cdc0b5;
+}
+
+
