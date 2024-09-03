@@ -1,0 +1,15 @@
+<app-townhall-card
+  [isSideBarGradient]="isSideBarGradient"
+  [sidebarColorCode]="sideBarColorCode">
+    <div card-title>
+      Taxes
+    </div>
+    <div top>
+      <div class="funds">{{ mockGameDto.funds | currency: 'USD'}}</div>
+      <div class="popularity">{{ mockGameDto.popularity}} p</div>
+    </div>
+    <div content></div>
+    <div button>
+      <button type="button" class="btn btn-outline-primary">Raise tax</button>
+    </div>
+  </app-townhall-card>

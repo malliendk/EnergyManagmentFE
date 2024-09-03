@@ -1,0 +1,15 @@
+<app-townhall-card
+  [isSideBarGradient]="isSideBarGradient"
+  [sidebarColorCode]="sideBarColorCode">
+  <div card-title>
+    Solar Panels
+  </div>
+  <div top>
+    <div class="funds"> {{ mockGameDto.funds | currency: 'USD' }}</div>
+    <div class="grid-load-total">{{ mockGameDto.gridLoadTotal | number: '1.2-2'}}</div>
+  </div>
+  <div content></div>
+  <div button>
+    <button type="button" class="btn btn-outline-primary">Buy solar Panels</button>
+  </div>
+</app-townhall-card>

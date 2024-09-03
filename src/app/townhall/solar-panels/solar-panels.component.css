@@ -1,0 +1,29 @@
+.btn {
+  margin: 1%;
+  padding: 1.5%;
+  font-size: 80%;
+}
+
+[top] {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 20%;
+  width: 100%;
+}
+
+[content] {
+  display: flex;
+  height: 60%;
+  width: 100%;
+  border-top: 1px solid lightslategrey;
+  border-bottom: 1px solid lightslategrey;
+}
+
+[button] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+  width: 100%;
+}

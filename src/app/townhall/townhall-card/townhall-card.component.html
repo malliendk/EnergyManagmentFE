@@ -1,0 +1,14 @@
+<div class="box">
+  <div class="box-sidebar" [ngStyle]="sideBarStyles"></div>
+  <div class="card">
+    <div class="card-header">
+      <div style="font-size: 80%">
+        <ng-content select="[card-title]"></ng-content>
+      </div>
+    </div>
+    <ng-content select="[top]"></ng-content>
+    <ng-content select="[content]"></ng-content>
+    <ng-content select="[button]"></ng-content>
+  </div>
+</div>
+

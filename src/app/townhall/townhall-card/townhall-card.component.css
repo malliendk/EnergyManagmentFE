@@ -1,0 +1,24 @@
+.card {
+  height: 35vh;
+  width: 20.5vw;
+  margin: 10% 0 10% 11.5%;
+  box-shadow: 1px 1px 5px 1px #cdc0b5;
+}
+
+.card-header {
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.box {
+  display: flex;
+}
+
+.box-sidebar {
+  height: 46.5vh;
+  width: 0.5vw;
+}
+
+
