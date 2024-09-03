@@ -1,13 +1,13 @@
 import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'app-townhall-info',
-  templateUrl: './townhall-info.component.html',
-  styleUrls: ['./townhall-info.component.css']
+  selector: 'app-info',
+  templateUrl: './info.component.html',
+  styleUrls: ['./info.component.css']
 })
-export class TownhallInfoComponent {
+export class InfoComponent {
 
-  @Input() componentView!: string;
+  @Input() viewType!: string;
 
   goalInfo: string = "Invest in your city's sustainable plan by investing in solar panels on public and private rooftops";
   solarPanelInfo: string = 'Solar panels come in batches of 100 accounts. Every batch costs 500 gold';
@@ -19,7 +19,4 @@ export class TownhallInfoComponent {
   surplusGoldInfo: string = 'Grant 3 times their shortage in gold by raising taxes';
   campaignInfo: string = 'Launch campaigns to increase public awareness of your visionary efforts';
   popularityInfo: string = 'You popularity increases by 100 for every 250 gold spent';
-
-
-
 }

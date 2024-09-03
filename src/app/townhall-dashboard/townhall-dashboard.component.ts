@@ -16,7 +16,7 @@ export class TownhallDashboardComponent implements OnInit{
 
   mockGameDto!: GameDto;
 
-  componentView: string = 'tutorial';
+  componentView: string = 'solar panels';
 
   showLabels: boolean = true;
 
@@ -27,7 +27,7 @@ export class TownhallDashboardComponent implements OnInit{
   constructor() {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.mockGameDto = mockGameDto;
     this.setPieChartVariableNames();
     this.setPieChartColorValue();
@@ -58,14 +58,14 @@ export class TownhallDashboardComponent implements OnInit{
   }
 
   toSolarPanels(): void {
-    this.componentView = 'solarPanels'
+    this.componentView = 'solar panels'
   }
 
   toCampaign(): void {
     this.componentView = 'campaign'
   }
 
-  toTutorial(): void {
-    this.componentView = 'tutorial'
+  toInfo(): void {
+    this.componentView = 'info'
   }
 }

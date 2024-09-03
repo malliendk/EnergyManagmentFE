@@ -1,15 +1,4 @@
-<div *ngIf="componentView=='income'" class="d-flex mb-4">
-  <div class="income"></div>
-</div>
-<div *ngIf="componentView == 'taxes'" class="side-deco-taxes">
-  <div class="info-container">
-    <div></div>
-    <p>poep</p>
-    <p>poep</p>
-    <p>poep</p>
-  </div>
-</div>
-<div *ngIf="componentView == 'tutorial'">
+<div *ngIf="viewType == 'tutorial'">
   <div class="info-container">
     <div class="card">
       <p class="card-header d-flex justify-content-center">
@@ -40,10 +29,6 @@
             <p>{{ surplusInfo }}</p>
             <p>{{ surplusGoldInfo }}</p>
           </div>
-        </li>
-        <li class="list-group-item">
-          <p class="mb-1">{{ campaignInfo }}</p>
-          <p>{{ popularityInfo }}</p>
         </li>
       </ul>
     </div>

@@ -14,35 +14,80 @@
 }
 
 
-
 .li {
   float: left;
 
 }
+
 .ri {
   float: right;
 }
 
-
 .funds {
   font-weight: bold;
-  font-size: large;
-  color: #dfc700 !important;
+  color: #dfc700;
+  background-color: #fbf0e2;
+  border-radius: 10px;
+}
+
+.popularity {
+  font-weight: bold;
+  font-style: oblique;
+  font-family: sans-serif;
+  color: #b902d3;
+  border-radius: 10px;
+  background-color: #fbf0e2;
 }
 
 .grid-load-total {
   font-weight: bold;
   font-size: large;
-  color: #ae0000 !important;
+  color: #ae0000;
+  background-color: #fbf0e2;
+  border-radius: 10px;
 }
 
-.popularity {
-  font-weight: bold;
-  font-size: large;
-  color: #b902d3 !important;
-  background-color: white;
-  border-radius: 50px;
+@media screen and (max-width: 1500px) {
+  .funds {
+    padding: 1%;
+    font-size: 80%;
+    border: 3px ridge #dfc700;
+  }
+
+  .popularity {
+    padding: 1%;
+    font-size: 80%;
+    border: 3px ridge #b902d3;
+  }
+
+  .grid-load-total {
+    padding: 1%;
+    font-size: 80%;
+    border: 3px ridge #ae0000;
+  }
 }
+
+@media screen and (min-width: 1500px) {
+  .funds {
+    padding: 2%;
+    font-size: 90%;
+    border: 4px ridge #dfc700;
+  }
+
+  .popularity {
+    padding: 2%;
+    font-size: 90%;
+    border: 4px ridge #b902d3;
+  }
+
+  .grid-load-total {
+    padding: 2%;
+    font-size: 90%;
+    border: 4px ridge #ae0000;
+  }
+}
+
+
 
 .environmental-score {
   font-weight: bold;
@@ -79,5 +124,7 @@
   background-color: transparent;
 }
 
-
+.pre-space {
+  white-space: pre;
+}
 

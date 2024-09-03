@@ -5,14 +5,17 @@
     <div class="middle-layer">
       <div class="middle-layer-box col-4">
         <app-townhall-chart-box
-        [showLabels]="showLabels"
-        [pieChartVariableNames]="pieChartVariableNames"
-        [pieChartColorValues]="pieChartColorValues"
-        [pieChartResultValues]="pieChartResultValues">
+          [showLabels]="showLabels"
+          [pieChartVariableNames]="pieChartVariableNames"
+          [pieChartColorValues]="pieChartColorValues"
+          [pieChartResultValues]="pieChartResultValues">
         </app-townhall-chart-box>
       </div>
       <div class="middle-layer-box col-4">
-      <app-townhall-info [componentView]="componentView"></app-townhall-info>
+        <app-income *ngIf="componentView =='income'"></app-income>
+        <app-taxes *ngIf="componentView == 'taxes'"></app-taxes>
+        <app-solar-panels *ngIf="componentView == 'solar panels'"></app-solar-panels>
+        <app-info *ngIf="componentView == 'info'"></app-info>
       </div>
     </div>
     <div class="treasury-nav-box">
@@ -20,7 +23,7 @@
       <button class="btn btn-sandy-brown" (click)="toTaxes()">Raise taxes</button>
       <button class="btn btn-sandy-brown" (click)="toSolarPanels()">Buy solar panels</button>
       <button class="btn btn-sandy-brown" (click)="toCampaign()">Launch public campaign</button>
-      <button class="btn btn-sandy-brown" (click)="toTutorial()">Tutorial</button>
+      <button class="btn btn-sandy-brown" (click)="toInfo()">Info</button>
     </div>
   </div>
 </div>

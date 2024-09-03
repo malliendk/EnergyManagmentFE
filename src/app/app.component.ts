@@ -17,6 +17,6 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    mockGameDto.totalGridLoad = this.gameDtoService.calculateTotalGridLoad()
+    mockGameDto.gridLoadTotal = this.gameDtoService.calculateTotalGridLoad()
   }
 }

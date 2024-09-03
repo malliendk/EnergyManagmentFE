@@ -46,7 +46,7 @@ export class LoadsourceDashboardComponent implements OnInit{
 
   ngOnInit() {
     this.mockGameDto = mockGameDto;
-    this.gridLoadTotalValue = this.mockGameDto.totalGridLoad;
+    this.gridLoadTotalValue = this.mockGameDto.gridLoadTotal;
     console.log(this.gridLoadTotalValue)
     this.setPieChartVariableNames();
     this.setPieChartColors();

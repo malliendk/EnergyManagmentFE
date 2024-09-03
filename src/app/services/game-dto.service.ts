@@ -27,9 +27,9 @@ export class GameDtoService {
     //   .subscribe((updatedGameDto: GameDto) => this.updateGameDto(updatedGameDto));
   }
 
-  calculateTotalGridLoad() {
+  calculateTotalGridLoad(): number {
     const loadSources = mockGameDto.sources;
-    return loadSources.reduce((totalLoad, source) => totalLoad + source.gridLoad, 0)
+    return loadSources.reduce((totalLoad, source) => totalLoad + source.gridLoad, 0);
   }
 
   startGame(initDto: InitiateGameDto) {

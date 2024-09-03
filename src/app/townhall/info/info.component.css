@@ -9,12 +9,6 @@
   background-image: linear-gradient(#cc0303 50%, #663399FF 50%);
 }
 
-.income {
-  height: 50vh;
-  width: 0.5vw;
-  background-color: #209f01;
-}
-
 .legend-block {
   height: 3.8vh;
   width: 1.5vw;
@@ -32,7 +26,6 @@ p {
 }
 
 .card {
-  width: 20vw;
   box-shadow: 1px 1px 5px 1px #cdc0b5;
 }
 

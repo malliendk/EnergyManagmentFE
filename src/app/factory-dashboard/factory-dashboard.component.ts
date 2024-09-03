@@ -55,7 +55,7 @@ export class FactoryDashboardComponent implements OnInit{
   ngOnInit(): void {
     this.mockGameDto = mockGameDto
     this.fundsChartResults = [this.mockGameDto.funds]
-    this.gridLoadChartResults = [this.mockGameDto.totalGridLoad]
+    this.gridLoadChartResults = [this.mockGameDto.gridLoadTotal]
     this.coalPlant = this.selectPowerPlant('Kolencentrale');
     this.gasPlant = this.selectPowerPlant('Gascentrale');
     this.coalPlantGridLoadStartingValue = this.coalPlant.gridLoad;
@@ -73,9 +73,9 @@ export class FactoryDashboardComponent implements OnInit{
   }
 
   calculateNewTotalGridLoad(): void {
-    this.mockGameDto.totalGridLoad = mockGameDto.sources.reduce(
+    this.mockGameDto.gridLoadTotal = mockGameDto.sources.reduce(
       (totalLoad: number, source: LoadSource) => totalLoad + source.gridLoad, 0)
-    this.gridLoadChartResults = [this.mockGameDto.totalGridLoad];
+    this.gridLoadChartResults = [this.mockGameDto.gridLoadTotal];
   }
 
   calculateNewFunds(powerPlant: LoadSource, startingValue: number, powerPlantGridLoad: HTMLInputElement): void {

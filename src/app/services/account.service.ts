@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Account} from "../dtos/account";
+import {SupplyTypes} from "../supplyType";
+import {GameDto} from "../dtos/gameDto";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +12,11 @@ export class AccountService {
   basePrefix = 'http://localhost:8080/api/v1/account';
 
   constructor(private http: HttpClient) { }
+
+  filterAccountType(mockGameDto: GameDto, accountType: string): Account[] {
+    return mockGameDto.accounts.filter(account =>
+      account.supplyType == accountType);
+  }
 
   generateAccounts(numberOfAccounts: number | null) {
     return this.http.post<Account[]>( this.basePrefix+'/', { numberOfAccounts });

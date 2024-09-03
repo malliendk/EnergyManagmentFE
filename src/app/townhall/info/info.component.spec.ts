@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TownhallInfoComponent } from './townhall-info.component';
+import { InfoComponent } from './info.component';
 
 describe('TownhallInfoComponent', () => {
-  let component: TownhallInfoComponent;
-  let fixture: ComponentFixture<TownhallInfoComponent>;
+  let component: InfoComponent;
+  let fixture: ComponentFixture<InfoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TownhallInfoComponent ]
+      declarations: [ InfoComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TownhallInfoComponent);
+    fixture = TestBed.createComponent(InfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

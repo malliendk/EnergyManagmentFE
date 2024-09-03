@@ -40,8 +40,13 @@ import { BorderBlockComponent } from './border-block/border-block.component';
 import { ChartBarHorizontalComponent } from './chart-bar-horizontal/chart-bar-horizontal.component';
 import { ChartPieComponent } from './chart-pie/chart-pie.component';
 import { ChartBarVerticalComponent } from './chart-bar-vertical/chart-bar-vertical.component';
-import { TownhallInfoComponent } from './townhall-info/townhall-info.component';
+import { InfoComponent } from './townhall/info/info.component';
 import { TownhallChartBoxComponent } from './townhall-chart-box/townhall-chart-box.component';
+import { IncomeComponent } from './townhall/income/income.component';
+import { TownhallCardComponent } from './townhall/townhall-card/townhall-card.component';
+import { TaxesComponent } from './townhall/taxes/taxes.component';
+import { SolarPanelsComponent } from './townhall/solar-panels/solar-panels.component';
+import { CampaignsComponent } from './campaigns/campaigns.component';
 
 
 
@@ -82,9 +87,13 @@ import { TownhallChartBoxComponent } from './townhall-chart-box/townhall-chart-b
     ChartBarHorizontalComponent,
     ChartPieComponent,
     ChartBarVerticalComponent,
-    TownhallInfoComponent,
+    InfoComponent,
     TownhallChartBoxComponent,
-
+    IncomeComponent,
+    TownhallCardComponent,
+    TaxesComponent,
+    SolarPanelsComponent,
+    CampaignsComponent,
   ],
   imports: [
     BrowserModule,
