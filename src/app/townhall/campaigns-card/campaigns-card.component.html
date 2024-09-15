@@ -1,0 +1,15 @@
+<app-townhall-card *ngIf="campaignType === ''">
+  <div card-title>
+    Choose your campaign
+  </div>
+  <div content>
+    <p>Breng je inwoners op de hoogte van de realisatie van je visionaire plannen</p>
+    <p>Kies in het menu rechts via welke kanalen je je successen deelt met de mensen</p>
+    <p>Je verkijgt populariteit op basis van je <b>pop rate</b></p>
+  </div>
+</app-townhall-card>
+<app-townhall-card *ngIf="campaignType === flyerenString">
+  <div card-title>
+    {{ campaignType }}
+  </div>
+</app-townhall-card>
