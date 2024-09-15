@@ -1,3 +1,8 @@
+pre {
+  font-family: serif;
+  margin-bottom: 2.5%;
+}
+
 .container {
   width: 80% !important;
 }
@@ -26,7 +31,7 @@
 .funds {
   font-weight: bold;
   color: #dfc700;
-  background-color: #fbf0e2;
+  background-color: rgba(255, 251, 241, 0.67);
   border-radius: 10px;
 }
 
@@ -39,7 +44,7 @@
   background-color: #fbf0e2;
 }
 
-.grid-load-total {
+.grid-load {
   font-weight: bold;
   font-size: large;
   color: #ae0000;
@@ -60,7 +65,7 @@
     border: 3px ridge #b902d3;
   }
 
-  .grid-load-total {
+  .grid-load {
     padding: 1%;
     font-size: 80%;
     border: 3px ridge #ae0000;
@@ -80,7 +85,7 @@
     border: 4px ridge #b902d3;
   }
 
-  .grid-load-total {
+  .grid-load {
     padding: 2%;
     font-size: 90%;
     border: 4px ridge #ae0000;
@@ -126,5 +131,10 @@
 
 .pre-space {
   white-space: pre;
+}
+
+.padding-sides {
+  margin-left: 5%;
+  margin-right: 5%;
 }
 

@@ -10,46 +10,39 @@ import {AccountService} from "./account.service";
 })
 export class StatsCalculationService implements OnInit{
 
-  incomeView: string = 'income';
-  taxView: string = 'taxes';
-  solarPanelView: string = 'solar panels';
-  campaignView: string = 'campaign';
-
   constructor(private accountService: AccountService) {
   }
 
   ngOnInit() {
   }
 
-  calculateStats(mockGameDto: GameDto, componentView: string, accounts?: Account[]): void {
-    switch(componentView) {
-      case this.incomeView: mockGameDto.funds += this.calculateIncome(mockGameDto);
-      break;
-      case this.taxView: {
-        mockGameDto.funds += this.calculateTaxes(accounts!);
-        mockGameDto.popularity -= this.calculatePopularityLoss(accounts!);
-      }
-      break;
-    }
+  //income
+
+  addIncome(mockGameDto: GameDto): number {
+    return mockGameDto.income + mockGameDto.funds;
   }
 
   calculateIncome(mockGameDto: GameDto): number {
-    const optimalAccountAmount: number = this.accountService.filterAccountType(mockGameDto, SupplyTypes.OPTIMAL.name).length;
+    const optimalAccountAmount: number = this.accountService.filterAccountByType(mockGameDto, SupplyTypes.OPTIMAL.name).length;
     return optimalAccountAmount * mockGameDto.incomeRate;
   }
 
+  //taxes
+  raiseTaxes(taxAmount: number, mockGameDto: GameDto, accounts: Account[]) {
+    mockGameDto.funds += this.calculateTaxes(accounts!);
+    mockGameDto.popularity -= this.calculatePopularityLoss(taxAmount, mockGameDto);
+  }
+
   calculateTaxes(accounts: Account[]): number {
-    return this.calculateTaxableSupplyAmount(accounts) * mockGameDto.taxRate;
+    return this.calculateTaxableSupplyTotal(accounts) * mockGameDto.taxRate;
   }
 
-  calculatePopularityLoss(accounts: Account[]): number {
-    return accounts.filter(account => {
-      account.supplyType == SupplyTypes.SHORTAGE.name;
-      account.supplyType == SupplyTypes.SURPLUS.name;
-    }).length;
+
+  calculateTaxAmount(accounts: Account[], mockGameDto: GameDto): number {
+    return this.calculateTaxableSupplyTotal(accounts) * mockGameDto.taxRate;
   }
 
-  calculateTaxableSupplyAmount(accounts: Account[]): number {
+  calculateTaxableSupplyTotal(accounts: Account[]): number {
     const totalShortageSupplyAmount: number = accounts
       .filter(account => account.supplyType === SupplyTypes.SHORTAGE.name)
       .map(account => 1 - account.supplyAmount)
@@ -59,5 +52,22 @@ export class StatsCalculationService implements OnInit{
       .map(account => account.supplyAmount - 1)
       .reduce((total, amount) => total + amount, 0);
     return totalShortageSupplyAmount + totalSurplusSupplyAmount;
+  }
+
+  calculatePopularityLoss(taxAmount: number, mockGameDto: GameDto): number {
+    return taxAmount * mockGameDto.popRate;
+  }
+
+  //solar panels
+  calculateSolarPanelCost(accountAmount: number, accountCost: number): number {
+    return accountAmount * accountCost;
+  }
+
+  estimateIncomeIncrease(accountAmount: number, mockGameDto: GameDto): number {
+    return accountAmount * mockGameDto.incomeRate * ( 1 / 7 );
+  }
+
+  estimateGridLoadIncrease(accountAmount: number): number {
+    return accountAmount * 0.3 * ( 6 / 7 ) / 10;
   }
 }

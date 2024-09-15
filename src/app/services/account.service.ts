@@ -13,10 +13,17 @@ export class AccountService {
 
   constructor(private http: HttpClient) { }
 
-  filterAccountType(mockGameDto: GameDto, accountType: string): Account[] {
+  filterAccountByType(mockGameDto: GameDto, accountType: string): Account[] {
     return mockGameDto.accounts.filter(account =>
       account.supplyType == accountType);
   }
+
+  generateAccountsFrontEnd(accountAmount: number, existingAccounts: Account[]) {
+    for (let i = 0; i < accountAmount ; i++) {
+      existingAccounts.push()
+    }
+  }
+
 
   generateAccounts(numberOfAccounts: number | null) {
     return this.http.post<Account[]>( this.basePrefix+'/', { numberOfAccounts });

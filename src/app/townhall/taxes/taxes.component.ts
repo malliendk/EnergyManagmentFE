@@ -11,22 +11,47 @@ import {SupplyTypes} from "../../supplyType";
   templateUrl: './taxes.component.html',
   styleUrls: ['./taxes.component.css']
 })
-export class TaxesComponent implements OnInit{
+export class TaxesComponent implements OnInit {
 
   mockGameDto: GameDto = mockGameDto;
-  shortageAccounts: Account[] = [];
-  surplusAccounts: Account[] = [];
+  deviationAccounts: Account[] = [];
+  deviationTotal: number = 0;
+  taxAmount: number = 0;
+  popularityLoss: number = 0;
 
   isSideBarGradient: boolean = true;
-  sideBarColorCode: string = `#cc0303 50%, #663399FF 50%`;
-  viewType: string = 'taxes';
+  sideBarColorCode: string = `#cc0303, #663399FF`;
 
-  constructor(private calctulationService: StatsCalculationService,
+  constructor(private calculationService: StatsCalculationService,
               private accountService: AccountService) {
   }
 
   ngOnInit() {
-    this.shortageAccounts = this.accountService.filterAccountType(this.mockGameDto, SupplyTypes.SHORTAGE.name);
-    this.surplusAccounts = this.accountService.filterAccountType(this.mockGameDto, SupplyTypes.SURPLUS.name);
+    this.deviationAccounts = this.filterDeviateAccounts();
+    this.deviationTotal = this.calculateDeviationTotal();
+    this.taxAmount = this.calculateTaxAmount();
+    this.popularityLoss = this.calculatePopularityLoss();
+  }
+
+  filterDeviateAccounts(): Account[] {
+    const shortageAccounts: Account[] = this.accountService.filterAccountByType(this.mockGameDto, SupplyTypes.SHORTAGE.name);
+    const surplusAccounts: Account[] = this.accountService.filterAccountByType(this.mockGameDto, SupplyTypes.SURPLUS.name);
+    return shortageAccounts.concat(surplusAccounts);
+  }
+
+  calculateDeviationTotal(): number {
+    return this.calculationService.calculateTaxableSupplyTotal(this.deviationAccounts);
+  }
+
+  calculateTaxAmount(): number {
+    return this.calculationService.calculateTaxAmount(this.deviationAccounts, this.mockGameDto);
+  }
+
+  calculatePopularityLoss(): number {
+    return this.calculationService.calculatePopularityLoss(this.taxAmount, this.mockGameDto)
+  }
+
+  raiseTaxes() {
+    this.calculationService.raiseTaxes(this.taxAmount, this.mockGameDto, this.deviationAccounts)
   }
 }

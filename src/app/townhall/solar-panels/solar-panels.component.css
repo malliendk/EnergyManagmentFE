@@ -1,3 +1,15 @@
+pre {
+  font-family: serif;
+  font-style: italic;
+  margin-bottom: 2.5%;
+}
+
+@media screen and (max-width: 1500px) {
+  pre {
+    font-size: 75%;
+  }
+}
+
 .btn {
   margin: 1%;
   padding: 1.5%;
@@ -14,10 +26,18 @@
 
 [content] {
   display: flex;
+  justify-content: space-around;
+  flex-direction: column;
   height: 60%;
   width: 100%;
   border-top: 1px solid lightslategrey;
   border-bottom: 1px solid lightslategrey;
+}
+
+[content] > div {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 [button] {
@@ -26,4 +46,27 @@
   align-items: center;
   height: 20%;
   width: 100%;
+}
+
+input {
+  width: 80% !important;
+  font-size: 80%;
+  margin-left: 13%;
+  margin-right: 7%;
+}
+
+/* For Chrome, Safari, Edge, and Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+div > p {
+  padding: 0.2em 0.5em 0.2em 0.5em;
 }

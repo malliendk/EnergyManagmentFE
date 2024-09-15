@@ -4,6 +4,12 @@ pre {
   margin-bottom: 2.5%;
 }
 
+@media screen and (max-width: 1500px) {
+  pre:nth-child(1) {
+    font-size: 75%;
+  }
+}
+
 .btn {
   margin: 1%;
   padding: 1.5%;
@@ -20,16 +26,13 @@ pre {
 
 [content] {
   display: flex;
+  flex-direction: row;
   justify-content: space-around;
   align-items: center;
   height: 60%;
   width: 100%;
   border-top: 1px solid lightslategrey;
   border-bottom: 1px solid lightslategrey;
-}
-
-pre:nth-child(1) {
-  font-size: 75%;
 }
 
 [button] {

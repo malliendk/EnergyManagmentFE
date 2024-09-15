@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-image: url("/assets/photos/town_hall.png");
+  background-image: url('src/assets/photos/town_hall.png');
   padding: 5% 3% 3% 3%;
   border-radius: 10px;
   box-shadow: 2px 2px 20px 3px;
@@ -10,7 +10,7 @@
 
 .top-layer {
   display: flex;
-  height: 20%;
+  height: 20vh;
   width: 100%;
   background-color: #49311d;
   border-radius: 20px;
@@ -20,18 +20,18 @@
 .middle-layer {
   display: flex;
   justify-content: space-around;
-  height: 60%;
+  height: 53vh;
   width: 100%;
 }
 
 .bottom-layer {
-  height: 15%;
+  height: 5vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.middle-layer-box{
+.middle-layer-box {
   display: flex;
   height: 100%;
   background-color: antiquewhite;
@@ -40,12 +40,18 @@
 }
 
 .middle-layer-box:nth-child(1) {
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+
 }
 
-.middle-layer-box:nth-child(2) {
+.middle-layer-box > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+}
+
+.middle-layer-box:nth-child(3) {
   flex-direction: row !important;
 }
 
@@ -57,12 +63,12 @@
 .treasury-nav-box {
   display: flex;
   justify-content: space-around;
+  height: 15vh;
   padding: 3% 3% 3% 3%;
   background-color: #49311d;
   border-radius: 20px;
   box-shadow: 1px 1px 10px #322313;
 }
-
 
 .btn-sandy-brown {
   color: white;
@@ -74,6 +80,32 @@
 .btn-sandy-brown:hover {
   background-color: #a67033;
 }
+
+@media screen and (max-width: 1500px) {
+  .btn-sandy-brown {
+    font-size: 90%;
+  }
+}
+
+.optimalLegend {
+  height: 3vh;
+  width: 2vw;
+  background-color: #008000FF;
+}
+
+.surplusLegend {
+  height: 3vh;
+  width: 2vw;
+  background-color: #663399FF;
+}
+
+.shortageLegend {
+  height: 3vh;
+  width: 2vw;
+  background-color: #c50101;
+}
+
+
 
 
 

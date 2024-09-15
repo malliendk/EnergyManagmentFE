@@ -1,0 +1,18 @@
+<app-townhall-card
+  [isSideBarGradient]="isSideBarGradient"
+  [sidebarColorCode]="sideBarColorCode"
+>
+  <div card-title>
+    Public Campaigns
+  </div>
+  <div top>
+    <div class="funds">{{ mockGameDto.funds | currency: 'USD' }}</div>
+    <div class="popularity">{{ mockGameDto.popularity }}p</div>
+  </div>
+  <div content>
+    <div (click)="setActiveAndEmit(flyerenString)" [ngClass]="{'active' : activeItem === flyerenString }">Flyeren</div>
+    <div (click)="setActiveAndEmit(socialMediaString)" [ngClass]="{'active' : activeItem === socialMediaString }">Social media</div>
+    <div (click)="setActiveAndEmit(langDeDeurenString)" [ngClass]="{'active' : activeItem === langDeDeurenString }">Langs de deuren</div>
+    <div (click)="setActiveAndEmit(vlogsEnPodCastsString)" [ngClass]="{'active' : activeItem === vlogsEnPodCastsString }">Vlogs en podcasts</div>
+  </div>
+</app-townhall-card>

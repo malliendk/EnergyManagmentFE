@@ -6,66 +6,96 @@ import {LoadSource} from "../dtos/loadSource";
 import {SupplyTypes} from "../supplyType";
 import {Account} from "../dtos/account";
 import {Router} from "@angular/router";
+import {AccountService} from "../services/account.service";
 
 @Component({
   selector: 'app-townhall-dashboard',
   templateUrl: './townhall-dashboard.component.html',
   styleUrls: ['./townhall-dashboard.component.css']
 })
-export class TownhallDashboardComponent implements OnInit{
+export class TownhallDashboardComponent implements OnInit {
 
   mockGameDto!: GameDto;
 
-  componentView: string = 'solar panels';
+  optimalAccountsNumber: number = 0;
+  surplusAccounts: Account[] = [];
+  shortageAccounts: Account[] = [];
+
+  componentView: string = 'campaigns';
+  selectedCampaignType: string = '';
+
+  chartResults: any[] = [];
+  customColors: any[] = [];
 
   showLabels: boolean = true;
 
-  pieChartVariableNames: string[] = [];
-  pieChartColorValues: string[] = [];
-  pieChartResultValues: number[] = [];
 
-  constructor() {
+  constructor(private accountService: AccountService) {
   }
 
   ngOnInit(): void {
     this.mockGameDto = mockGameDto;
-    this.setPieChartVariableNames();
-    this.setPieChartColorValue();
-    this.setPieChartResultValues();
+    this.getAccountNumberByType();
+    this.customColors = this.setCustomColors();
+    this.chartResults = this.setChartResults();
   }
 
-  setPieChartVariableNames(): void {
-    this.pieChartVariableNames = Object.values(SupplyTypes).map(type => type.name);
+  setCustomColors(): { name: string, value: string }[] {
+    return [
+      {name: SupplyTypes.OPTIMAL.name, value: SupplyTypes.OPTIMAL.color},
+      {name: SupplyTypes.SURPLUS.name, value: SupplyTypes.SURPLUS.color},
+      {name: SupplyTypes.SHORTAGE.name, value: SupplyTypes.SHORTAGE.color}
+    ]
   }
 
-  setPieChartColorValue(): void {
-    this.pieChartColorValues = Object.values(SupplyTypes).map(type => type.color);
+  setChartResults(): { name: string, value: string }[] {
+    return [
+      {name: SupplyTypes.OPTIMAL.name, value: (this.optimalAccountsNumber).toString()},
+      {name: SupplyTypes.SURPLUS.name, value: this.surplusAccounts.length.toString()},
+      {name: SupplyTypes.SHORTAGE.name, value: this.shortageAccounts.length.toString()}
+    ]
   }
 
-  setPieChartResultValues(): void {
-    const supplyTypeNames: string[] = Object.values(SupplyTypes).map(type => type.name);
-    this.pieChartResultValues = supplyTypeNames.map((name: string) =>
-      this.mockGameDto.accounts.filter((account: Account) => account.supplyType === name).length
-    );
+  getAccountNumberByType() {
+    this.optimalAccountsNumber = this.accountService.filterAccountByType(mockGameDto, SupplyTypes.OPTIMAL.name).length -200;
+    this.surplusAccounts = this.accountService.filterAccountByType(mockGameDto, SupplyTypes.SURPLUS.name);
+    this.shortageAccounts = this.accountService.filterAccountByType(mockGameDto, SupplyTypes.SHORTAGE.name);
   }
 
-  toIncome(){
+
+  toIncome() {
     this.componentView = 'income';
   }
 
-  toTaxes(): void {
+  toTaxes()
+    :
+    void {
     this.componentView = 'taxes'
   }
 
-  toSolarPanels(): void {
+  toSolarPanels()
+    :
+    void {
     this.componentView = 'solar panels'
   }
 
-  toCampaign(): void {
-    this.componentView = 'campaign'
+  toCampaign()
+    :
+    void {
+    this.componentView = 'campaigns'
   }
 
-  toInfo(): void {
+  toInfo()
+    :
+    void {
     this.componentView = 'info'
   }
+
+    onCampaignTypeSelect(campaignType: string): void {
+    this.selectedCampaignType = campaignType;
+    console.log("emitted value:", campaignType)
+    console.log(this.selectedCampaignType);
+
+  }
+
 }

@@ -1,15 +1,50 @@
 <app-townhall-card
   [isSideBarGradient]="isSideBarGradient"
   [sidebarColorCode]="sideBarColorCode">
-    <div card-title>
-      Taxes
+  <div card-title>
+    Taxes
+  </div>
+  <div top>
+    <div class="funds">{{ mockGameDto.funds | currency: 'USD' }}</div>
+    <div class="popularity">{{ mockGameDto.popularity }} p</div>
+  </div>
+  <div content>
+    <div>
+      <div>
+        <pre>Total<br>deviation</pre>
+        <pre>{{ deviationTotal | number: '1.2-2' }}</pre>
+      </div>
     </div>
-    <div top>
-      <div class="funds">{{ mockGameDto.funds | currency: 'USD'}}</div>
-      <div class="popularity">{{ mockGameDto.popularity}} p</div>
+    <div>
+      <pre>x</pre>
+      <pre>x</pre>
     </div>
-    <div content></div>
-    <div button>
-      <button type="button" class="btn btn-outline-primary">Raise tax</button>
+    <div>
+      <div class="m-bottom">
+        <pre>Tax rate</pre>
+        <pre>{{ mockGameDto.taxRate }}</pre>
+      </div>
+      <div>
+        <pre>Pop rate</pre>
+        <pre>{{ mockGameDto.popRate }}</pre>
+      </div>
     </div>
-  </app-townhall-card>
+    <div>
+      <pre>=</pre>
+      <pre>=</pre>
+    </div>
+    <div>
+      <div>
+        <pre>Total tax</pre>
+        <pre>{{ taxAmount | number: '1.2-2' }}</pre>
+      </div>
+      <div>
+        <pre>Popularity<br>loss</pre>
+        <pre>{{ popularityLoss | number: '1.2-2' }}</pre>
+      </div>
+    </div>
+  </div>
+  <div button>
+    <button type="button" class="btn btn-outline-primary" (click)="raiseTaxes()">Raise taxes</button>
+  </div>
+</app-townhall-card>

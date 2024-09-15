@@ -28,7 +28,6 @@ import { GameModeSelectComponent } from './game-mode-select/game-mode-select.com
 import { GridloadDashboardComponent } from './gridload-dashboard/gridload-dashboard.component';
 import { ModalComponent } from './modal/modal.component';
 import { GameInterfaceComponent } from './game-interface/game-interface.component';
-import { GridloadDashboardTableComponent } from './gridload-dashboard-table/gridload-dashboard-table.component';
 import { GridloadDashboardChartComponent } from './gridload-dashboard-chart/gridload-dashboard-chart.component';
 import { ClockComponent } from './clock/clock.component';
 import { TownhallDashboardComponent } from './townhall-dashboard/townhall-dashboard.component';
@@ -41,12 +40,12 @@ import { ChartBarHorizontalComponent } from './chart-bar-horizontal/chart-bar-ho
 import { ChartPieComponent } from './chart-pie/chart-pie.component';
 import { ChartBarVerticalComponent } from './chart-bar-vertical/chart-bar-vertical.component';
 import { InfoComponent } from './townhall/info/info.component';
-import { TownhallChartBoxComponent } from './townhall-chart-box/townhall-chart-box.component';
 import { IncomeComponent } from './townhall/income/income.component';
 import { TownhallCardComponent } from './townhall/townhall-card/townhall-card.component';
 import { TaxesComponent } from './townhall/taxes/taxes.component';
 import { SolarPanelsComponent } from './townhall/solar-panels/solar-panels.component';
-import { CampaignsComponent } from './campaigns/campaigns.component';
+import { CampaignsComponent } from './townhall/campaigns/campaigns.component';
+import { CampaignsCardComponent } from './townhall/campaigns-card/campaigns-card.component';
 
 
 
@@ -74,7 +73,6 @@ import { CampaignsComponent } from './campaigns/campaigns.component';
     GridloadDashboardComponent,
     ModalComponent,
     GameInterfaceComponent,
-    GridloadDashboardTableComponent,
     GridloadDashboardChartComponent,
     ClockComponent,
     TownhallDashboardComponent,
@@ -88,12 +86,12 @@ import { CampaignsComponent } from './campaigns/campaigns.component';
     ChartPieComponent,
     ChartBarVerticalComponent,
     InfoComponent,
-    TownhallChartBoxComponent,
     IncomeComponent,
     TownhallCardComponent,
     TaxesComponent,
     SolarPanelsComponent,
     CampaignsComponent,
+    CampaignsCardComponent,
   ],
   imports: [
     BrowserModule,

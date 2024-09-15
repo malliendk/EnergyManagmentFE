@@ -1,3 +1,21 @@
+pre {
+  font-family: serif;
+  font-style: italic;
+  margin-bottom: 2.5%;
+}
+
+@media screen and (max-width: 1500px) {
+  pre:nth-child(1) {
+    font-size: 75%;
+  }
+}
+
+@media screen and (min-width: 1501px){
+  pre:nth-child(1) {
+    font-size: 85%;
+  }
+}
+
 .btn {
   margin: 1%;
   padding: 1.5%;
@@ -14,10 +32,33 @@
 
 [content] {
   display: flex;
+  justify-content: space-around;
   height: 60%;
   width: 100%;
   border-top: 1px solid lightslategrey;
   border-bottom: 1px solid lightslategrey;
+}
+
+@media screen and (max-width: 1500px) {
+  [content] {
+    padding: 3%;
+  }
+}
+
+@media screen and (min-width: 1500px) {
+  [content] {
+    padding: 5%;
+  }
+}
+
+[content] > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+[content] > div > div > pre:nth-child(1) {
+  font-weight: bold;
 }
 
 [button] {
@@ -27,3 +68,11 @@
   height: 20%;
   width: 100%;
 }
+
+@media screen and (min-width: 1500px) {
+  .m-bottom {
+    margin-bottom: 40%;
+  }
+}
+
+

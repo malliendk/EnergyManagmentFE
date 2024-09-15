@@ -18,26 +18,33 @@ export class IncomeComponent implements OnInit {
 
   isSideBarGradient: boolean = false;
   sideBarColorCode: string = '#209f01';
-  viewType: string = 'income';
 
   constructor(private calculationService: StatsCalculationService,
               private accountService: AccountService) {
   }
 
   ngOnInit(): void {
-    this.optimalAccounts = this.accountService.filterAccountType(mockGameDto, SupplyTypes.OPTIMAL.name);
+    this.optimalAccounts = this.setOptimalAccounts()
     this.mockGameDto.income = this.calculateIncome();
+  }
+
+  setOptimalAccounts(): Account[] {
+    return this.accountService.filterAccountByType(mockGameDto, SupplyTypes.OPTIMAL.name);
   }
 
   calculateIncome(): number {
     return this.calculationService.calculateIncome(this.mockGameDto);
   }
 
+  addIncome(): number {
+    return this.calculationService.addIncome(this.mockGameDto);
+  }
+
   startAddingIncome(): void {
     setInterval(() => {
       console.log("income started, income: {}, new funds: {}",
         this.mockGameDto.income, this.mockGameDto.funds);
-      this.calculationService.calculateStats(this.mockGameDto, this.viewType);
+      this.calculationService.addIncome(this.mockGameDto);
     }, 1000)
   }
 }

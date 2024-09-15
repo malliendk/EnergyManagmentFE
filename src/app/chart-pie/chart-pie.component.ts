@@ -7,6 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ChartPieComponent implements OnInit {
 
+  @Input() view!: number[]
   @Input() legendPosition: string = '';
   @Input() gradient: boolean = false;
   @Input() showLegend: boolean = false;
@@ -18,6 +19,7 @@ export class ChartPieComponent implements OnInit {
   @Input() chartVariableNames: string[] = [];
   @Input() chartColorValues: string[] = [];
   @Input() chartResultValues: number[] = [];
+  @Input() labelFormatting!: (c: any) => string;
 
   chartResults: any[] = [];
   customColors: any[] = [];

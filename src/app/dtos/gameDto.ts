@@ -6,14 +6,18 @@ export interface GameDto {
 
   localityName: string;
   supervisorName: string;
-  gridLoadTotal: number;
   startingSourcesAmount: number;
   funds: number;
   popularity: number;
+  gridCapacity: number;
+  gridLoadTotal: number;
+  energy: number;
+  science: number;
   distributionEfficiency: number;
   incomeRate: number;
   income: number;
   taxRate: number;
+  popRate: number;
   sources: LoadSource[];
   accounts: Account[];
   events: EventDto[];

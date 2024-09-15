@@ -4,18 +4,47 @@
     </div>
     <div class="middle-layer">
       <div class="middle-layer-box col-4">
-        <app-townhall-chart-box
-          [showLabels]="showLabels"
-          [pieChartVariableNames]="pieChartVariableNames"
-          [pieChartColorValues]="pieChartColorValues"
-          [pieChartResultValues]="pieChartResultValues">
-        </app-townhall-chart-box>
+        <div *ngIf="componentView === 'income' || componentView === 'taxes' || componentView === 'solar panels'">
+          <div class="mt-2">Rooftop solar panel accounts</div>
+          <div class="d-flex justify-content-around w-100 mt-4">
+            <div>
+              <div class="optimalLegend mb-2"></div>
+              <div>{{ optimalAccountsNumber }}</div>
+            </div>
+            <div>
+              <div class="surplusLegend mb-2"></div>
+              <div>{{ surplusAccounts.length }}</div>
+            </div>
+            <div>
+              <div class="shortageLegend mb-2"></div>
+              <div>{{ shortageAccounts.length }}</div>
+            </div>
+            <div>
+              <div style="font-weight: bold">Total</div>
+              <div>{{ mockGameDto.accounts.length }}</div>
+            </div>
+          </div>
+          <ngx-charts-pie-chart
+            [view]="[400, 300]"
+            [customColors]="customColors"
+            [results]="chartResults"
+            [labels]="showLabels"
+          >
+          </ngx-charts-pie-chart>
+        </div>
+        <app-campaigns-card
+          *ngIf="componentView === 'campaigns'"
+          [campaignType]="selectedCampaignType"
+        >
+        </app-campaigns-card>
       </div>
       <div class="middle-layer-box col-4">
-        <app-income *ngIf="componentView =='income'"></app-income>
-        <app-taxes *ngIf="componentView == 'taxes'"></app-taxes>
-        <app-solar-panels *ngIf="componentView == 'solar panels'"></app-solar-panels>
-        <app-info *ngIf="componentView == 'info'"></app-info>
+        <app-income *ngIf="componentView ==='income'"></app-income>
+        <app-taxes *ngIf="componentView === 'taxes'"></app-taxes>
+        <app-solar-panels *ngIf="componentView === 'solar panels'"></app-solar-panels>
+        <app-campaigns *ngIf="componentView === 'campaigns'"
+        (campaignTypeSelect)="onCampaignTypeSelect($event)"></app-campaigns>
+        <app-info *ngIf="componentView === 'info'"></app-info>
       </div>
     </div>
     <div class="treasury-nav-box">

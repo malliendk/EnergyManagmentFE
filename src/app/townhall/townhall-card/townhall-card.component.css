@@ -1,8 +1,9 @@
 .card {
-  height: 35vh;
-  width: 20.5vw;
-  margin: 10% 0 10% 11.5%;
+  height: 47vh;
+  width: 21.5vw;
+  margin: 5% 0 5% 7%;
   box-shadow: 1px 1px 5px 1px #cdc0b5;
+  cursor: default;
 }
 
 .card-header {
@@ -17,7 +18,7 @@
 }
 
 .box-sidebar {
-  height: 46.5vh;
+  height: 53vh;
   width: 0.5vw;
 }
 

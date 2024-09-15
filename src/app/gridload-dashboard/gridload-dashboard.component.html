@@ -10,14 +10,14 @@
       <button type="button" class="btn-toggle-view" (click)="toggleSingleView()" [disabled]="isDoubleExpanded">
         {{ singleDashboardView == 'table' ? '<' : '>' }}
       </button>
-    <div class="custom-container d-flex justify-content-center">
-      <app-gridload-dahsboard-table *ngIf="singleDashboardView=='table'" [mockGameDto]="mockGameDto">
-      </app-gridload-dahsboard-table>
-        <app-gridload-dashboard-chart *ngIf="singleDashboardView=='chart'" [mockGameDto]="mockGameDto">
-        </app-gridload-dashboard-chart>
+      <div class="custom-container d-flex justify-content-around">
+        <div class="funds">{{ mockGameDto.funds | currency: 'USD' }}</div>
+        <div class="popularity">{{ mockGameDto.popularity }}p</div>
+        <div class="grid-load">{{ mockGameDto.gridLoadTotal }}/{{ mockGameDto.gridCapacity }} </div>
       </div>
     </div>
   </div>
+
 </div>
 
 <div id="board-double-expanded" *ngIf="isDoubleExpanded" [ngClass]="doubleExpandedCss">
@@ -28,15 +28,10 @@
     <button *ngIf="!isCollapsed" type="button" [ngClass]="btnToggleView" (click)="toggleDoubleExpand()">
       {{ isDoubleExpanded ? '>>' : '<<' }}
     </button>
-    <div class="custom-container">
-    <div class="row">
-      <div class="col">
-        <app-gridload-dahsboard-table [mockGameDto]="mockGameDto" ></app-gridload-dahsboard-table>
-      </div>
-      <div class="col">
-        <app-gridload-dashboard-chart [mockGameDto]="mockGameDto" ></app-gridload-dashboard-chart>
-      </div>
-    </div>
+    <div class="custom-container d-flex justify-content-around">
+      <div class="funds">{{ mockGameDto.funds | currency: 'USD' }}</div>
+      <div class="popularity">{{ mockGameDto.popularity }}p</div>
+      <div class="grid-load">{{ mockGameDto.gridLoadTotal }}/{{ mockGameDto.gridCapacity }} </div>
     </div>
   </div>
 </div>

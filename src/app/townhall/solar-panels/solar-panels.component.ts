@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {GameDto} from "../../dtos/gameDto";
 import {mockGameDto} from "../../mocks/mock-game-dto";
+import {StatsCalculationService} from "../../services/stats-calculation.service";
 
 @Component({
   selector: 'app-solar-panels',
@@ -12,11 +13,42 @@ export class SolarPanelsComponent implements OnInit{
   mockGameDto: GameDto = mockGameDto;
 
   isSideBarGradient: boolean = true;
-  sideBarColorCode: string = '#7777FF, #FFFFFF';
+  sideBarColorCode: string = '#d1bb1a, #ae0000';
+  accountCost: number = 5;
+  accountAmount: number = 0;
+  totalCost: number = 0;
+  estimatedIncomeIncrease: number = 0;
+  estimatedGridLoadIncrease: number = 0;
 
+  constructor(private calculationService: StatsCalculationService) {
+  }
 
   ngOnInit() {
+    this.accountAmount = 100;
+    this.calculateStats();
+  }
+
+  buySolarPanels() {
 
   }
+
+  calculateStats() {
+    this.totalCost = this.calculateTotalCost();
+    this.estimatedIncomeIncrease = this.estimateIncomeIncrease();
+    this.estimatedGridLoadIncrease = this.estimateGridLoadIncrease();
+  }
+
+  calculateTotalCost(): number {
+    return this.calculationService.calculateSolarPanelCost(this.accountAmount, this.accountCost);
+  }
+
+  estimateIncomeIncrease(): number {
+    return this.calculationService.estimateIncomeIncrease(this.accountAmount, this.mockGameDto);
+  }
+
+  estimateGridLoadIncrease(): number {
+    return this.calculationService.estimateGridLoadIncrease(this.accountAmount);
+  }
+
 
 }
