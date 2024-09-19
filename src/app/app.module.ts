@@ -46,6 +46,7 @@ import { TaxesComponent } from './townhall/taxes/taxes.component';
 import { SolarPanelsComponent } from './townhall/solar-panels/solar-panels.component';
 import { CampaignsComponent } from './townhall/campaigns/campaigns.component';
 import { CampaignsCardComponent } from './townhall/campaigns-card/campaigns-card.component';
+import { CampaignTypeCardComponent } from './townhall/campaign-type-card/campaign-type-card.component';
 
 
 
@@ -92,6 +93,7 @@ import { CampaignsCardComponent } from './townhall/campaigns-card/campaigns-card
     SolarPanelsComponent,
     CampaignsComponent,
     CampaignsCardComponent,
+    CampaignTypeCardComponent,
   ],
   imports: [
     BrowserModule,

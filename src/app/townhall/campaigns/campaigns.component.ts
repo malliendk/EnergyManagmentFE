@@ -21,7 +21,7 @@ export class CampaignsComponent {
   flyerenString: string = 'Flyeren';
   socialMediaString: string = 'Social media';
   langDeDeurenString: string = 'Langs de deuren';
-  vlogsEnPodCastsString: string = 'Televisie en podcast';
+  vlogsEnPodCastsString: string = 'vlogPodcast';
 
 
   setActiveAndEmit(item: string) {

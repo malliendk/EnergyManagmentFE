@@ -1,7 +1,27 @@
-[content] {
-  height: 60%;
-  width: 100%;
-  text-align: center;
-  font-size: 90%;
-  font-style: italic;
+@media screen and (max-width: 1500px) {
+  .btn {
+    font-size: 80%;
+  }
+
+  .margin-top-bottom {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .border-center {
+    border-top: 1px solid lightslategrey;
+  }
 }
+
+@media screen and (min-width: 1501px) {
+  .margin-top-bottom {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .border-center {
+    border-top: 3px dotted lightslategrey;
+  }
+}
+
+
