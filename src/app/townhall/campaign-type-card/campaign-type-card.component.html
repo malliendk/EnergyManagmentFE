@@ -1,0 +1,13 @@
+<app-townhall-card *ngIf="campaignType === campaignTypeString">
+  <div card-title>
+    {{ campaignObject.name }}
+  </div>
+  <div top [style.background-image]="'url(/assets/photos/{{ imageName }}.png)'"></div>
+  <div content class="d-flex justify-content-center align-items-center">
+    <div class="funds">{{ campaignObject.fundsCost }}</div>
+    <div class="popularity">{{ campaignObject.popGain }}</div>
+  </div>
+  <div button>
+    <button type="button" class="btn btn-outline-primary" (click)="launchCampaign(campaignObject, mockGameDto)"></button>
+  </div>
+</app-townhall-card>
