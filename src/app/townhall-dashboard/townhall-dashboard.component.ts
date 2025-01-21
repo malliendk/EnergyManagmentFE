@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameDto} from "../dtos/gameDto";
+import {GameDTO} from "../dtos/gameDTO";
 import {ChartService} from "../services/chart.service";
 import {mockGameDto} from "../mocks/mock-game-dto";
-import {LoadSource} from "../dtos/loadSource";
 import {SupplyTypes} from "../supplyType";
 import {Account} from "../dtos/account";
 import {Router} from "@angular/router";
@@ -15,7 +14,7 @@ import {AccountService} from "../services/account.service";
 })
 export class TownhallDashboardComponent implements OnInit {
 
-  mockGameDto!: GameDto;
+  mockGameDto!: GameDTO;
 
   optimalAccountsNumber: number = 0;
   surplusAccounts: Account[] = [];

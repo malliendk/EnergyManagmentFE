@@ -1,4 +1,5 @@
-<div id="single-expanded" *ngIf="isSingleExpanded" [ngClass]="singleExpandedCss">
+<div id="single-expanded" *ngIf="isSingleExpanded"
+     [ngClass]="[singleExpandedCss, dayWeatherClass]">
   <div>
     <button type="button" class="btn-collapse" (click)="toggleCollapseForSingle()">
       {{ isCollapsed ? '<' : '>' }}
@@ -11,13 +12,10 @@
         {{ singleDashboardView == 'table' ? '<' : '>' }}
       </button>
       <div class="custom-container d-flex justify-content-around">
-        <div class="funds">{{ mockGameDto.funds | currency: 'USD' }}</div>
-        <div class="popularity">{{ mockGameDto.popularity }}p</div>
         <div class="grid-load">{{ mockGameDto.gridLoadTotal }}/{{ mockGameDto.gridCapacity }} </div>
       </div>
     </div>
   </div>
-
 </div>
 
 <div id="board-double-expanded" *ngIf="isDoubleExpanded" [ngClass]="doubleExpandedCss">
@@ -35,4 +33,3 @@
     </div>
   </div>
 </div>
-

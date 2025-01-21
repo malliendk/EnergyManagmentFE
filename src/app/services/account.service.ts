@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Account} from "../dtos/account";
 import {SupplyTypes} from "../supplyType";
-import {GameDto} from "../dtos/gameDto";
+import {GameDTO} from "../dtos/gameDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class AccountService {
 
   constructor(private http: HttpClient) { }
 
-  filterAccountByType(mockGameDto: GameDto, accountType: string): Account[] {
+  filterAccountByType(mockGameDto: GameDTO, accountType: string): Account[] {
     return mockGameDto.accounts.filter(account =>
       account.supplyType == accountType);
   }

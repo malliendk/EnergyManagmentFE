@@ -2,7 +2,7 @@ import {Injectable, OnInit} from '@angular/core';
 import {Account} from "../dtos/account";
 import {SupplyTypes} from "../supplyType";
 import {mockGameDto} from "../mocks/mock-game-dto";
-import {GameDto} from "../dtos/gameDto";
+import {GameDTO} from "../dtos/gameDTO";
 import {AccountService} from "./account.service";
 
 @Injectable({
@@ -18,17 +18,17 @@ export class StatsCalculationService implements OnInit{
 
   //income
 
-  addIncome(mockGameDto: GameDto): number {
+  addIncome(mockGameDto: GameDTO): number {
     return mockGameDto.income + mockGameDto.funds;
   }
 
-  calculateIncome(mockGameDto: GameDto): number {
+  calculateIncome(mockGameDto: GameDTO): number {
     const optimalAccountAmount: number = this.accountService.filterAccountByType(mockGameDto, SupplyTypes.OPTIMAL.name).length;
     return optimalAccountAmount * mockGameDto.incomeRate;
   }
 
   //taxes
-  raiseTaxes(taxAmount: number, mockGameDto: GameDto, accounts: Account[]) {
+  raiseTaxes(taxAmount: number, mockGameDto: GameDTO, accounts: Account[]) {
     mockGameDto.funds += this.calculateTaxes(accounts!);
     mockGameDto.popularity -= this.calculatePopularityLoss(taxAmount, mockGameDto);
   }
@@ -38,7 +38,7 @@ export class StatsCalculationService implements OnInit{
   }
 
 
-  calculateTaxAmount(accounts: Account[], mockGameDto: GameDto): number {
+  calculateTaxAmount(accounts: Account[], mockGameDto: GameDTO): number {
     return this.calculateTaxableSupplyTotal(accounts) * mockGameDto.taxRate;
   }
 
@@ -54,7 +54,7 @@ export class StatsCalculationService implements OnInit{
     return totalShortageSupplyAmount + totalSurplusSupplyAmount;
   }
 
-  calculatePopularityLoss(taxAmount: number, mockGameDto: GameDto): number {
+  calculatePopularityLoss(taxAmount: number, mockGameDto: GameDTO): number {
     return taxAmount * mockGameDto.popRate;
   }
 
@@ -63,7 +63,7 @@ export class StatsCalculationService implements OnInit{
     return accountAmount * accountCost;
   }
 
-  estimateIncomeIncrease(accountAmount: number, mockGameDto: GameDto): number {
+  estimateIncomeIncrease(accountAmount: number, mockGameDto: GameDTO): number {
     return accountAmount * mockGameDto.incomeRate * ( 1 / 7 );
   }
 

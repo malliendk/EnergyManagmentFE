@@ -1,14 +1,18 @@
 import {Account} from "./account";
-import {LoadSource} from "./loadSource";
+import {Building} from "./building";
 import {EventDto} from "./eventDto";
 
-export interface GameDto {
+export interface GameDTO {
 
   localityName: string;
   supervisorName: string;
   startingSourcesAmount: number;
   funds: number;
   popularity: number;
+  research: number;
+  environmentalScore: number;
+  energyProduction: number;
+  energyConsumption: number;
   gridCapacity: number;
   gridLoadTotal: number;
   energy: number;
@@ -18,7 +22,7 @@ export interface GameDto {
   income: number;
   taxRate: number;
   popRate: number;
-  sources: LoadSource[];
+  buildings: Building[];
   accounts: Account[];
   events: EventDto[];
 }

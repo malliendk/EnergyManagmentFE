@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {GameDtoService} from "./services/game-dto.service";
-import {GameDto} from "./dtos/gameDto";
+import {GameDTO} from "./dtos/gameDTO";
 import {mockGameDto} from "./mocks/mock-game-dto";
 
 @Component({

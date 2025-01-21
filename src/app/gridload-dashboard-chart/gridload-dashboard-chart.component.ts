@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameDto} from "../dtos/gameDto";
-import {LoadSource} from "../dtos/loadSource";
+import {GameDTO} from "../dtos/gameDTO";
+import {Building} from "../dtos/building";
 import {Color, LegendPosition, ScaleType} from '@swimlane/ngx-charts';
 import {mockGameDto} from "../mocks/mock-game-dto";
 
@@ -12,7 +12,7 @@ import {mockGameDto} from "../mocks/mock-game-dto";
 export class GridloadDashboardChartComponent implements OnInit {
 
 
-  @Input() mockGameDto!: GameDto;
+  @Input() mockGameDto!: GameDTO;
 
   chartResults: any[] = [];
   nameGridLoadArray: any[] = [];
@@ -26,7 +26,7 @@ export class GridloadDashboardChartComponent implements OnInit {
   isInitialized: boolean = false;
 
   ngOnInit() {
-    this.mockGameDto.sources.forEach(source => {
+    this.mockGameDto.buildings.forEach(source => {
       this.setChartSeries(source);
       this.setCustomColors(source)
     });
@@ -34,7 +34,7 @@ export class GridloadDashboardChartComponent implements OnInit {
     this.isInitialized = true;
   }
 
-  setCustomColors(source: LoadSource): void {
+  setCustomColors(source: Building): void {
     const nameColorPair: {name: string; value: string} = {
       name: source.name,
       value: source.color
@@ -51,7 +51,7 @@ export class GridloadDashboardChartComponent implements OnInit {
     ]
   }
 
-  setChartSeries(source: LoadSource): void {
+  setChartSeries(source: Building): void {
     const nameGridloadPair: {name:string, value: number} = {
       name: source.name,
       value: source.gridLoad

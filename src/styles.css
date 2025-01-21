@@ -18,35 +18,57 @@ pre {
   border-radius: 10px;
 }
 
-
-.li {
-  float: left;
-
-}
-
-.ri {
-  float: right;
-}
-
 .funds {
   font-weight: bold;
+  font-family: sans-serif;
   color: #dfc700;
-  background-color: rgba(255, 251, 241, 0.67);
+  background-color: white;
   border-radius: 10px;
 }
 
 .popularity {
   font-weight: bold;
-  font-style: oblique;
   font-family: sans-serif;
   color: #b902d3;
   border-radius: 10px;
   background-color: #fbf0e2;
 }
 
+.research {
+  font-weight: bold;
+  font-family: sans-serif;
+  color: #00cbfb;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.environmental-score {
+  font-weight: bold;
+  font-family: sans-serif;
+  color: #209f01;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.energy-production {
+  font-weight: bold;
+  font-family: sans-serif;
+  color: #FFA500;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.energy-consumption {
+  font-weight: bold;
+  font-family: sans-serif;
+  color: #c56c00;
+  background-color: white;
+  border-radius: 10px;
+}
+
 .grid-load {
   font-weight: bold;
-  font-size: large;
+  font-family: sans-serif;
   color: #ae0000;
   background-color: #fbf0e2;
   border-radius: 10px;
@@ -54,21 +76,45 @@ pre {
 
 @media screen and (max-width: 1500px) {
   .funds {
-    padding: 1%;
+    padding: 3px;
     font-size: 80%;
     border: 3px ridge #dfc700;
   }
 
   .popularity {
-    padding: 1%;
+    padding: 3px;
     font-size: 80%;
     border: 3px ridge #b902d3;
+  }
+
+  .environmental-score {
+    padding: 3px;
+    font-size: 80%;
+    border: 3px ridge #209f01;
+  }
+
+  .research {
+    padding: 3px;
+    font-size: 80%;
+    border: 3px ridge #00cbfb;
   }
 
   .grid-load {
     padding: 1%;
     font-size: 80%;
     border: 3px ridge #ae0000;
+  }
+
+  .energy-production {
+    padding: 3px;
+    font-size: 80%;
+    border: 3px ridge #FFA500;
+  }
+
+  .energy-consumption {
+    padding: 3px;
+    font-size: 80%;
+    border: 3px ridge #c56c00;
   }
 }
 
@@ -92,11 +138,7 @@ pre {
   }
 }
 
-.environmental-score {
-  font-weight: bold;
-  font-size: large;
-  color: #209f01 !important;
-}
+
 
 .row {
   margin: 0;
@@ -135,4 +177,6 @@ pre {
   margin-left: 5%;
   margin-right: 5%;
 }
+
+
 

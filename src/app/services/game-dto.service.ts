@@ -1,7 +1,7 @@
 import {Injectable, OnInit} from '@angular/core';
-import {BehaviorSubject, tap} from "rxjs";
+import {BehaviorSubject, Observable, tap} from "rxjs";
 import {InitiateGameDto} from "../dtos/initiateGameDto";
-import {GameDto} from "../dtos/gameDto";
+import {GameDTO} from "../dtos/gameDTO";
 import {WebsocketService} from "./websocketService";
 import {HttpClient} from "@angular/common/http";
 import {mockGameDto} from "../mocks/mock-game-dto";
@@ -11,12 +11,14 @@ import {mockGameDto} from "../mocks/mock-game-dto";
 })
 export class GameDtoService {
 
-  baseUrl = 'http://localhost:8081';
+  updateServiceUrl = 'http://localhost:8080';
+  private calculationServiceUrl: string = 'http://localhost:8093';
+
   wsUrl = 'ws://PLACEHOLDER-URL'; //TODO: replace url with real url
 
   private mockGameDto = mockGameDto;
 
-  private gameDtoSource = new BehaviorSubject<GameDto | null>(null);
+  private gameDtoSource = new BehaviorSubject<GameDTO | null>(null);
   currentGameDto = this.gameDtoSource.asObservable();
 
 
@@ -28,21 +30,27 @@ export class GameDtoService {
   }
 
   calculateTotalGridLoad(): number {
-    const loadSources = mockGameDto.sources;
+    const loadSources = mockGameDto.buildings;
     return loadSources.reduce((totalLoad, source) => totalLoad + source.gridLoad, 0);
   }
 
   startGame(initDto: InitiateGameDto) {
-    return this.http.post<GameDto>(this.baseUrl, { initDto }).pipe(
-      tap(gameDto => this.gameDtoSource.next(gameDto))
+    return this.http.post<GameDTO>(this.updateServiceUrl, { initDto }).pipe(
+      tap(gameDTO => this.gameDtoSource.next(gameDTO))
     );
   }
 
-  updateGameDto(gameDto: GameDto) {
-    this.gameDtoSource.next(gameDto);
+  getGameDto(): Observable<GameDTO> {
+    return this.http.get<GameDTO>(this.calculationServiceUrl);
   }
 
-  getGameDto() {
-    return this.currentGameDto
+  updateGameDTO(gameDto: GameDTO): Observable<GameDTO> {
+    return this.http.put<GameDTO>(this.updateServiceUrl, { gameDto: gameDto });
   }
+
+
+
+  // updateGameDto(gameDto: GameDto) {
+  //   return this.gameDtoSource.next(gameDto);
+  // }
 }

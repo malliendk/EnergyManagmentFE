@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {mockGameDto} from "../../mocks/mock-game-dto";
-import {GameDto} from "../../dtos/gameDto";
+import {GameDTO} from "../../dtos/gameDTO";
 import {StatsCalculationService} from "../../services/stats-calculation.service";
 import {AccountService} from "../../services/account.service";
 import {Account} from "../../dtos/account";
@@ -13,7 +13,7 @@ import {SupplyTypes} from "../../supplyType";
 })
 export class TaxesComponent implements OnInit {
 
-  mockGameDto: GameDto = mockGameDto;
+  mockGameDto: GameDTO = mockGameDto;
   deviationAccounts: Account[] = [];
   deviationTotal: number = 0;
   taxAmount: number = 0;

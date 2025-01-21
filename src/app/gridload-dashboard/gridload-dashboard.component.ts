@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameDto} from "../dtos/gameDto";
+import {GameDTO} from "../dtos/gameDTO";
 import {GameDtoService} from "../services/game-dto.service";
 
 @Component({
@@ -9,7 +9,7 @@ import {GameDtoService} from "../services/game-dto.service";
 })
 export class GridloadDashboardComponent implements OnInit {
 
-  @Input() mockGameDto!: GameDto;
+  @Input() mockGameDto!: GameDTO;
   singleDashboardView: string = 'table';
 
   isCollapsed: boolean = false;
@@ -22,11 +22,19 @@ export class GridloadDashboardComponent implements OnInit {
 
   btnToggleView: any = 'btn-toggle-view';
 
+  dayWeatherClass = 'moderate'
+
 
   constructor(private gameDtoService: GameDtoService) {
   }
 
   ngOnInit(): void {
+  }
+
+  transition() {
+    console.log(this.dayWeatherClass)
+    this.dayWeatherClass = this.dayWeatherClass.replace('moderate', 'overcast')
+    console.log(this.dayWeatherClass)
   }
 
   toggleSingleView() {

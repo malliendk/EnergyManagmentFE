@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {GameDto} from "../../dtos/gameDto";
+import {GameDTO} from "../../dtos/gameDTO";
 import {mockGameDto} from "../../mocks/mock-game-dto";
 import {StatsCalculationService} from "../../services/stats-calculation.service";
 import {Account} from "../../dtos/account";
@@ -13,7 +13,7 @@ import {SupplyTypes} from "../../supplyType";
 })
 export class IncomeComponent implements OnInit {
 
-  mockGameDto: GameDto = mockGameDto;
+  mockGameDto: GameDTO = mockGameDto;
   optimalAccounts: Account[] = [];
 
   isSideBarGradient: boolean = false;

@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CampaignObject} from "../../CampaignObject";
 import {mockCampagins} from "../../mocks/mock-campagins";
 import {mockGameDto} from "../../mocks/mock-game-dto";
-import {GameDto} from "../../dtos/gameDto";
+import {GameDTO} from "../../dtos/gameDTO";
 
 @Component({
   selector: 'app-campaigns-card',
@@ -11,7 +11,7 @@ import {GameDto} from "../../dtos/gameDto";
 })
 export class CampaignsCardComponent implements OnInit{
 
-  mockGameDto: GameDto = mockGameDto;
+  mockGameDto: GameDTO = mockGameDto;
 
   campaigns: CampaignObject[] = mockCampagins;
   flyeren: CampaignObject = this.campaigns[0];
@@ -29,7 +29,7 @@ export class CampaignsCardComponent implements OnInit{
 
   }
 
-  launchCampaign(campaign: CampaignObject, gameDto: GameDto) {
+  launchCampaign(campaign: CampaignObject, gameDto: GameDTO) {
     gameDto.funds -= campaign.fundsCost;
     gameDto.popularity += campaign.popGain
   }

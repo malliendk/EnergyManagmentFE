@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameDto} from "../dtos/gameDto";
-import {LoadSource} from "../dtos/loadSource";
+import {GameDTO} from "../dtos/gameDTO";
+import {Building} from "../dtos/building";
 import {mockGameDto} from "../mocks/mock-game-dto";
 import {ChartBarHorizontalComponent} from "../chart-bar-horizontal/chart-bar-horizontal.component";
 
@@ -12,9 +12,9 @@ import {ChartBarHorizontalComponent} from "../chart-bar-horizontal/chart-bar-hor
 })
 export class FactoryDashboardComponent implements OnInit{
 
-  mockGameDto!: GameDto
-  coalPlant!: LoadSource;
-  gasPlant!: LoadSource;
+  mockGameDto!: GameDTO
+  coalPlant!: Building;
+  gasPlant!: Building;
   sliderMinValue: number = 0.0;
   sliderMaxValue: number = 6.0;
   sliderStepValue: number = 0.1;
@@ -64,21 +64,21 @@ export class FactoryDashboardComponent implements OnInit{
   }
 
   selectPowerPlant(sourceName: string) {
-    return <LoadSource>this.mockGameDto.sources.find(source => source.name === sourceName);
+    return <Building>this.mockGameDto.buildings.find(source => source.name === sourceName);
   }
 
-  calculateNewValues(powerPlant: LoadSource, startingValue: number, powerPlantGridLoad: HTMLInputElement) {
+  calculateNewValues(powerPlant: Building, startingValue: number, powerPlantGridLoad: HTMLInputElement) {
     this.calculateNewTotalGridLoad();
     this.calculateNewFunds(powerPlant, startingValue, powerPlantGridLoad);
   }
 
   calculateNewTotalGridLoad(): void {
-    this.mockGameDto.gridLoadTotal = mockGameDto.sources.reduce(
-      (totalLoad: number, source: LoadSource) => totalLoad + source.gridLoad, 0)
+    this.mockGameDto.gridLoadTotal = mockGameDto.buildings.reduce(
+      (totalLoad: number, source: Building) => totalLoad + source.gridLoad, 0)
     this.gridLoadChartResults = [this.mockGameDto.gridLoadTotal];
   }
 
-  calculateNewFunds(powerPlant: LoadSource, startingValue: number, powerPlantGridLoad: HTMLInputElement): void {
+  calculateNewFunds(powerPlant: Building, startingValue: number, powerPlantGridLoad: HTMLInputElement): void {
     const gridLoadDifference: number = startingValue - powerPlantGridLoad.valueAsNumber;
     this.mockGameDto.funds = this.mockGameDto.funds - (gridLoadDifference * 1000);
     if (powerPlant === this.coalPlant) {

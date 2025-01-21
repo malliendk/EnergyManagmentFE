@@ -1,17 +1,23 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameDto} from "../dtos/gameDto";
+import {GameDTO} from "../dtos/gameDTO";
 import {mockGameDto} from "../mocks/mock-game-dto";
-import {LoadSource} from "../dtos/loadSource";
+import {Building} from "../dtos/building";
 import {GameDtoService} from "../services/game-dto.service";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-loadsource-dashboard',
   templateUrl: './loadsource-dashboard.component.html',
   styleUrls: ['./loadsource-dashboard.component.css']
 })
-export class LoadsourceDashboardComponent implements OnInit{
+export class LoadsourceDashboardComponent implements OnInit {
 
-  mockGameDto!: GameDto
+  mockGameDto!: GameDTO
+  building: Building | null = null;
+
+  isSmallView: boolean = false;
+  isShowPurchaseButton: boolean = false;
+
   gridLoadTotalColor: string = '#ae0000'
   gridLoadTotalName: string = 'Total'
   gridLoadTotalValue: number = 0;
@@ -41,10 +47,16 @@ export class LoadsourceDashboardComponent implements OnInit{
   isInitialized: boolean = false;
 
 
-  constructor(private gameDtoService: GameDtoService) {
+  constructor(private gameDTOService: GameDtoService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.isSmallView = true;
+    const id: number | null = Number(this.route.snapshot.params['id']);
+    if (!id) {
+      this.isShowPurchaseButton = true;
+    }
     this.mockGameDto = mockGameDto;
     this.gridLoadTotalValue = this.mockGameDto.gridLoadTotal;
     console.log(this.gridLoadTotalValue)
@@ -57,16 +69,40 @@ export class LoadsourceDashboardComponent implements OnInit{
     this.isInitialized = true;
   }
 
+
+  toggleCardDetailView(id: number) {
+    this.isSmallView = false;
+    this.building = this.mockGameDto.buildings.find((building => building.id === id)) as Building | null;
+    console.log(this.building)
+  }
+
+  cancelDetailView() {
+    this.building = null;
+    this.isSmallView = true
+  }
+
+  purchaseBuilding() {
+    this.gameDTOService.updateGameDTO(this.mockGameDto)
+      .subscribe(() => {
+        this.getGameDTO()
+      })
+  }
+
+  getGameDTO() {
+    this.gameDTOService.getGameDto()
+      .subscribe(updatedGameDTO => this.mockGameDto = updatedGameDTO);
+  }
+
   setPieChartColors(): void {
-    this.pieChartColorValues = this.mockGameDto.sources.map((source: LoadSource) => source.color);
+    this.pieChartColorValues = this.mockGameDto.buildings.map((source: Building) => source.color);
   }
 
   setPieChartResults(): void {
-    this.pieChartResultValues = this.mockGameDto.sources.map((source: LoadSource) => source.gridLoad);
+    this.pieChartResultValues = this.mockGameDto.buildings.map((source: Building) => source.gridLoad);
   }
 
   setPieChartVariableNames(): void {
-    this.pieChartVariableNames = this.mockGameDto.sources.map((source: LoadSource) => source.name);
+    this.pieChartVariableNames = this.mockGameDto.buildings.map((source: Building) => source.name);
   }
 
   setBarChartVariableName(): void {
@@ -79,5 +115,9 @@ export class LoadsourceDashboardComponent implements OnInit{
 
   setBarChartResults(): void {
     this.barChartResultValue.push(this.gridLoadTotalValue);
+  }
+
+  getBorderColor(propertyValue: number): string {
+    return propertyValue > 0 ? '#e6b904' : 'black';
   }
 }
