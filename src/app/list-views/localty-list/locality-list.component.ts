@@ -4,9 +4,10 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Locality} from "../../dtos/locality";
 
 @Component({
-  selector: 'app-localty-list',
-  templateUrl: './locality-list.component.html',
-  styleUrls: ['./locality-list.component.css']
+    selector: 'app-localty-list',
+    templateUrl: './locality-list.component.html',
+    styleUrls: ['./locality-list.component.css'],
+    standalone: false
 })
 export class LocalityListComponent implements OnInit{
 

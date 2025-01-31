@@ -2,9 +2,10 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {ChartService} from "../services/chart.service";
 
 @Component({
-  selector: 'app-chart-bar-horizontal',
-  templateUrl: './chart-bar-horizontal.component.html',
-  styleUrls: ['./chart-bar-horizontal.component.css']
+    selector: 'app-chart-bar-horizontal',
+    templateUrl: './chart-bar-horizontal.component.html',
+    styleUrls: ['./chart-bar-horizontal.component.css'],
+    standalone: false
 })
 export class ChartBarHorizontalComponent implements OnInit, OnChanges{
 

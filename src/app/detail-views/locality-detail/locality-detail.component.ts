@@ -4,9 +4,10 @@ import {ActivatedRoute} from "@angular/router";
 import {Locality} from "../../dtos/locality";
 
 @Component({
-  selector: 'app-locality-detail',
-  templateUrl: './locality-detail.component.html',
-  styleUrls: ['./locality-detail.component.css']
+    selector: 'app-locality-detail',
+    templateUrl: './locality-detail.component.html',
+    styleUrls: ['./locality-detail.component.css'],
+    standalone: false
 })
 export class LocalityDetailComponent implements OnInit {
 

@@ -4,9 +4,10 @@ import {Distributor} from "../../dtos/distributor";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
-  selector: 'app-distributor-view',
-  templateUrl: './distributor-list.component.html',
-  styleUrls: ['./distributor-list.component.css']
+    selector: 'app-distributor-view',
+    templateUrl: './distributor-list.component.html',
+    styleUrls: ['./distributor-list.component.css'],
+    standalone: false
 })
 export class DistributorListComponent implements OnInit{
 

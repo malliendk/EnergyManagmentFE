@@ -6,9 +6,10 @@ import {ChartBarHorizontalComponent} from "../chart-bar-horizontal/chart-bar-hor
 
 
 @Component({
-  selector: 'app-factory-dashboard',
-  templateUrl: './factory-dashboard.component.html',
-  styleUrls: ['./factory-dashboard.component.css']
+    selector: 'app-factory-dashboard',
+    templateUrl: './factory-dashboard.component.html',
+    styleUrls: ['./factory-dashboard.component.css'],
+    standalone: false
 })
 export class FactoryDashboardComponent implements OnInit{
 

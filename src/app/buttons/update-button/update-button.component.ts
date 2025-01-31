@@ -2,9 +2,10 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 
 @Component({
-  selector: 'app-update-button',
-  templateUrl: './update-button.component.html',
-  styleUrls: ['./update-button.component.css']
+    selector: 'app-update-button',
+    templateUrl: './update-button.component.html',
+    styleUrls: ['./update-button.component.css'],
+    standalone: false
 })
 export class UpdateButtonComponent {
 

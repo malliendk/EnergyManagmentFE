@@ -8,9 +8,10 @@ import {mockBuildings} from "../mocks/mock-buildings";
 import {BuildingService} from "../services/building.service";
 
 @Component({
-  selector: 'app-building-dashboard',
-  templateUrl: './building-dashboard.component.html',
-  styleUrls: ['./building-dashboard.component.css']
+    selector: 'app-building-dashboard',
+    templateUrl: './building-dashboard.component.html',
+    styleUrls: ['./building-dashboard.component.css'],
+    standalone: false
 })
 export class BuildingDashboardComponent implements OnInit {
 

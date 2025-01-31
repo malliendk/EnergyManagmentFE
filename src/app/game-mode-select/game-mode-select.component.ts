@@ -8,9 +8,10 @@ import {ClockService} from "../services/clock.service";
 
 
 @Component({
-  selector: 'app-game-mode-select',
-  templateUrl: './game-mode-select.component.html',
-  styleUrls: ['./game-mode-select.component.css']
+    selector: 'app-game-mode-select',
+    templateUrl: './game-mode-select.component.html',
+    styleUrls: ['./game-mode-select.component.css'],
+    standalone: false
 })
 export class GameModeSelectComponent implements OnInit {
 

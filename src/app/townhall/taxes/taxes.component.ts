@@ -7,9 +7,10 @@ import {Account} from "../../dtos/account";
 import {SupplyTypes} from "../../supplyType";
 
 @Component({
-  selector: 'app-taxes',
-  templateUrl: './taxes.component.html',
-  styleUrls: ['./taxes.component.css']
+    selector: 'app-taxes',
+    templateUrl: './taxes.component.html',
+    styleUrls: ['./taxes.component.css'],
+    standalone: false
 })
 export class TaxesComponent implements OnInit {
 

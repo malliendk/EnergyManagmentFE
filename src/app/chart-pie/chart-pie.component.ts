@@ -1,9 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-chart-pie',
-  templateUrl: './chart-pie.component.html',
-  styleUrls: ['./chart-pie.component.css']
+    selector: 'app-chart-pie',
+    templateUrl: './chart-pie.component.html',
+    styleUrls: ['./chart-pie.component.css'],
+    standalone: false
 })
 export class ChartPieComponent implements OnInit {
 

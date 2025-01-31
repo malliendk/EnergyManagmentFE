@@ -3,9 +3,10 @@ import {ActivatedRoute} from "@angular/router";
 import {Supervisor} from "../dtos/supervisor";
 
 @Component({
-  selector: 'app-supervisor',
-  templateUrl: './supervisor.component.html',
-  styleUrls: ['./supervisor.component.css']
+    selector: 'app-supervisor',
+    templateUrl: './supervisor.component.html',
+    styleUrls: ['./supervisor.component.css'],
+    standalone: false
 })
 export class SupervisorComponent implements OnInit {
 

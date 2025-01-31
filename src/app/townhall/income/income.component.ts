@@ -7,9 +7,10 @@ import {AccountService} from "../../services/account.service";
 import {SupplyTypes} from "../../supplyType";
 
 @Component({
-  selector: 'app-income',
-  templateUrl: './income.component.html',
-  styleUrls: ['./income.component.css']
+    selector: 'app-income',
+    templateUrl: './income.component.html',
+    styleUrls: ['./income.component.css'],
+    standalone: false
 })
 export class IncomeComponent implements OnInit {
 

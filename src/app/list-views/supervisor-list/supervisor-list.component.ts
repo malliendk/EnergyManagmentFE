@@ -4,9 +4,10 @@ import {SupervisorService} from "../../services/supervisor.service";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
-  selector: 'app-supervisor-list',
-  templateUrl: './supervisor-list.component.html',
-  styleUrls: ['./supervisor-list.component.css']
+    selector: 'app-supervisor-list',
+    templateUrl: './supervisor-list.component.html',
+    styleUrls: ['./supervisor-list.component.css'],
+    standalone: false
 })
 export class SupervisorListComponent implements OnInit {
 

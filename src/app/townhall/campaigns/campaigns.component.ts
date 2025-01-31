@@ -4,9 +4,10 @@ import {mockGameObject} from "../../mocks/mock-game-object";
 import {active} from "d3";
 
 @Component({
-  selector: 'app-campaigns',
-  templateUrl: './campaigns.component.html',
-  styleUrls: ['./campaigns.component.css']
+    selector: 'app-campaigns',
+    templateUrl: './campaigns.component.html',
+    styleUrls: ['./campaigns.component.css'],
+    standalone: false
 })
 export class CampaignsComponent {
 

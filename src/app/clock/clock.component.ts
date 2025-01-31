@@ -3,9 +3,10 @@ import {ClockService} from "../services/clock.service";
 import {Subscription} from "rxjs";
 
 @Component({
-  selector: 'app-clock',
-  templateUrl: './clock.component.html',
-  styleUrls: ['./clock.component.css']
+    selector: 'app-clock',
+    templateUrl: './clock.component.html',
+    styleUrls: ['./clock.component.css'],
+    standalone: false
 })
 export class ClockComponent implements OnInit, OnDestroy {
   time: string = '00:00';

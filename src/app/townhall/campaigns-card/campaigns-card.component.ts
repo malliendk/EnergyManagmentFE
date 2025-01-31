@@ -5,9 +5,10 @@ import {mockGameObject} from "../../mocks/mock-game-object";
 import {GameObject} from "../../dtos/gameObject";
 
 @Component({
-  selector: 'app-campaigns-card',
-  templateUrl: './campaigns-card.component.html',
-  styleUrls: ['./campaigns-card.component.css']
+    selector: 'app-campaigns-card',
+    templateUrl: './campaigns-card.component.html',
+    styleUrls: ['./campaigns-card.component.css'],
+    standalone: false
 })
 export class CampaignsCardComponent implements OnInit{
 

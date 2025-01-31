@@ -3,9 +3,10 @@ import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {ClockService} from "../services/clock.service";
 
 @Component({
-  selector: 'app-daytime-weather',
-  templateUrl: './daytime-weather.component.html',
-  styleUrls: ['./daytime-weather.component.css']
+    selector: 'app-daytime-weather',
+    templateUrl: './daytime-weather.component.html',
+    styleUrls: ['./daytime-weather.component.css'],
+    standalone: false
 })
 export class DaytimeWeatherComponent implements OnInit, OnDestroy{
   private timer: any;

@@ -4,9 +4,10 @@ import {mockGameObject} from "../../mocks/mock-game-object";
 import {StatsCalculationService} from "../../services/stats-calculation.service";
 
 @Component({
-  selector: 'app-solar-panels',
-  templateUrl: './solar-panels.component.html',
-  styleUrls: ['./solar-panels.component.css']
+    selector: 'app-solar-panels',
+    templateUrl: './solar-panels.component.html',
+    styleUrls: ['./solar-panels.component.css'],
+    standalone: false
 })
 export class SolarPanelsComponent implements OnInit{
 

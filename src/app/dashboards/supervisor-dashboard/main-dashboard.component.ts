@@ -10,9 +10,10 @@ import {AccountService} from "../../services/account.service";
 import {ToastrService} from "ngx-toastr";
 
 @Component({
-  selector: 'app-supervisor-dashboard',
-  templateUrl: './main-dashboard.component.html',
-  styleUrls: ['./main-dashboard.component.css']
+    selector: 'app-supervisor-dashboard',
+    templateUrl: './main-dashboard.component.html',
+    styleUrls: ['./main-dashboard.component.css'],
+    standalone: false
 })
 export class MainDashboardComponent implements OnInit {
 

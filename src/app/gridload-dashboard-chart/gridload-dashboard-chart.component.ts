@@ -5,9 +5,10 @@ import {Color, LegendPosition, ScaleType} from '@swimlane/ngx-charts';
 import {mockGameObject} from "../mocks/mock-game-object";
 
 @Component({
-  selector: 'app-gridload-dashboard-chart',
-  templateUrl: './gridload-dashboard-chart.component.html',
-  styleUrls: ['./gridload-dashboard-chart.component.css']
+    selector: 'app-gridload-dashboard-chart',
+    templateUrl: './gridload-dashboard-chart.component.html',
+    styleUrls: ['./gridload-dashboard-chart.component.css'],
+    standalone: false
 })
 export class GridloadDashboardChartComponent implements OnInit {
 

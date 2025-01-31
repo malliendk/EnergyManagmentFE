@@ -2,9 +2,10 @@ import {Component, Input, OnInit, SimpleChanges} from '@angular/core';
 import {ChartService} from "../services/chart.service";
 
 @Component({
-  selector: 'app-chart-bar-vertical',
-  templateUrl: './chart-bar-vertical.component.html',
-  styleUrls: ['./chart-bar-vertical.component.css']
+    selector: 'app-chart-bar-vertical',
+    templateUrl: './chart-bar-vertical.component.html',
+    styleUrls: ['./chart-bar-vertical.component.css'],
+    standalone: false
 })
 export class ChartBarVerticalComponent implements OnInit {
 

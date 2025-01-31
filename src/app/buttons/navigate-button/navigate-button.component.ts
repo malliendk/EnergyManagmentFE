@@ -2,9 +2,10 @@ import {Component, Input} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
-  selector: 'app-navigate-button',
-  templateUrl: './navigate-button.component.html',
-  styleUrls: ['./navigate-button.component.css']
+    selector: 'app-navigate-button',
+    templateUrl: './navigate-button.component.html',
+    styleUrls: ['./navigate-button.component.css'],
+    standalone: false
 })
 export class NavigateButtonComponent {
 

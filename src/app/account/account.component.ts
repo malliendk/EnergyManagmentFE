@@ -5,9 +5,10 @@ import {interval, Subscription, switchMap} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
-  selector: 'app-account',
-  templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css']
+    selector: 'app-account',
+    templateUrl: './account.component.html',
+    styleUrls: ['./account.component.css'],
+    standalone: false
 })
 export class AccountComponent implements OnInit, OnDestroy {
 

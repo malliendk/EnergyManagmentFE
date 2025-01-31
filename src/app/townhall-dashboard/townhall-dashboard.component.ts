@@ -8,9 +8,10 @@ import {Router} from "@angular/router";
 import {AccountService} from "../services/account.service";
 
 @Component({
-  selector: 'app-townhall-dashboard',
-  templateUrl: './townhall-dashboard.component.html',
-  styleUrls: ['./townhall-dashboard.component.css']
+    selector: 'app-townhall-dashboard',
+    templateUrl: './townhall-dashboard.component.html',
+    styleUrls: ['./townhall-dashboard.component.css'],
+    standalone: false
 })
 export class TownhallDashboardComponent implements OnInit {
 

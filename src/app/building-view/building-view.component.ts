@@ -4,9 +4,10 @@ import {mockBuildings} from "../mocks/mock-buildings";
 import {timeout} from "rxjs";
 
 @Component({
-  selector: 'app-building-view',
-  templateUrl: './building-view.component.html',
-  styleUrls: ['./building-view.component.css']
+    selector: 'app-building-view',
+    templateUrl: './building-view.component.html',
+    styleUrls: ['./building-view.component.css'],
+    standalone: false
 })
 export class BuildingViewComponent {
 

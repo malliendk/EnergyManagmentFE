@@ -1,9 +1,10 @@
 import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'app-townhall-card',
-  templateUrl: './townhall-card.component.html',
-  styleUrls: ['./townhall-card.component.css']
+    selector: 'app-townhall-card',
+    templateUrl: './townhall-card.component.html',
+    styleUrls: ['./townhall-card.component.css'],
+    standalone: false
 })
 export class TownhallCardComponent {
 

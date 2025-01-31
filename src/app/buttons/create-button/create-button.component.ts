@@ -2,9 +2,10 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 
 @Component({
-  selector: 'app-create-button',
-  templateUrl: './create-button.component.html',
-  styleUrls: ['./create-button.component.css']
+    selector: 'app-create-button',
+    templateUrl: './create-button.component.html',
+    styleUrls: ['./create-button.component.css'],
+    standalone: false
 })
 export class CreateButtonComponent {
 

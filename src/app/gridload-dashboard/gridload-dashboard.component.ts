@@ -3,9 +3,10 @@ import {GameObject} from "../dtos/gameObject";
 import {GameDtoService} from "../services/game-dto.service";
 
 @Component({
-  selector: 'app-gridload-dashboard',
-  templateUrl: './gridload-dashboard.component.html',
-  styleUrls: ['./gridload-dashboard.component.css']
+    selector: 'app-gridload-dashboard',
+    templateUrl: './gridload-dashboard.component.html',
+    styleUrls: ['./gridload-dashboard.component.css'],
+    standalone: false
 })
 export class GridloadDashboardComponent implements OnInit {
 

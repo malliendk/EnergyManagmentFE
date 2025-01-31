@@ -4,9 +4,10 @@ import {CampaignObject} from "../../CampaignObject";
 import {GameObject} from "../../dtos/gameObject";
 
 @Component({
-  selector: 'app-campaign-type-card',
-  templateUrl: './campaign-type-card.component.html',
-  styleUrls: ['./campaign-type-card.component.css']
+    selector: 'app-campaign-type-card',
+    templateUrl: './campaign-type-card.component.html',
+    styleUrls: ['./campaign-type-card.component.css'],
+    standalone: false
 })
 export class CampaignTypeCardComponent {
 
