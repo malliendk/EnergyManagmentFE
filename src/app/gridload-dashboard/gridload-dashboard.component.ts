@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameDTO} from "../dtos/gameDTO";
+import {GameObject} from "../dtos/gameObject";
 import {GameDtoService} from "../services/game-dto.service";
 
 @Component({
@@ -9,7 +9,7 @@ import {GameDtoService} from "../services/game-dto.service";
 })
 export class GridloadDashboardComponent implements OnInit {
 
-  @Input() mockGameDto!: GameDTO;
+  mockGameDto!: GameObject;
   singleDashboardView: string = 'table';
 
   isCollapsed: boolean = false;
@@ -29,6 +29,7 @@ export class GridloadDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.gameDtoService.getMockGameObject();
   }
 
   transition() {

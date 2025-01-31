@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameDTO} from "../dtos/gameDTO";
+import {GameObject} from "../dtos/gameObject";
 import {ChartService} from "../services/chart.service";
-import {mockGameDto} from "../mocks/mock-game-dto";
+import {mockGameObject} from "../mocks/mock-game-object";
 import {SupplyTypes} from "../supplyType";
 import {Account} from "../dtos/account";
 import {Router} from "@angular/router";
@@ -14,7 +14,7 @@ import {AccountService} from "../services/account.service";
 })
 export class TownhallDashboardComponent implements OnInit {
 
-  mockGameDto!: GameDTO;
+  mockGameDto!: GameObject;
 
   optimalAccountsNumber: number = 0;
   surplusAccounts: Account[] = [];
@@ -33,8 +33,8 @@ export class TownhallDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mockGameDto = mockGameDto;
-    this.getAccountNumberByType();
+    this.mockGameDto = mockGameObject;
+    // this.getAccountNumberByType();
     this.customColors = this.setCustomColors();
     this.chartResults = this.setChartResults();
   }
@@ -55,11 +55,11 @@ export class TownhallDashboardComponent implements OnInit {
     ]
   }
 
-  getAccountNumberByType() {
-    this.optimalAccountsNumber = this.accountService.filterAccountByType(mockGameDto, SupplyTypes.OPTIMAL.name).length -200;
-    this.surplusAccounts = this.accountService.filterAccountByType(mockGameDto, SupplyTypes.SURPLUS.name);
-    this.shortageAccounts = this.accountService.filterAccountByType(mockGameDto, SupplyTypes.SHORTAGE.name);
-  }
+  // getAccountNumberByType() {
+  //   this.optimalAccountsNumber = this.accountService.filterAccountByType(mockGameObject, SupplyTypes.OPTIMAL.name).length -200;
+  //   this.surplusAccounts = this.accountService.filterAccountByType(mockGameObject, SupplyTypes.SURPLUS.name);
+  //   this.shortageAccounts = this.accountService.filterAccountByType(mockGameObject, SupplyTypes.SHORTAGE.name);
+  // }
 
 
   toIncome() {

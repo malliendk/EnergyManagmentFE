@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameDTO} from "../dtos/gameDTO";
+import {GameObject} from "../dtos/gameObject";
 import {Building} from "../dtos/building";
 import {Color, LegendPosition, ScaleType} from '@swimlane/ngx-charts';
-import {mockGameDto} from "../mocks/mock-game-dto";
+import {mockGameObject} from "../mocks/mock-game-object";
 
 @Component({
   selector: 'app-gridload-dashboard-chart',
@@ -12,7 +12,7 @@ import {mockGameDto} from "../mocks/mock-game-dto";
 export class GridloadDashboardChartComponent implements OnInit {
 
 
-  @Input() mockGameDto!: GameDTO;
+  @Input() mockGameDto!: GameObject;
 
   chartResults: any[] = [];
   nameGridLoadArray: any[] = [];
@@ -23,7 +23,35 @@ export class GridloadDashboardChartComponent implements OnInit {
   yAxis: boolean = true
   legendPosition: LegendPosition = LegendPosition.Right;
   yAxisMaxValue: number = 15;
+
+  gridLoadTotalColor: string = '#ae0000'
+  gridLoadTotalName: string = 'Total'
+  gridLoadTotalValue: number = 0;
+
+  //pie-chart properties start
+  showLabels: boolean = true;
+  pieChartVariableNames: string[] = [];
+  pieChartColorValues: string[] = [];
+  pieChartResultValues: number[] = [];
+  trimLabels: boolean = false;
+  //pie-chart properties end
+
+  //bar-chart-properties-start
+  animations: boolean = true;
+  showXAxis: boolean = true;
+  showYAxis: boolean = true;
+  showXAxisLabel: boolean = true;
+  showYAxisLabel: boolean = true;
+  xAxisLabel = 'Grid load';
+  barchartVariableName: string[] = [];
+  barChartColorValue: string[] = [];
+  barChartResultValue: number[] = [];
+  yScaleMax: number = 15;
+  //bar-chart-properties-end
+
   isInitialized: boolean = false;
+
+
 
   ngOnInit() {
     this.mockGameDto.buildings.forEach(source => {
@@ -31,6 +59,12 @@ export class GridloadDashboardChartComponent implements OnInit {
       this.setCustomColors(source)
     });
     this.setChartResults();
+    this.setPieChartVariableNames();
+    this.setPieChartColors();
+    this.setPieChartResults();
+    this.setBarChartVariableName();
+    this.setBarChartColor();
+    this.setBarChartResults();
     this.isInitialized = true;
   }
 
@@ -65,5 +99,30 @@ export class GridloadDashboardChartComponent implements OnInit {
     group: ScaleType.Ordinal,
     domain: this.customColors.map(c => c.value)
   };
+
+
+  setPieChartColors(): void {
+    this.pieChartColorValues = this.mockGameDto.buildings.map((source: Building) => source.color);
+  }
+
+  setPieChartResults(): void {
+    this.pieChartResultValues = this.mockGameDto.buildings.map((source: Building) => source.gridLoad);
+  }
+
+  setPieChartVariableNames(): void {
+    this.pieChartVariableNames = this.mockGameDto.buildings.map((source: Building) => source.name);
+  }
+
+  setBarChartVariableName(): void {
+    this.barchartVariableName.push(this.gridLoadTotalName);
+  }
+
+  setBarChartColor(): void {
+    this.barChartColorValue.push(this.gridLoadTotalColor);
+  }
+
+  setBarChartResults(): void {
+    this.barChartResultValue.push(this.gridLoadTotalValue);
+  }
 
 }

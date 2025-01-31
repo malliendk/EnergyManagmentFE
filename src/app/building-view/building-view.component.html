@@ -1,0 +1,93 @@
+<div *ngIf="!isDetailView">
+  <div class="d-flex flex-wrap justify-content-center mt-1">
+    <div *ngFor="let building of buildings">
+      <div class="card card-small" (click)="toggleCardDetailView(building.id)">
+        <div class="card-img-top">
+          <img [src]="building.imageUri" alt="{{building.imageUri}} + ' image'"
+               class="card-img-top-small img-fluid" [ngStyle]="{'border-color': building.color}">
+        </div>
+        <div class="property-block-theme-small">{{ building.name }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isDetailView">
+  <div class="d-flex justify-content-center align-items-center">
+  <div class="card card-large" [ngStyle]="{'border-color': building!.color}">
+    <div class="card-column justify-content-end align-items-center">
+      <div class="d-flex justify-content-between">
+        <div class="property-block-title" [ngStyle]="{'border-color': building!.color}">
+          <div class="justify-content-start">{{ building!.name }}</div>
+        </div>
+      </div>
+      <div class="card-img-top img-radius">
+        <img [src]="building?.imageUri" alt="{{building?.imageUri}} + ' image'" class="img-fluid img-radius">
+      </div>
+      <div class="d-flex flex-column align-items-center h-35">
+        <h6 class="property-block-theme mb-2 mt-4">Category: {{ building!.category }}</h6>
+        <h6 class="property-block-theme mt-2 mb-3">Price: {{ building!.price }}</h6>
+      </div>
+    </div>
+    <div class="card-column flex-column">
+      <div class="d-flex justify-content-evenly">
+        <div class="property-column">
+          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.energyProduction)}">
+            <div>Energy Production</div>
+            <div>{{ building!.energyProduction }}</div>
+          </div>
+          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.energyConsumption)}">
+            <div>Energy Consumption</div>
+            <div>{{ building!.energyConsumption }}</div>
+          </div>
+          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.households)}">
+            <div>Households</div>
+            <div>{{ building!.households }}</div>
+          </div>
+          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.goldIncome)}">
+            <div>Gold income</div>
+            <div>+{{ building!.goldIncome }}</div>
+          </div>
+          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.researchIncome)}">
+            <div>Research income</div>
+            <div>+{{ building!.researchIncome }}</div>
+          </div>
+        </div>
+        <div class="property-column">
+          <button class="cancel" (click)="cancelDetailView()">X</button>
+          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.gridLoad)}">
+            <div>Grid Load</div>
+            <div>{{ building!.gridLoad }}</div>
+          </div>
+          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.gridCapacity)}">
+            <div>Grid Capacity</div>
+            <div>{{ building!.gridCapacity }}</div>
+          </div>
+          <div class="property-block"
+               [ngStyle]="{'border-color': getBorderColor(building!.solarPanelCapacity)}">
+            <div>Solar Panel Capacity</div>
+            <div>{{ building!.solarPanelCapacity }}</div>
+          </div>
+          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.popularityIncome)}">
+            <div>Popularity income</div>
+            <div>+{{ building!.popularityIncome }}</div>
+          </div>
+          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.environmentalIncome)}">
+            <div>Environmental income</div>
+            <div>+{{ building!.environmentalIncome }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex flex-column justify-content-center align-self-center mt-1">
+        <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.solarPanelAmount)}">
+          <div>Solar Panels</div>
+          <div>{{ building!.solarPanelAmount }}</div>
+        </div>
+        <div *ngIf="viewType === purchaseView" class="purchase-button">
+          <button class="btn btn-gold mb-2" (click)="purchaseBuilding(building!)">Purchase Building</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

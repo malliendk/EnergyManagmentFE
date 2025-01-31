@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Account} from "../dtos/account";
 import {SupplyTypes} from "../supplyType";
-import {GameDTO} from "../dtos/gameDTO";
+import {GameObject} from "../dtos/gameObject";
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,11 @@ export class AccountService {
   basePrefix = 'http://localhost:8080/api/v1/account';
 
   constructor(private http: HttpClient) { }
-
-  filterAccountByType(mockGameDto: GameDTO, accountType: string): Account[] {
-    return mockGameDto.accounts.filter(account =>
-      account.supplyType == accountType);
-  }
+  //
+  // filterAccountByType(mockGameObject: GameDTO, accountType: string): Account[] {
+  //   return mockGameObject.accounts.filter(account =>
+  //     account.supplyType == accountType);
+  // }
 
   generateAccountsFrontEnd(accountAmount: number, existingAccounts: Account[]) {
     for (let i = 0; i < accountAmount ; i++) {

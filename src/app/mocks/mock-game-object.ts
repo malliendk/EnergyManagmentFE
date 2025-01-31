@@ -1,12 +1,12 @@
-import {GameDTO} from "../dtos/gameDTO";
-import {mockSources} from "./mock-buildings";
+import {GameObject} from "../dtos/gameObject";
+import {mockBuildings} from "./mock-buildings";
 import {mockAccounts} from "./mock-accounts";
 import {mockEvents} from "./mock-events";
 
-export const mockGameDto: GameDTO = {
+export const mockGameObject: GameObject = {
+  id : 1,
   localityName : 'Zutphen',
   supervisorName : 'Amelia Lupina',
-  startingSourcesAmount : 2,
   funds : 10000,
   popularity : 5000,
   research: 1000,
@@ -15,14 +15,17 @@ export const mockGameDto: GameDTO = {
   energyConsumption: 750,
   gridCapacity: 100,
   gridLoadTotal : 0,
-  energy: 1000,
-  science: 200,
+  solarPanelAmount: 100,
+  solarPanelCapacity: 100,
+  goldIncome: 300,
+  scienceIncome: 200,
+  popularityIncome: 100,
+  environmentalIncome: 100,
   distributionEfficiency : 0.2,
   incomeRate : 0.2,
-  income: 0,
   taxRate: 1,
   popRate: 0.5,
-  buildings : mockSources,
+  buildings : mockBuildings,
   accounts: mockAccounts,
   events: mockEvents
 }

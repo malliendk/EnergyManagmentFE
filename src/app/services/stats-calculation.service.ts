@@ -1,8 +1,8 @@
 import {Injectable, OnInit} from '@angular/core';
 import {Account} from "../dtos/account";
 import {SupplyTypes} from "../supplyType";
-import {mockGameDto} from "../mocks/mock-game-dto";
-import {GameDTO} from "../dtos/gameDTO";
+import {mockGameObject} from "../mocks/mock-game-object";
+import {GameObject} from "../dtos/gameObject";
 import {AccountService} from "./account.service";
 
 @Injectable({
@@ -18,27 +18,27 @@ export class StatsCalculationService implements OnInit{
 
   //income
 
-  addIncome(mockGameDto: GameDTO): number {
-    return mockGameDto.income + mockGameDto.funds;
+  addIncome(mockGameDto: GameObject): number {
+    return mockGameDto.goldIncome + mockGameDto.funds;
   }
-
-  calculateIncome(mockGameDto: GameDTO): number {
-    const optimalAccountAmount: number = this.accountService.filterAccountByType(mockGameDto, SupplyTypes.OPTIMAL.name).length;
-    return optimalAccountAmount * mockGameDto.incomeRate;
-  }
+  //
+  // calculateIncome(mockGameObject: GameDTO): number {
+  //   // const optimalAccountAmount: number = this.accountService.filterAccountByType(mockGameObject, SupplyTypes.OPTIMAL.name).length;
+  //   // return optimalAccountAmount * mockGameObject.incomeRate;
+  // }
 
   //taxes
-  raiseTaxes(taxAmount: number, mockGameDto: GameDTO, accounts: Account[]) {
+  raiseTaxes(taxAmount: number, mockGameDto: GameObject, accounts: Account[]) {
     mockGameDto.funds += this.calculateTaxes(accounts!);
     mockGameDto.popularity -= this.calculatePopularityLoss(taxAmount, mockGameDto);
   }
 
   calculateTaxes(accounts: Account[]): number {
-    return this.calculateTaxableSupplyTotal(accounts) * mockGameDto.taxRate;
+    return this.calculateTaxableSupplyTotal(accounts) * mockGameObject.taxRate;
   }
 
 
-  calculateTaxAmount(accounts: Account[], mockGameDto: GameDTO): number {
+  calculateTaxAmount(accounts: Account[], mockGameDto: GameObject): number {
     return this.calculateTaxableSupplyTotal(accounts) * mockGameDto.taxRate;
   }
 
@@ -54,7 +54,7 @@ export class StatsCalculationService implements OnInit{
     return totalShortageSupplyAmount + totalSurplusSupplyAmount;
   }
 
-  calculatePopularityLoss(taxAmount: number, mockGameDto: GameDTO): number {
+  calculatePopularityLoss(taxAmount: number, mockGameDto: GameObject): number {
     return taxAmount * mockGameDto.popRate;
   }
 
@@ -63,7 +63,7 @@ export class StatsCalculationService implements OnInit{
     return accountAmount * accountCost;
   }
 
-  estimateIncomeIncrease(accountAmount: number, mockGameDto: GameDTO): number {
+  estimateIncomeIncrease(accountAmount: number, mockGameDto: GameObject): number {
     return accountAmount * mockGameDto.incomeRate * ( 1 / 7 );
   }
 

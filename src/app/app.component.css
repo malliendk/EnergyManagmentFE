@@ -4,10 +4,11 @@
 }
 
 .side-bar {
-  width: 1.0444%; /* equivalent to half of col-1 (1/24th of the total width) */
+  width: 1.0444%;
   background-color: gold;
   min-height: 100vh;
-  float: left; /* to ensure the div takes the specified width */
+  float: left;
 }
+
 
 

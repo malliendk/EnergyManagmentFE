@@ -1,6 +1,6 @@
-import {EventDto} from "../dtos/eventDto";
+import {EventDTO} from "../dtos/eventDTO";
 
 
-export const mockEvents: EventDto[] = [
+export const mockEvents: EventDTO[] = [
 
 ]

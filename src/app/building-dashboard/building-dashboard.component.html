@@ -1,0 +1,14 @@
+  <div *ngIf="recievingViewType === ownedBuildingsView">
+    <app-building-view
+      (passViewType)="getBuildingViewType($event)"
+      [viewType]="ownedBuildingsView"
+      [buildings]="mockGameDto.buildings"
+    ></app-building-view>
+  </div>
+  <div *ngIf="recievingViewType === purchaseView">
+    <app-building-view
+      [viewType]="purchaseView"
+      [buildings]="allBuildings"
+      (purchasedBuildingEmitter)="updateGameDTO($event)"
+    ></app-building-view>
+  </div>

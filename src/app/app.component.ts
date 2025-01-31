@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {GameDtoService} from "./services/game-dto.service";
-import {GameDTO} from "./dtos/gameDTO";
-import {mockGameDto} from "./mocks/mock-game-dto";
+import {GameObject} from "./dtos/gameObject";
+import {mockGameObject} from "./mocks/mock-game-object";
 
 @Component({
   selector: 'app-root',
@@ -11,12 +11,27 @@ import {mockGameDto} from "./mocks/mock-game-dto";
 export class AppComponent implements OnInit{
   title = 'Energy Management';
 
-  mockGameDto = mockGameDto;
+  mockGameDto = mockGameObject;
+
+  buildingViewComponentType: string = '';
+  passingViewType!: string;
+  viewTypeTownHall: string = 'town hall';
+  viewTypeFactory: string = 'factory';
+  viewTypeBuildings: string = 'buildings'
 
   constructor(private gameDtoService: GameDtoService) {
   }
 
   ngOnInit(): void {
-    mockGameDto.gridLoadTotal = this.gameDtoService.calculateTotalGridLoad()
+    mockGameObject.gridLoadTotal = this.gameDtoService.calculateTotalGridLoad()
+  }
+
+  getViewType(value: string) {
+    this.passingViewType = value;
+    console.log(`passing view types from navbar: ${this.passingViewType}`,` ${this.buildingViewComponentType}`)
+  }
+
+  getBuildingViewType(value: string) {
+   this.buildingViewComponentType = value;
   }
 }

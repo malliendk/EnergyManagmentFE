@@ -1,6 +1,8 @@
+import {Account} from "./account";
+import {Building} from "./building";
 import {EventDTO} from "./eventDTO";
 
-export interface GameDTO {
+export interface GameObject {
   id: number;
   localityName: string;
   supervisorName: string;
@@ -22,6 +24,7 @@ export interface GameDTO {
   incomeRate: number;
   taxRate: number;
   popRate: number;
-  buildingIds: number[];
+  buildings: Building[];
+  accounts: Account[];
   events: EventDTO[];
 }

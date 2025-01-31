@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {GameDTO} from "../../dtos/gameDTO";
-import {mockGameDto} from "../../mocks/mock-game-dto";
+import {GameObject} from "../../dtos/gameObject";
+import {mockGameObject} from "../../mocks/mock-game-object";
 import {StatsCalculationService} from "../../services/stats-calculation.service";
 import {Account} from "../../dtos/account";
 import {AccountService} from "../../services/account.service";
@@ -13,7 +13,7 @@ import {SupplyTypes} from "../../supplyType";
 })
 export class IncomeComponent implements OnInit {
 
-  mockGameDto: GameDTO = mockGameDto;
+  mockGameDto: GameObject = mockGameObject;
   optimalAccounts: Account[] = [];
 
   isSideBarGradient: boolean = false;
@@ -24,17 +24,17 @@ export class IncomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.optimalAccounts = this.setOptimalAccounts()
-    this.mockGameDto.income = this.calculateIncome();
+    // this.optimalAccounts = this.setOptimalAccounts()
+    // this.mockGameObject.goldIncome = this.calculateIncome();
   }
 
-  setOptimalAccounts(): Account[] {
-    return this.accountService.filterAccountByType(mockGameDto, SupplyTypes.OPTIMAL.name);
-  }
-
-  calculateIncome(): number {
-    return this.calculationService.calculateIncome(this.mockGameDto);
-  }
+  // setOptimalAccounts(): Account[] {
+  //   return this.accountService.filterAccountByType(mockGameObject, SupplyTypes.OPTIMAL.name);
+  // }
+  //
+  // calculateIncome(): number {
+  //   return this.calculationService.calculateIncome(this.mockGameObject);
+  // }
 
   addIncome(): number {
     return this.calculationService.addIncome(this.mockGameDto);
@@ -43,7 +43,7 @@ export class IncomeComponent implements OnInit {
   startAddingIncome(): void {
     setInterval(() => {
       console.log("income started, income: {}, new funds: {}",
-        this.mockGameDto.income, this.mockGameDto.funds);
+        this.mockGameDto.goldIncome, this.mockGameDto.funds);
       this.calculationService.addIncome(this.mockGameDto);
     }, 1000)
   }

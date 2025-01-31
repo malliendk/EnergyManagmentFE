@@ -11,8 +11,11 @@
       <button type="button" class="btn-toggle-view" (click)="toggleSingleView()" [disabled]="isDoubleExpanded">
         {{ singleDashboardView == 'table' ? '<' : '>' }}
       </button>
-      <div class="custom-container d-flex justify-content-around">
-        <div class="grid-load">{{ mockGameDto.gridLoadTotal }}/{{ mockGameDto.gridCapacity }} </div>
+      <div class="custom-container">
+        <div>{{ mockGameDto.solarPanelAmount }}/{{mockGameDto.solarPanelCapacity}}</div>
+        <div class="grid-load">{{mockGameDto.gridLoadTotal}}/{{mockGameDto.gridCapacity}}</div>
+        <div class="energy-production">{{mockGameDto.energyProduction}}</div>
+        <div class="energy-consumption">{{mockGameDto.energyConsumption}}</div>
       </div>
     </div>
   </div>

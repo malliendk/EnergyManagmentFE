@@ -31,7 +31,7 @@ import { GameInterfaceComponent } from './game-interface/game-interface.componen
 import { GridloadDashboardChartComponent } from './gridload-dashboard-chart/gridload-dashboard-chart.component';
 import { ClockComponent } from './clock/clock.component';
 import { TownhallDashboardComponent } from './townhall-dashboard/townhall-dashboard.component';
-import { LoadsourceDashboardComponent } from './loadsource-dashboard/loadsource-dashboard.component';
+import { BuildingDashboardComponent } from './building-dashboard/building-dashboard.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { FactoryDashboardComponent } from './factory-dashboard/factory-dashboard.component';
 import { SliderComponent } from './slider/slider.component';
@@ -47,6 +47,9 @@ import { SolarPanelsComponent } from './townhall/solar-panels/solar-panels.compo
 import { CampaignsComponent } from './townhall/campaigns/campaigns.component';
 import { CampaignsCardComponent } from './townhall/campaigns-card/campaigns-card.component';
 import { CampaignTypeCardComponent } from './townhall/campaign-type-card/campaign-type-card.component';
+import { BuildingViewComponent } from './building-view/building-view.component';
+import { DaytimeWeatherComponent } from './daytime-weather/daytime-weather.component';
+import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 
 
 
@@ -77,10 +80,10 @@ import { CampaignTypeCardComponent } from './townhall/campaign-type-card/campaig
     GridloadDashboardChartComponent,
     ClockComponent,
     TownhallDashboardComponent,
-    LoadsourceDashboardComponent,
+    BuildingDashboardComponent,
     SideBarComponent,
     FactoryDashboardComponent,
-    LoadsourceDashboardComponent,
+    BuildingDashboardComponent,
     SliderComponent,
     BorderBlockComponent,
     ChartBarHorizontalComponent,
@@ -94,6 +97,8 @@ import { CampaignTypeCardComponent } from './townhall/campaign-type-card/campaig
     CampaignsComponent,
     CampaignsCardComponent,
     CampaignTypeCardComponent,
+    BuildingViewComponent,
+    DaytimeWeatherComponent,
   ],
   imports: [
     BrowserModule,
@@ -103,7 +108,8 @@ import { CampaignTypeCardComponent } from './townhall/campaign-type-card/campaig
     ReactiveFormsModule,
     NgxChartsModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

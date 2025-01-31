@@ -1,6 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {GameDTO} from "../dtos/gameDTO";
-import {mockGameDto} from "../mocks/mock-game-dto";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {GameObject} from "../dtos/gameObject";
+import {mockGameObject} from "../mocks/mock-game-object";
+import {GameDtoService} from "../services/game-dto.service";
+import {BuildingService} from "../services/building.service";
 
 @Component({
   selector: 'app-navbar',
@@ -13,11 +15,22 @@ export class NavbarComponent implements OnInit{
   toMorning = 'morning';
   toAfternoon = 'afternoon';
 
+  @Input() mockGameDto!: GameObject
+  @Output() passViewType = new EventEmitter<string>();
+  @Output() passBuildingVieWType = new EventEmitter<string>();
 
-  @Input() mockGameDto!: GameDTO
+  showButtons: boolean = false;
+  viewType!: string;
+  viewTypeTownHall: string = 'town hall';
+  viewTypeFactory: string = 'factory';
+  viewTypeBuildings: string = 'buildings'
+  viewTypeBuildingPurchase: string = 'purchase';
+  viewTypeBuildingOverview: string = 'overview';
+
+  constructor(private buildingService: BuildingService) {}
 
   ngOnInit() {
-    this.mockGameDto = mockGameDto
+    this.mockGameDto = mockGameObject
   }
 
   transition() {
@@ -32,5 +45,18 @@ export class NavbarComponent implements OnInit{
       this.transitionClass = this.transitionClass.replace('night', 'morning');
     }
       console.log(this.transitionClass);
+  }
+
+  activateButtons() {
+    this.showButtons = !this.showButtons;
+  }
+
+  emitBuildingViewType(viewType: string, viewTypeBuilding: string) {
+    this.passViewType.emit(viewType);
+    this.passBuildingVieWType.emit(viewTypeBuilding)
+  }
+
+  emitViewType(viewType: string) {
+    this.passViewType.emit(viewType)
   }
 }

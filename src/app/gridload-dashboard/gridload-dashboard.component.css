@@ -1,42 +1,42 @@
 .dashboard {
   display: block;
   float: right;
-  margin-left: 1.5%;
+  margin-left: 1.5vw;
   min-height: 60vh;
   /*background-image: linear-gradient(45deg, white, lightblue, white, lightblue, white);*/
   box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.7);
 }
 
 .collapsed {
-  width: 1.1%;
+  width: 1.1vw;
 }
 
 .single-expanded {
-  width: 15%;
+  width: 15vw;
 }
 
 .double-expanded {
-  width: 25%;
+  width: 25vw;
 }
 
 
 @keyframes to-collapse {
-  to {width: 1.1%}
+  to {width: 1.1vw}
 }
 
 @keyframes collapse-to-single {
-  from {width: 1.1%;}
-  to {width: 15%;}
+  from {width: 1.1vw;}
+  to {width: 15vw;}
 }
 
 @keyframes collapsed-to-double {
-  from {width: 1.1%}
-  to {width: 25%;}
+  from {width: 1.1vw}
+  to {width: 25vw}
 }
 
 @keyframes single-to-double {
-  from {width: 15%;}
-  to {width: 25%;}
+  from {width: 15vw}
+  to {width: 25vw}
 }
 
 @keyframes double-to-single {
@@ -142,6 +142,9 @@
 
 .custom-container {
   padding: 10% 0 0 0 ;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .sunny {

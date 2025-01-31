@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {mockGameDto} from "../../mocks/mock-game-dto";
-import {GameDTO} from "../../dtos/gameDTO";
+import {mockGameObject} from "../../mocks/mock-game-object";
+import {GameObject} from "../../dtos/gameObject";
 import {StatsCalculationService} from "../../services/stats-calculation.service";
 import {AccountService} from "../../services/account.service";
 import {Account} from "../../dtos/account";
@@ -13,7 +13,7 @@ import {SupplyTypes} from "../../supplyType";
 })
 export class TaxesComponent implements OnInit {
 
-  mockGameDto: GameDTO = mockGameDto;
+  mockGameDto: GameObject = mockGameObject;
   deviationAccounts: Account[] = [];
   deviationTotal: number = 0;
   taxAmount: number = 0;
@@ -27,17 +27,17 @@ export class TaxesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.deviationAccounts = this.filterDeviateAccounts();
+    // this.deviationAccounts = this.filterDeviateAccounts();
     this.deviationTotal = this.calculateDeviationTotal();
     this.taxAmount = this.calculateTaxAmount();
     this.popularityLoss = this.calculatePopularityLoss();
   }
 
-  filterDeviateAccounts(): Account[] {
-    const shortageAccounts: Account[] = this.accountService.filterAccountByType(this.mockGameDto, SupplyTypes.SHORTAGE.name);
-    const surplusAccounts: Account[] = this.accountService.filterAccountByType(this.mockGameDto, SupplyTypes.SURPLUS.name);
-    return shortageAccounts.concat(surplusAccounts);
-  }
+  // filterDeviateAccounts(): Account[] {
+  //   const shortageAccounts: Account[] = this.accountService.filterAccountByType(this.mockGameObject, SupplyTypes.SHORTAGE.name);
+  //   const surplusAccounts: Account[] = this.accountService.filterAccountByType(this.mockGameObject, SupplyTypes.SURPLUS.name);
+  //   return shortageAccounts.concat(surplusAccounts);
+  // }
 
   calculateDeviationTotal(): number {
     return this.calculationService.calculateTaxableSupplyTotal(this.deviationAccounts);

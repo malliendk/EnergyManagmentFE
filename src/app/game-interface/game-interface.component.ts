@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameDTO} from "../dtos/gameDTO";
-import {mockGameDto} from "../mocks/mock-game-dto";
+import {GameObject} from "../dtos/gameObject";
+import {mockGameObject} from "../mocks/mock-game-object";
 
 @Component({
   selector: 'app-game-interface',

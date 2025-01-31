@@ -1,4 +1,5 @@
 .nav-demo {
+  position: relative;
   display: flex;
   justify-content: space-between;
   overflow: hidden;
@@ -6,23 +7,17 @@
   box-shadow: 1px 1px 10px 1px;
 }
 
-.nav-demo-items {
-  padding: 1.5vh 2em;
-  color: white;
-  text-align: center;
-  text-decoration: none;
+.nav-demo-items:hover {
+  cursor: pointer;
 }
 
 .stats {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 33%;
+  width: 50%;
 }
 
-.nav-demo-items:hover {
-  cursor: pointer;
-}
 
 .morning {
   background-color: #FFB6C1;
@@ -82,4 +77,103 @@
   opacity: 1;
 }
 
+@media screen and (max-width: 1500px) {
+
+  .nav-demo-items {
+    padding: 1.5vh 1.5em;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .grid-load {
+    margin-right: 3em;
+  }
+
+  .w-30 {
+    width: 30%;
+  }
+
+  .w-35 {
+    width: 35%;
+  }
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  height: 2em;
+  color: black;
+  border-radius: 15px;
+  border: 3px groove;
+  font-size: smaller;
+}
+
+.btn-secondary {
+  background-color: ghostwhite;
+  border-color: #cccccc;
+}
+
+.btn-gold {
+  margin-left: 5px;
+  background-color: gold;
+  border-color: gold;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 1000;
+}
+
+.dropdown-menu {
+  z-index: 1000;
+}
+
+.custom-dropdown {
+  background-color: inherit;
+  border: solid 1px #209f01;
+  box-shadow: 1px 1px 10px 1px;
+}
+
+.dropdown-menu .nav-demo-items {
+  padding: 1.5vh 1.5em;
+  color: black;  /* Changed to black for better visibility in dropdown */
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+}
+
+.dropdown-menu .nav-demo-items:hover {
+  background-color: rgba(32, 159, 1, 0.1);  /* Light green tint on hover */
+}
+
+.button-group {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+/* Override Bootstrap's default dropdown styles */
+.dropdown-toggle::after {
+  margin-left: 8px;
+}
+
+.dropdown-toggle.nav-demo-items {
+  background-color: transparent;
+  border: none;
+  color: white;
+  padding: 1.5vh 1.5em;
+}
+
+.dropdown-toggle.nav-demo-items:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media screen and (max-width: 1500px) {
+  .dropdown-menu .nav-demo-items {
+    padding: 1.5vh 1.5em;
+  }
+}
 

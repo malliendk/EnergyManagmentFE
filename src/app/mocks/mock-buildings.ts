@@ -1,6 +1,6 @@
 import {Building} from "../dtos/building";
 
-export const mockSources: Building[] = [
+export const mockBuildings: Building[] = [
   {
     id: 1, name: "Kolencentrale",
     description: "Energiecentrale die elektriciteit opwekt met behulp van steenkool",
@@ -85,7 +85,7 @@ export const mockSources: Building[] = [
     environmentalIncome: 0
   },
   {
-    id: 7, name: 'Windpark op zee', description: 'string', gridLoad: 1.5,
+    id: 6, name: 'Windpark op zee', description: 'string', gridLoad: 1.5,
     price: 2000, color: "#0267ff", imageUri: 'assets/photos/windpark_op_zee.png',
     category: 'Energy Generation',
     energyProduction: 1000,
@@ -100,7 +100,7 @@ export const mockSources: Building[] = [
     environmentalIncome: 20
   },
   {
-    id: 8, name: 'Zonneweide', description: 'string', gridLoad: 0.5, price: 500,
+    id: 7, name: 'Zonneweide', description: 'string', gridLoad: 0.5, price: 500,
     color: "#008000", imageUri: 'assets/photos/solar_field.png',
     category: 'Energy Generation',
     energyProduction: 500,

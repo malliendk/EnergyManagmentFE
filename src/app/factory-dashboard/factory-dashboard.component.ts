@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameDTO} from "../dtos/gameDTO";
+import {GameObject} from "../dtos/gameObject";
 import {Building} from "../dtos/building";
-import {mockGameDto} from "../mocks/mock-game-dto";
+import {mockGameObject} from "../mocks/mock-game-object";
 import {ChartBarHorizontalComponent} from "../chart-bar-horizontal/chart-bar-horizontal.component";
 
 
@@ -12,7 +12,7 @@ import {ChartBarHorizontalComponent} from "../chart-bar-horizontal/chart-bar-hor
 })
 export class FactoryDashboardComponent implements OnInit{
 
-  mockGameDto!: GameDTO
+  mockGameDto!: GameObject
   coalPlant!: Building;
   gasPlant!: Building;
   sliderMinValue: number = 0.0;
@@ -53,7 +53,7 @@ export class FactoryDashboardComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.mockGameDto = mockGameDto
+    this.mockGameDto = mockGameObject
     this.fundsChartResults = [this.mockGameDto.funds]
     this.gridLoadChartResults = [this.mockGameDto.gridLoadTotal]
     this.coalPlant = this.selectPowerPlant('Kolencentrale');
@@ -73,7 +73,7 @@ export class FactoryDashboardComponent implements OnInit{
   }
 
   calculateNewTotalGridLoad(): void {
-    this.mockGameDto.gridLoadTotal = mockGameDto.buildings.reduce(
+    this.mockGameDto.gridLoadTotal = mockGameObject.buildings.reduce(
       (totalLoad: number, source: Building) => totalLoad + source.gridLoad, 0)
     this.gridLoadChartResults = [this.mockGameDto.gridLoadTotal];
   }

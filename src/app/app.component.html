@@ -1,4 +1,20 @@
-<app-navbar></app-navbar>
-<app-gridload-dashboard [mockGameDto]="mockGameDto"></app-gridload-dashboard>
-<router-outlet></router-outlet>
+<app-navbar
+  (passViewType)="getViewType($event)"
+  (passBuildingVieWType)="getBuildingViewType($event)"
+></app-navbar>
+<div class="d-flex justify-content-between">
+  <div>
+    <app-townhall-dashboard *ngIf="passingViewType === viewTypeTownHall"></app-townhall-dashboard>
+    <app-factory-dashboard *ngIf="passingViewType === viewTypeFactory"></app-factory-dashboard>
+    <app-building-dashboard
+      [recievingViewType]="buildingViewComponentType"
+      *ngIf="passingViewType === viewTypeBuildings"
+    ></app-building-dashboard>
+  </div>
+  <div class="d-flex flex-column">
+    <app-gridload-dashboard></app-gridload-dashboard>
+    <app-daytime-weather class="align-self-end"></app-daytime-weather>
+  </div>
+</div>
+<!--<router-outlet></router-outlet>-->
 
