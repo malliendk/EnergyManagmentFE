@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {mockBuildings} from "../mocks/mock-buildings";
 import {Building} from "../dtos/building";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {Observable, Subject} from "rxjs";
 
 @Injectable({

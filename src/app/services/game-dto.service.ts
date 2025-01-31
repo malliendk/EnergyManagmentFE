@@ -3,7 +3,7 @@ import {BehaviorSubject, from, Observable, tap} from "rxjs";
 import {InitiateGameDto} from "../dtos/initiateGameDto";
 import {GameObject} from "../dtos/gameObject";
 import {WebsocketService} from "./websocketService";
-import {HttpClient} from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {mockGameObject} from "../mocks/mock-game-object";
 import {Building} from "../dtos/building";
 import {GameDTO} from "../dtos/gameDTO";
