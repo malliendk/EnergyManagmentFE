@@ -1,7 +1,7 @@
 <div class="dashboard-container">
   <div class="switcher">
     <div class="stats">
-      <div class="funds align-self-center">{{ mockGameDto.funds | currency: 'USD' }}</div>
+      <div class="funds align-self-center">{{ gameDTO.funds | currency: 'USD' }}</div>
       <app-chart-bar-horizontal
         [showYAxis]="showYAxis"
         [xScaleMax]="fundsScaleMax"
@@ -10,7 +10,7 @@
         [chartColorValues]="fundsColor"
         [chartResultValues]="fundsChartResults">
       </app-chart-bar-horizontal>
-      <div class="grid-load align-self-center">{{ mockGameDto.gridLoadTotal }}</div>
+      <div class="grid-load align-self-center">{{ gameDTO.gridLoadTotal }}</div>
       <app-chart-bar-horizontal
         [showYAxis]="showYAxis"
         [xScaleMax]="gridLoadScaleMax"

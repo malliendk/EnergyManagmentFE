@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameObject} from "../dtos/gameObject";
+import {ExtendedGameDTO} from "../extendedGameDTO";
 import {ChartService} from "../services/chart.service";
 import {mockGameObject} from "../mocks/mock-game-object";
 import {SupplyTypes} from "../supplyType";
@@ -15,7 +15,7 @@ import {AccountService} from "../services/account.service";
 })
 export class TownhallDashboardComponent implements OnInit {
 
-  mockGameDto!: GameObject;
+  @Input() gameDTO!: ExtendedGameDTO;
 
   optimalAccountsNumber: number = 0;
   surplusAccounts: Account[] = [];
@@ -34,7 +34,7 @@ export class TownhallDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mockGameDto = mockGameObject;
+    this.gameDTO = mockGameObject;
     // this.getAccountNumberByType();
     this.customColors = this.setCustomColors();
     this.chartResults = this.setChartResults();

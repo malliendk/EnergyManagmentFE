@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameObject} from "../dtos/gameObject";
-import {GameDtoService} from "../services/game-dto.service";
+import {ExtendedGameDTO} from "../extendedGameDTO";
+import {GameDTOService} from "../services/game-dto.service";
+import {TimeOfDay, TimesOfDay} from "../timeOfDay";
+import {WeatherType, WeatherTypes} from "../weatherType";
 
 @Component({
     selector: 'app-gridload-dashboard',
@@ -10,7 +12,9 @@ import {GameDtoService} from "../services/game-dto.service";
 })
 export class GridloadDashboardComponent implements OnInit {
 
-  mockGameDto!: GameObject;
+  @Input() gameDTO!: ExtendedGameDTO
+  timeOfDay!: TimeOfDay;
+  weatherType!: WeatherType;
   singleDashboardView: string = 'table';
 
   isCollapsed: boolean = false;
@@ -26,11 +30,12 @@ export class GridloadDashboardComponent implements OnInit {
   dayWeatherClass = 'moderate'
 
 
-  constructor(private gameDtoService: GameDtoService) {
+  constructor(private gameDtoService: GameDTOService) {
   }
 
   ngOnInit(): void {
-    this.gameDtoService.getMockGameObject();
+    this.timeOfDay = TimesOfDay[this.gameDTO.timeOfDay.name]
+    this.weatherType = WeatherTypes[this.gameDTO.weatherType.name]
   }
 
   transition() {

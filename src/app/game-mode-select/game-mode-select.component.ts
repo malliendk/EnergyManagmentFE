@@ -2,7 +2,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { InitiateGameDto } from "../dtos/initiateGameDto";
 import { DifficultyLevel } from "../difficultyLevel";
-import { GameDtoService } from "../services/game-dto.service";
+import { GameDTOService } from "../services/game-dto.service";
 import { Router } from "@angular/router";
 import {ClockService} from "../services/clock.service";
 
@@ -32,7 +32,7 @@ export class GameModeSelectComponent implements OnInit {
     [DifficultyLevel.HARD]: 'Hard',
   }
 
-  constructor(private gameDtoService: GameDtoService,
+  constructor(private gameDtoService: GameDTOService,
               private router: Router,
               private clockService: ClockService) {
   }
@@ -76,8 +76,8 @@ export class GameModeSelectComponent implements OnInit {
     console.log(this.initDto);
   }
 
-  startGame(initDto: InitiateGameDto) {
-    this.gameDtoService.startGame(initDto)
+  startGame() {
+    this.gameDtoService.startGame()
       .subscribe(gameDto => {
         this.router.navigate(['game-mode-select'])
           .then(() => {

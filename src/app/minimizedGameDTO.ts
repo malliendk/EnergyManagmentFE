@@ -1,8 +1,12 @@
-import {EventDTO} from "./eventDTO";
+import {Building} from "./dtos/building";
+import {EventDTO} from "./dtos/eventDTO";
+import {TimeOfDay} from "./timeOfDay";
+import {WeatherType} from "./weatherType";
+import {BuildingRequest} from "./BuildingRequest";
 
-export interface GameDTO {
+export interface MinimizedGameDTO {
+
   id: number;
-  localityName: string;
   supervisorName: string;
   funds: number;
   popularity: number;
@@ -16,12 +20,13 @@ export interface GameDTO {
   solarPanelCapacity: number;
   goldIncome: number;
   popularityIncome: number;
-  environmentalIncome: number;
   scienceIncome: number;
   distributionEfficiency: number;
   incomeRate: number;
   taxRate: number;
   popRate: number;
-  buildingIds: number[];
+  buildingRequests: BuildingRequest[];
   events: EventDTO[];
+  timeOfDay: TimeOfDay;
+  weatherType: WeatherType
 }

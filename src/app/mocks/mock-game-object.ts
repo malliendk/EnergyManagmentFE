@@ -1,9 +1,11 @@
-import {GameObject} from "../dtos/gameObject";
+import {ExtendedGameDTO} from "../extendedGameDTO";
 import {mockBuildings} from "./mock-buildings";
 import {mockAccounts} from "./mock-accounts";
 import {mockEvents} from "./mock-events";
+import {TimesOfDay} from "../timeOfDay";
+import {WeatherTypes} from "../weatherType";
 
-export const mockGameObject: GameObject = {
+export const mockGameObject: ExtendedGameDTO = {
   id : 1,
   localityName : 'Zutphen',
   supervisorName : 'Amelia Lupina',
@@ -11,7 +13,7 @@ export const mockGameObject: GameObject = {
   popularity : 5000,
   research: 1000,
   environmentalScore: 500,
-  energyProduction:1500,
+  energyProduction: 1500,
   energyConsumption: 750,
   gridCapacity: 100,
   gridLoadTotal : 0,
@@ -27,7 +29,9 @@ export const mockGameObject: GameObject = {
   popRate: 0.5,
   buildings : mockBuildings,
   accounts: mockAccounts,
-  events: mockEvents
+  events: mockEvents,
+  timeOfDay: TimesOfDay['morning'],
+  weatherType: WeatherTypes['overcast'],
 }
 
 

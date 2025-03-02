@@ -2,7 +2,7 @@ import {Injectable, OnInit} from '@angular/core';
 import {Account} from "../dtos/account";
 import {SupplyTypes} from "../supplyType";
 import {mockGameObject} from "../mocks/mock-game-object";
-import {GameObject} from "../dtos/gameObject";
+import {ExtendedGameDTO} from "../extendedGameDTO";
 import {AccountService} from "./account.service";
 
 @Injectable({
@@ -18,17 +18,17 @@ export class StatsCalculationService implements OnInit{
 
   //income
 
-  addIncome(mockGameDto: GameObject): number {
+  addIncome(mockGameDto: ExtendedGameDTO): number {
     return mockGameDto.goldIncome + mockGameDto.funds;
   }
   //
-  // calculateIncome(mockGameObject: GameDTO): number {
+  // calculateIncome(mockGameObject: ExtendedGameDTO): number {
   //   // const optimalAccountAmount: number = this.accountService.filterAccountByType(mockGameObject, SupplyTypes.OPTIMAL.name).length;
   //   // return optimalAccountAmount * mockGameObject.incomeRate;
   // }
 
   //taxes
-  raiseTaxes(taxAmount: number, mockGameDto: GameObject, accounts: Account[]) {
+  raiseTaxes(taxAmount: number, mockGameDto: ExtendedGameDTO, accounts: Account[]) {
     mockGameDto.funds += this.calculateTaxes(accounts!);
     mockGameDto.popularity -= this.calculatePopularityLoss(taxAmount, mockGameDto);
   }
@@ -38,7 +38,7 @@ export class StatsCalculationService implements OnInit{
   }
 
 
-  calculateTaxAmount(accounts: Account[], mockGameDto: GameObject): number {
+  calculateTaxAmount(accounts: Account[], mockGameDto: ExtendedGameDTO): number {
     return this.calculateTaxableSupplyTotal(accounts) * mockGameDto.taxRate;
   }
 
@@ -54,7 +54,7 @@ export class StatsCalculationService implements OnInit{
     return totalShortageSupplyAmount + totalSurplusSupplyAmount;
   }
 
-  calculatePopularityLoss(taxAmount: number, mockGameDto: GameObject): number {
+  calculatePopularityLoss(taxAmount: number, mockGameDto: ExtendedGameDTO): number {
     return taxAmount * mockGameDto.popRate;
   }
 
@@ -63,7 +63,7 @@ export class StatsCalculationService implements OnInit{
     return accountAmount * accountCost;
   }
 
-  estimateIncomeIncrease(accountAmount: number, mockGameDto: GameObject): number {
+  estimateIncomeIncrease(accountAmount: number, mockGameDto: ExtendedGameDTO): number {
     return accountAmount * mockGameDto.incomeRate * ( 1 / 7 );
   }
 

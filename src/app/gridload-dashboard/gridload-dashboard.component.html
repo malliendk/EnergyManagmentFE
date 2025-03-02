@@ -12,12 +12,18 @@
         {{ singleDashboardView == 'table' ? '<' : '>' }}
       </button>
       <div class="custom-container">
-        <div>{{ mockGameDto.solarPanelAmount }}/{{mockGameDto.solarPanelCapacity}}</div>
-        <div class="grid-load">{{mockGameDto.gridLoadTotal}}/{{mockGameDto.gridCapacity}}</div>
-        <div class="energy-production">{{mockGameDto.energyProduction}}</div>
-        <div class="energy-consumption">{{mockGameDto.energyConsumption}}</div>
+        <div>{{ gameDTO.solarPanelAmount }}/{{ gameDTO.solarPanelCapacity }}</div>
+        <div class="grid-load">{{ gameDTO.gridLoadTotal }}/{{ gameDTO.gridCapacity }}</div>
+        <div class="energy-production">{{ gameDTO.energyProduction }}</div>
+        <div class="energy-consumption">{{ gameDTO.energyConsumption }}</div>
       </div>
     </div>
+  </div>
+  <div class="day-weather-box">
+    <div>Time of day</div>
+    <div [ngStyle]="{'background-color': gameDTO.timeOfDay.color}">{{ gameDTO.timeOfDay.name }}</div>
+    <div>Weather type</div>
+    <div [ngStyle]="{'background-color': gameDTO.weatherType.color}">{{ gameDTO.weatherType.name }}</div>
   </div>
 </div>
 
@@ -30,9 +36,9 @@
       {{ isDoubleExpanded ? '>>' : '<<' }}
     </button>
     <div class="custom-container d-flex justify-content-around">
-      <div class="funds">{{ mockGameDto.funds | currency: 'USD' }}</div>
-      <div class="popularity">{{ mockGameDto.popularity }}p</div>
-      <div class="grid-load">{{ mockGameDto.gridLoadTotal }}/{{ mockGameDto.gridCapacity }} </div>
+      <div class="funds">{{ gameDTO.funds | currency: 'USD' }}</div>
+      <div class="popularity">{{ gameDTO.popularity }}p</div>
+      <div class="grid-load">{{ gameDTO.gridLoadTotal }}/{{ gameDTO.gridCapacity }}</div>
     </div>
   </div>
 </div>

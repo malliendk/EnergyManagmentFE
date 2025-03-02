@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import {mockBuildings} from "../mocks/mock-buildings";
+import {Injectable} from '@angular/core';
 import {Building} from "../dtos/building";
-import { HttpClient } from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Observable, Subject} from "rxjs";
+import {MinimizedGameDTO} from "../minimizedGameDTO";
+import {map} from "d3";
 
 @Injectable({
   providedIn: 'root'
@@ -15,14 +16,18 @@ export class BuildingService {
 
   buildingAPIBaseURL: string = 'http://localhost:8090/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   setViewType(viewType: string) {
     this.viewTypeSubject.next(viewType);
   }
 
-  getAll(): Building[] {
-    // this this.http.get<Building[]>(this.buildingAPIBaseURL)
-    return mockBuildings;
+  getAll(): Observable<Building[]> {
+    return this.http.get<Building[]>(this.buildingAPIBaseURL);
+  }
+
+  getBuildingsById(ids: number[]) {
+    return this.http.post<Building[]>(this.buildingAPIBaseURL + '/ids', ids);
   }
 }

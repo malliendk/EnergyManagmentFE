@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import {GameObject} from "../dtos/gameObject";
+import {ExtendedGameDTO} from "../extendedGameDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ import {GameObject} from "../dtos/gameObject";
 export class WebsocketService {
 
   private webSocket: WebSocket | null = null;
-  private gameUpdateSubject = new Subject<GameObject>();
+  private gameUpdateSubject = new Subject<ExtendedGameDTO>();
 
   constructor() {}
 
@@ -16,7 +16,7 @@ export class WebsocketService {
     this.webSocket = new WebSocket(url);
 
     this.webSocket.onmessage = (event) => {
-      const gameDto: GameObject = JSON.parse(event.data);
+      const gameDto: ExtendedGameDTO = JSON.parse(event.data);
       this.gameUpdateSubject.next(gameDto);
     };
 
@@ -28,7 +28,7 @@ export class WebsocketService {
     }
   }
 
-  onGameUpdate(): Observable<GameObject> {
+  onGameUpdate(): Observable<ExtendedGameDTO> {
     return this.gameUpdateSubject.asObservable();
   }
 

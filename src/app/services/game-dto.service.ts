@@ -1,26 +1,23 @@
 import {Injectable, OnInit} from '@angular/core';
-import {BehaviorSubject, from, Observable, tap} from "rxjs";
-import {InitiateGameDto} from "../dtos/initiateGameDto";
-import {GameObject} from "../dtos/gameObject";
+import {BehaviorSubject, from, Observable, switchMap, tap} from "rxjs";
+import {ExtendedGameDTO} from "../extendedGameDTO";
 import {WebsocketService} from "./websocketService";
 import { HttpClient } from "@angular/common/http";
 import {mockGameObject} from "../mocks/mock-game-object";
 import {Building} from "../dtos/building";
-import {GameDTO} from "../dtos/gameDTO";
-import {mockBuildings} from "../mocks/mock-buildings";
+import {MinimizedGameDTO} from "../minimizedGameDTO";
+import {InitiateGameDto} from "../dtos/initiateGameDto";
 
 @Injectable({
   providedIn: 'root'
 })
-export class GameDtoService implements OnInit {
-  updateServiceUrl = 'http://localhost:8080';
+export class GameDTOService implements OnInit {
+  private initiateServiceUrl = 'http://localhost:8080';
   private calculationServiceUrl: string = 'http://localhost:8093';
 
   wsUrl = 'ws://PLACEHOLDER-URL'; //TODO: replace url with real url
 
-  private mockGameDto = mockGameObject;
-
-  private gameDtoSource = new BehaviorSubject<GameObject | null>(null);
+  private gameDtoSource = new BehaviorSubject<ExtendedGameDTO | null>(null);
   currentGameDto = this.gameDtoSource.asObservable();
 
   constructor(private http: HttpClient, private webSocketService: WebsocketService) {
@@ -35,35 +32,27 @@ export class GameDtoService implements OnInit {
     return loadSources.reduce((totalLoad, source) => totalLoad + source.gridLoad, 0);
   }
 
-  startGame(initDto: InitiateGameDto) {
-    return this.http.post<GameObject>(this.updateServiceUrl, { initDto }).pipe(
-      tap(gameDTO => this.gameDtoSource.next(gameDTO))
-    );
+  startGame(): Observable<InitiateGameDto> {
+    return this.http.post<InitiateGameDto>(this.initiateServiceUrl, {}).pipe(
+      switchMap(() => this.getGameDto())
+    )
   }
 
-  getMockGameObject() {
-    console.log(this.mockGameDto.buildings)
-    return this.mockGameDto;
-  }
-
-  getGameDto(): Observable<GameObject> {
-    return this.http.get<GameObject>(this.calculationServiceUrl);
-  }
-
-
-  updateGameDTO(gameDto: GameObject): Observable<GameObject> {
-    // const gameDTOToSend: GameDTO = this.filterBuildingIds(gameDto);
-    return this.http.put<GameObject>(this.updateServiceUrl, { gameDto: gameDto });
-  }
-
-  // updateGameDto(gameDto: GameDto) {
-  //   return this.gameDtoSource.next(gameDto);
+  // startGame() {
+  //   return this.http.post<GameObject>(this.initiateServiceUrl, {}).pipe(
+  //     tap(gameDTO => this.gameDtoSource.next(gameDTO))
+  //   );
   // }
 
-  filterBuildingIds(gameObject: GameObject): GameDTO {
-    const buildingIds: number[] = gameObject.buildings.map(building => building.id);
-    return {
-      buildingIds: buildingIds
-    } as GameDTO
+  getGameDto(): Observable<MinimizedGameDTO> {
+    return this.http.get<MinimizedGameDTO>(this.calculationServiceUrl);
+  }
+
+  updateGameDTO(gameDto: ExtendedGameDTO): Observable<ExtendedGameDTO> {
+    return this.http.put<ExtendedGameDTO>(this.initiateServiceUrl, { gameDto: gameDto });
+  }
+
+  extendGameDTO(minimizedDTO: MinimizedGameDTO, buildings: Building[]) {
+    (extendedGameDTO: ExtendedGameDTO) : {buildings}
   }
 }

@@ -1,6 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {ClockService} from "../services/clock.service";
+import {ExtendedGameDTO} from "../extendedGameDTO";
 
 @Component({
     selector: 'app-daytime-weather',
@@ -11,6 +12,8 @@ import {ClockService} from "../services/clock.service";
 export class DaytimeWeatherComponent implements OnInit, OnDestroy{
   private timer: any;
   private timeSubject = new BehaviorSubject<string>('00:00');
+  @Input() gameDTO!: ExtendedGameDTO
+
 
   ngOnInit() {
     this.startTimer();

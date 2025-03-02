@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {GameObject} from "../../dtos/gameObject";
+import {ExtendedGameDTO} from "../../extendedGameDTO";
 import {mockGameObject} from "../../mocks/mock-game-object";
 import {active} from "d3";
 
@@ -13,7 +13,7 @@ export class CampaignsComponent {
 
   @Output() campaignTypeSelect = new EventEmitter<string>();
 
-  mockGameDto: GameObject = mockGameObject;
+  mockGameDto: ExtendedGameDTO = mockGameObject;
 
   isSideBarGradient: boolean = true;
   sideBarColorCode: string = '#dfc700, #b902d3';

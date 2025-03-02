@@ -1,20 +1,34 @@
-<app-navbar
-  (passViewType)="getViewType($event)"
-  (passBuildingVieWType)="getBuildingViewType($event)"
-></app-navbar>
-<div class="d-flex justify-content-between">
-  <div>
-    <app-townhall-dashboard *ngIf="passingViewType === viewTypeTownHall"></app-townhall-dashboard>
-    <app-factory-dashboard *ngIf="passingViewType === viewTypeFactory"></app-factory-dashboard>
-    <app-building-dashboard
-      [recievingViewType]="buildingViewComponentType"
-      *ngIf="passingViewType === viewTypeBuildings"
-    ></app-building-dashboard>
+@if (gameDTO) {
+  <app-navbar
+    [gameDTO]="gameDTO"
+    (passViewType)="getViewType($event)"
+    (passBuildingVieWType)="getBuildingViewType($event)"
+  ></app-navbar>
+  <div class="d-flex justify-content-between">
+    <div>
+      @if (passingViewType === viewTypeTownHall) {
+        <app-townhall-dashboard [gameDTO]="gameDTO"></app-townhall-dashboard>
+      }
+      @if (passingViewType === viewTypeFactory) {
+        <app-factory-dashboard [gameDTO]="gameDTO"></app-factory-dashboard>
+      }
+      @if (passingViewType === viewTypeBuildings) {
+        <app-building-dashboard
+          [recievingViewType]="buildingViewComponentType"
+          [gameDTO]="gameDTO"
+          (passGameDTOToTopLevel)="getGameDTO()"
+        ></app-building-dashboard>
+      }
+    </div>
+    <div class="d-flex flex-column">
+      <app-gridload-dashboard [gameDTO]="gameDTO"></app-gridload-dashboard>
+      <app-daytime-weather
+        class="align-self-end"
+        [gameDTO]="gameDTO"
+      ></app-daytime-weather>
+    </div>
   </div>
-  <div class="d-flex flex-column">
-    <app-gridload-dashboard></app-gridload-dashboard>
-    <app-daytime-weather class="align-self-end"></app-daytime-weather>
-  </div>
-</div>
+}
+<button class="btn btn-primary" (click)="initiateGame()">Start game</button>
 <!--<router-outlet></router-outlet>-->
 

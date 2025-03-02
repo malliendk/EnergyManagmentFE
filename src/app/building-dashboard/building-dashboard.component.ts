@@ -1,10 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {GameObject} from "../dtos/gameObject";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ExtendedGameDTO} from "../extendedGameDTO";
 import {mockGameObject} from "../mocks/mock-game-object";
 import {Building} from "../dtos/building";
-import {GameDtoService} from "../services/game-dto.service";
-import {ActivatedRoute} from "@angular/router";
-import {mockBuildings} from "../mocks/mock-buildings";
+import {GameDTOService} from "../services/game-dto.service";
 import {BuildingService} from "../services/building.service";
 
 @Component({
@@ -15,44 +13,46 @@ import {BuildingService} from "../services/building.service";
 })
 export class BuildingDashboardComponent implements OnInit {
 
-  protected readonly mockBuildings = mockBuildings;
-
+  @Input() gameDTO!: ExtendedGameDTO;
   @Input() recievingViewType: string = '';
+  @Output() passGameDTOToTopLevel = new EventEmitter<void>();
 
-  mockGameDto!: GameObject;
   allBuildings!: Building[];
+  purchasedBuildings!: Building[];
 
   building: Building | null = null;
-
-  viewTypeOverview: string = 'overview';
-  viewTypePurchase = 'purchase';
 
   ownedBuildingsView: string = 'overview';
   purchaseView: string = 'purchase';
 
-  constructor(private gameDTOService: GameDtoService,
+  constructor(private gameDTOService: GameDTOService,
               private buildingService: BuildingService) {
   }
 
   ngOnInit() {
-    this.mockGameDto = mockGameObject;
-    this.mockGameDto.buildings = this.mockGameDto.buildings.filter((building, index) => index < 5);
-    this.allBuildings = this.buildingService.getAll();
+    this.getAllBuildings();
+    this.updatePurchasedBuildings();
   }
 
   updateGameDTO(building: Building): void {
-    this.mockGameDto.buildings.push(building);
-    this.gameDTOService.updateGameDTO(this.mockGameDto)
-      .subscribe(() => this.getGameDTO())
+    this.gameDTO.buildings.push(building);
+    this.gameDTOService.updateGameDTO(this.gameDTO)
+      .subscribe(() => {
+        this.triggerGetGameDTO()
+      })
   }
 
-  getGameDTO() {
-    this.gameDTOService.getGameDto()
-      .subscribe(updatedGameDTO => this.mockGameDto = updatedGameDTO);
+  triggerGetGameDTO() {
+    this.passGameDTOToTopLevel.emit()
   }
 
-  private getMockGameObject() {
-    return this.gameDTOService.getMockGameObject();
+  getAllBuildings() {
+    this.buildingService.getAll()
+      .subscribe((buildings: Building[]) => this.allBuildings = buildings)
+  }
+
+  updatePurchasedBuildings() {
+    this.purchasedBuildings = this.gameDTO.buildings;
   }
 
   getBuildingViewType(emittedValue: string) {

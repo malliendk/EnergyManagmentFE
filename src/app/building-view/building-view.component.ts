@@ -14,7 +14,8 @@ export class BuildingViewComponent {
   protected readonly mockBuildings = mockBuildings;
 
   @Input() viewType: string = '';
-  @Input() buildings!: Building[];
+  @Input() allBuildings!: Building[];
+  @Input() purchasedBuildings! : Building[];
   @Output() purchasedBuildingEmitter = new EventEmitter<Building>();
   @Output() passViewType = new EventEmitter<string>();
 
@@ -22,10 +23,15 @@ export class BuildingViewComponent {
 
   isDetailView: boolean = false;
   purchaseView : string = 'purchase';
+  isPurchased: boolean = false;
 
   toggleCardDetailView(id: number) {
     this.isDetailView = true;
-    this.building = this.buildings.find((building => building.id === id)) as Building | null;
+    this.building = this.allBuildings.find(building => building.id === id) as Building | null;
+    const isPurchased = this.purchasedBuildings.find(building => building.id === id);
+    if (isPurchased) {
+      this.isPurchased = true;
+    }
   }
 
   purchaseBuilding(building: Building) {
@@ -44,7 +50,7 @@ export class BuildingViewComponent {
     return propertyValue > 0 ? '#e6b904' : 'black';
   }
 
-  emitViewType(viewType: string) {
-    this.passViewType.emit(viewType);
+  findIfBuildingIsPurchased() {
+
   }
 }

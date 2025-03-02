@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {mockGameObject} from "../../mocks/mock-game-object";
 import {CampaignObject} from "../../CampaignObject";
-import {GameObject} from "../../dtos/gameObject";
+import {ExtendedGameDTO} from "../../extendedGameDTO";
 
 @Component({
     selector: 'app-campaign-type-card',
@@ -11,7 +11,7 @@ import {GameObject} from "../../dtos/gameObject";
 })
 export class CampaignTypeCardComponent {
 
-  mockGameDto: GameObject = mockGameObject;
+  mockGameDto: ExtendedGameDTO = mockGameObject;
   @Input() campaignObject!: CampaignObject;
 
   @Input() campaignType!: string;
@@ -19,7 +19,7 @@ export class CampaignTypeCardComponent {
 
   @Input() imageName!: string;
 
-  launchCampaign(campaign: CampaignObject, gameDto: GameObject) {
+  launchCampaign(campaign: CampaignObject, gameDto: ExtendedGameDTO) {
     gameDto.funds -= campaign.fundsCost;
     gameDto.popularity += campaign.popGain;
   }

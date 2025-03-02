@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameObject} from "../dtos/gameObject";
+import {ExtendedGameDTO} from "../extendedGameDTO";
 import {Building} from "../dtos/building";
 import {Color, LegendPosition, ScaleType} from '@swimlane/ngx-charts';
 import {mockGameObject} from "../mocks/mock-game-object";
@@ -13,7 +13,7 @@ import {mockGameObject} from "../mocks/mock-game-object";
 export class GridloadDashboardChartComponent implements OnInit {
 
 
-  @Input() mockGameDto!: GameObject;
+  @Input() mockGameDto!: ExtendedGameDTO;
 
   chartResults: any[] = [];
   nameGridLoadArray: any[] = [];

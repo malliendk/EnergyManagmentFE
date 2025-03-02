@@ -1,5 +1,5 @@
 import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {GameObject} from "../../dtos/gameObject";
+import {ExtendedGameDTO} from "../../extendedGameDTO";
 import {mockGameObject} from "../../mocks/mock-game-object";
 import {StatsCalculationService} from "../../services/stats-calculation.service";
 
@@ -11,7 +11,7 @@ import {StatsCalculationService} from "../../services/stats-calculation.service"
 })
 export class SolarPanelsComponent implements OnInit{
 
-  mockGameDto: GameObject = mockGameObject;
+  mockGameDto: ExtendedGameDTO = mockGameObject;
 
   isSideBarGradient: boolean = true;
   sideBarColorCode: string = '#d1bb1a, #ae0000';

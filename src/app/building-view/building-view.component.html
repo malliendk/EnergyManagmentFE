@@ -1,6 +1,6 @@
 <div *ngIf="!isDetailView">
   <div class="d-flex flex-wrap justify-content-center mt-1">
-    <div *ngFor="let building of buildings">
+    <div *ngFor="let building of allBuildings">
       <div class="card card-small" (click)="toggleCardDetailView(building.id)">
         <div class="card-img-top">
           <img [src]="building.imageUri" alt="{{building.imageUri}} + ' image'"
@@ -83,9 +83,9 @@
           <div>Solar Panels</div>
           <div>{{ building!.solarPanelAmount }}</div>
         </div>
-        <div *ngIf="viewType === purchaseView" class="purchase-button">
-          <button class="btn btn-gold mb-2" (click)="purchaseBuilding(building!)">Purchase Building</button>
-        </div>
+        @if (!isPurchased) {
+          <button class="purchase-button btn btn-gold mb-2" (click)="purchaseBuilding(building!)">Purchase Building</button>
+        }
       </div>
     </div>
   </div>

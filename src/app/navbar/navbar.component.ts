@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {GameObject} from "../dtos/gameObject";
+import {ExtendedGameDTO} from "../extendedGameDTO";
 import {mockGameObject} from "../mocks/mock-game-object";
-import {GameDtoService} from "../services/game-dto.service";
+import {GameDTOService} from "../services/game-dto.service";
 import {BuildingService} from "../services/building.service";
 
 @Component({
@@ -16,12 +16,11 @@ export class NavbarComponent implements OnInit{
   toMorning = 'morning';
   toAfternoon = 'afternoon';
 
-  @Input() mockGameDto!: GameObject
+  @Input() gameDTO!: ExtendedGameDTO
   @Output() passViewType = new EventEmitter<string>();
   @Output() passBuildingVieWType = new EventEmitter<string>();
 
   showButtons: boolean = false;
-  viewType!: string;
   viewTypeTownHall: string = 'town hall';
   viewTypeFactory: string = 'factory';
   viewTypeBuildings: string = 'buildings'
@@ -31,7 +30,6 @@ export class NavbarComponent implements OnInit{
   constructor(private buildingService: BuildingService) {}
 
   ngOnInit() {
-    this.mockGameDto = mockGameObject
   }
 
   transition() {
