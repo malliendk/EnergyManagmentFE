@@ -1,71 +1,71 @@
-<app-modal [isModalOpen]="showScopeChoice">
-  <div modal-title>
-    <h1 class="fs-3">Select game mode</h1>
-  </div>
-  <div modal-body>
-    <div class="d-flex flex-column">
-      <button type="button" class="btn btn-outline-success mb-4 mt-4" (click)="setPlayerScope('locality')">
-        Play as locality
-      </button>
-      <button type="button" class="btn btn-outline-primary mb-4" (click)="setPlayerScope('supervisor')">
-        Play as supervisor
-      </button>
-      <button type="button" class="btn btn-outline-gold mb-4" (click)="setPlayerScope('distributor')">
-        Play as distributor
-      </button>
-    </div>
-  </div>
-</app-modal>
+<!--<app-modal [isModalOpen]="showScopeChoice">-->
+<!--  <div modal-title>-->
+<!--    <h1 class="fs-3">Select game mode</h1>-->
+<!--  </div>-->
+<!--  <div modal-body>-->
+<!--    <div class="d-flex flex-column">-->
+<!--      <button type="button" class="btn btn-outline-success mb-4 mt-4" (click)="setPlayerScope('locality')">-->
+<!--        Play as locality-->
+<!--      </button>-->
+<!--      <button type="button" class="btn btn-outline-primary mb-4" (click)="setPlayerScope('supervisor')">-->
+<!--        Play as supervisor-->
+<!--      </button>-->
+<!--      <button type="button" class="btn btn-outline-gold mb-4" (click)="setPlayerScope('distributor')">-->
+<!--        Play as distributor-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</app-modal>-->
 
 
-<div *ngIf="showLocalityChoice">
-  <div *ngIf="playerScope === 'locality'">
-    <app-localty-list (localitySelected)="onLocalitySelected($event)"></app-localty-list>
-  </div>
-  <button type="button" class="btn btn-outline-primary" (click)="setLocality(selectedLocalityName)">
-    Select Locality
-  </button>
-</div>
+<!--<div *ngIf="showLocalityChoice">-->
+<!--  <div *ngIf="playerScope === 'locality'">-->
+<!--    <app-localty-list (localitySelected)="onLocalitySelected($event)"></app-localty-list>-->
+<!--  </div>-->
+<!--  <button type="button" class="btn btn-outline-primary" (click)="setLocality(selectedLocalityName)">-->
+<!--    Select Locality-->
+<!--  </button>-->
+<!--</div>-->
 
-<app-modal [isModalOpen]="showDifficultyLevel">
-  <div modal-title>
-    <h1 class="fs-3">Select difficulty level</h1>
-  </div>
-  <div modal-body>
-    <div class="d-flex flex-column">
-      <button type="button" class="btn btn-outline-success rounded-5 mb-4 mt-4" (click)="setDifficultyLevel(difficultyLevel.EASY)">
-        Easy
-      </button>
-      <button type="button" class="btn btn-outline-primary rounded-5 mb-4" (click)="setDifficultyLevel(difficultyLevel.MEDIUM)">
-        Medium
-      </button>
-      <button type="button" class="btn btn-outline-gold rounded-5 mb-4" (click)="setDifficultyLevel(difficultyLevel.HARD)">
-        Hard
-      </button>
-    </div>
-  </div>
-</app-modal>
+<!--<app-modal [isModalOpen]="showDifficultyLevel">-->
+<!--  <div modal-title>-->
+<!--    <h1 class="fs-3">Select difficulty level</h1>-->
+<!--  </div>-->
+<!--  <div modal-body>-->
+<!--    <div class="d-flex flex-column">-->
+<!--      <button type="button" class="btn btn-outline-success rounded-5 mb-4 mt-4" (click)="setDifficultyLevel(difficultyLevel.EASY)">-->
+<!--        Easy-->
+<!--      </button>-->
+<!--      <button type="button" class="btn btn-outline-primary rounded-5 mb-4" (click)="setDifficultyLevel(difficultyLevel.MEDIUM)">-->
+<!--        Medium-->
+<!--      </button>-->
+<!--      <button type="button" class="btn btn-outline-gold rounded-5 mb-4" (click)="setDifficultyLevel(difficultyLevel.HARD)">-->
+<!--        Hard-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</app-modal>-->
 
-<app-modal [isModalOpen]="showConfirmation">
-  <div modal-title>
-    <h3>You've chosen to play as {{ selectedLocalityName }} on difficulty level {{ selectedDifficultyLevel }}</h3>
-    <h5>Do you wish to continue with those settings?</h5>
-  </div>
-  <div modal-body>
-    <div class="row">
-      <div class="col d-flex justify-content-center">
-        <button type="button" class="btn btn-primary" id="confirmStartGame"
-                (click)="startGame()">Start game
-        </button>
-      </div>
-      <div class="col d-flex justify-content-center">
-        <button type="button" class="btn btn-danger" id="changeGameMode"
-                (click)="resetChoices()">Reset choices
-        </button>
-      </div>
-    </div>
-  </div>
-</app-modal>
+<!--<app-modal [isModalOpen]="showConfirmation">-->
+<!--  <div modal-title>-->
+<!--    <h3>You've chosen to play as {{ selectedLocalityName }} on difficulty level {{ selectedDifficultyLevel }}</h3>-->
+<!--    <h5>Do you wish to continue with those settings?</h5>-->
+<!--  </div>-->
+<!--  <div modal-body>-->
+<!--    <div class="row">-->
+<!--      <div class="col d-flex justify-content-center">-->
+<!--        <button type="button" class="btn btn-primary" id="confirmStartGame"-->
+<!--                (click)="startGame()">Start game-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div class="col d-flex justify-content-center">-->
+<!--        <button type="button" class="btn btn-danger" id="changeGameMode"-->
+<!--                (click)="resetChoices()">Reset choices-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</app-modal>-->
 
 
 

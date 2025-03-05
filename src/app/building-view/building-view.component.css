@@ -16,7 +16,6 @@
 }
 
 .card {
-
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 0 10px 2px rgba(60, 60, 60, 0.8);
@@ -60,7 +59,7 @@
 
 .card-small {
   height: 28vh;
-  width: 15vw;
+  width: 17vw;
   margin: 0.5em;
   color: white;
   background-color: #61371f;
@@ -77,8 +76,21 @@
   display: flex;
   margin-right: 0.5em;
   margin-left: 0.5em;
-  background-color: #61371f;
+  /*background-color: #754226;*/
+  /*background-color: #61371f;*/
   border-radius: 3em;
+}
+
+.background-color-dark-brown {
+  background-color: #754226;
+}
+
+.background-color-light-brown {
+  background-color: #b88157;
+}
+
+.background-color-grey {
+  background-color: grey;
 }
 
 @media screen and (max-width: 1500px) {
@@ -127,7 +139,6 @@
     width: 15em;
     padding-left: 1.2em;
     margin-top: 1em;
-    background-color: #b88157;
     border: 3px solid;
     border-radius: 0.75em;
     font-size: 110%;
@@ -139,7 +150,6 @@
     align-items: center;
     height: 2.5em;
     width: 15em;
-    background-color: #b88157;
     border: 2px solid black;
     border-radius: 0.5em;
   }
@@ -150,7 +160,6 @@
     align-items: center;
     height: 2.5em;
     width: 15em;
-    background-color: #b88157;
     border: 2px solid black;
     border-radius: 0.5em;
   }
@@ -160,12 +169,13 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    width: 10em;
+    width: 100%;
     left: -10px;
+    right: -10px;
     bottom: 6px;
     margin-top: 0.5em;
     padding-left: 20px;
-    background-color: #b88157;
+    background-color: #cf8c5c;
     border: 2px solid black;
     border-radius: 0.5em;
     text-align: left;
@@ -179,7 +189,6 @@
   padding-top: 1em;
   padding-left: 0.5em;
   padding-right: 0.5em;
-  background-color: #61371f;
 }
 
 

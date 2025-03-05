@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable, Subscription} from "rxjs";
 import {ClockService} from "../services/clock.service";
-import {ExtendedGameDTO} from "../extendedGameDTO";
+import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 
 @Component({
     selector: 'app-daytime-weather',

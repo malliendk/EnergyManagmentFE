@@ -2,23 +2,23 @@
   <div class="switcher">
     <div class="stats">
       <div class="funds align-self-center">{{ gameDTO.funds | currency: 'USD' }}</div>
-      <app-chart-bar-horizontal
-        [showYAxis]="showYAxis"
-        [xScaleMax]="fundsScaleMax"
-        [showGridLines]="showGridLines"
-        [chartVariableNames]="fundsVariableName"
-        [chartColorValues]="fundsColor"
-        [chartResultValues]="fundsChartResults">
-      </app-chart-bar-horizontal>
-      <div class="grid-load align-self-center">{{ gameDTO.gridLoadTotal }}</div>
-      <app-chart-bar-horizontal
-        [showYAxis]="showYAxis"
-        [xScaleMax]="gridLoadScaleMax"
-        [showGridLines]="showGridLines"
-        [chartVariableNames]="gridLoadVariableName"
-        [chartColorValues]="totalGridLoadColor"
-        [chartResultValues]="gridLoadChartResults">
-      </app-chart-bar-horizontal>
+<!--      <app-chart-bar-horizontal-->
+<!--        [showYAxis]="showYAxis"-->
+<!--        [xScaleMax]="fundsScaleMax"-->
+<!--        [showGridLines]="showGridLines"-->
+<!--        [chartVariableNames]="fundsVariableName"-->
+<!--        [chartColorValues]="fundsColor"-->
+<!--        [chartResultValues]="fundsChartResults">-->
+<!--      </app-chart-bar-horizontal>-->
+      <div class="grid-load align-self-center">{{ gameDTO.gridLoad }}</div>
+<!--      <app-chart-bar-horizontal-->
+<!--        [showYAxis]="showYAxis"-->
+<!--        [xScaleMax]="gridLoadScaleMax"-->
+<!--        [showGridLines]="showGridLines"-->
+<!--        [chartVariableNames]="gridLoadVariableName"-->
+<!--        [chartColorValues]="totalGridLoadColor"-->
+<!--        [chartResultValues]="gridLoadChartResults">-->
+<!--      </app-chart-bar-horizontal>-->
     </div>
     <div class="slider-space">
       <div class="slider-container" [ngStyle]="{'background-image' : cssFactoryContainer1BackgroundColor}">

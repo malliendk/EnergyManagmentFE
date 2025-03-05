@@ -1,8 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ExtendedGameDTO} from "../extendedGameDTO";
+import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {Building} from "../dtos/building";
-import {mockGameObject} from "../mocks/mock-game-object";
-import {ChartBarHorizontalComponent} from "../chart-bar-horizontal/chart-bar-horizontal.component";
 
 
 @Component({
@@ -54,9 +52,8 @@ export class FactoryDashboardComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.gameDTO = mockGameObject
     this.fundsChartResults = [this.gameDTO.funds]
-    this.gridLoadChartResults = [this.gameDTO.gridLoadTotal]
+    this.gridLoadChartResults = [this.gameDTO.gridLoad]
     this.coalPlant = this.selectPowerPlant('Kolencentrale');
     this.gasPlant = this.selectPowerPlant('Gascentrale');
     this.coalPlantGridLoadStartingValue = this.coalPlant.gridLoad;
@@ -69,15 +66,9 @@ export class FactoryDashboardComponent implements OnInit{
   }
 
   calculateNewValues(powerPlant: Building, startingValue: number, powerPlantGridLoad: HTMLInputElement) {
-    this.calculateNewTotalGridLoad();
     this.calculateNewFunds(powerPlant, startingValue, powerPlantGridLoad);
   }
 
-  calculateNewTotalGridLoad(): void {
-    this.gameDTO.gridLoadTotal = mockGameObject.buildings.reduce(
-      (totalLoad: number, source: Building) => totalLoad + source.gridLoad, 0)
-    this.gridLoadChartResults = [this.gameDTO.gridLoadTotal];
-  }
 
   calculateNewFunds(powerPlant: Building, startingValue: number, powerPlantGridLoad: HTMLInputElement): void {
     const gridLoadDifference: number = startingValue - powerPlantGridLoad.valueAsNumber;

@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ExtendedGameDTO} from "../extendedGameDTO";
-import {mockGameObject} from "../mocks/mock-game-object";
+import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {GameDTOService} from "../services/game-dto.service";
 import {BuildingService} from "../services/building.service";
 

@@ -1,44 +1,44 @@
-<app-townhall-card
-  [isSideBarGradient]="isSideBarGradient"
-  [sidebarColorCode]="sideBarColorCode">
-  <div card-title>
-    Solar Panels
-  </div>
-  <div top>
-  </div>
-  <div content>
-    <div>
-      <div>
-        <pre>Amount</pre>
-        <input type="number"
-               [placeholder]="accountAmount"
-               [(ngModel)]="accountAmount"
-               (input)="calculateStats()"
-               min="0"
-               max="999">
-      </div>
-      <div>
-        <pre>Total cost</pre>
-        <pre>{{ totalCost | number: '1.2-2' }}</pre>
-      </div>
-    </div>
-    <div>
-      <div>
-        <pre>Estimated<br>income increase</pre>
-        <div class="d-flex justify-content-center">
-          <p class="funds">{{ estimatedIncomeIncrease | currency: 'USD' }}</p>
-        </div>
-      </div>
-      <div>
-        <pre>Estimated<br>grid load increase</pre>
-        <div class="d-flex justify-content-center">
-          <p class="grid-load">{{ estimatedGridLoadIncrease | number: '1.2-2' }}</p>
-        </div>
-      </div>
-    </div>
-  </div>
+<!--<app-townhall-card-->
+<!--  [isSideBarGradient]="isSideBarGradient"-->
+<!--  [sidebarColorCode]="sideBarColorCode">-->
+<!--  <div card-title>-->
+<!--    Solar Panels-->
+<!--  </div>-->
+<!--  <div top>-->
+<!--  </div>-->
+<!--  <div content>-->
+<!--    <div>-->
+<!--      <div>-->
+<!--        <pre>Amount</pre>-->
+<!--        <input type="number"-->
+<!--               [placeholder]="accountAmount"-->
+<!--               [(ngModel)]="accountAmount"-->
+<!--               (input)="calculateStats()"-->
+<!--               min="0"-->
+<!--               max="999">-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <pre>Total cost</pre>-->
+<!--        <pre>{{ totalCost | number: '1.2-2' }}</pre>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--    <div>-->
+<!--      <div>-->
+<!--        <pre>Estimated<br>income increase</pre>-->
+<!--        <div class="d-flex justify-content-center">-->
+<!--          <p class="funds">{{ estimatedIncomeIncrease | currency: 'USD' }}</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <pre>Estimated<br>grid load increase</pre>-->
+<!--        <div class="d-flex justify-content-center">-->
+<!--          <p class="grid-load">{{ estimatedGridLoadIncrease | number: '1.2-2' }}</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
 
-  <div button>
-    <button type="button" class="btn btn-outline-primary" (click)="buySolarPanels()">Buy solar Panels</button>
-  </div>
-</app-townhall-card>
+<!--  <div button>-->
+<!--    <button type="button" class="btn btn-outline-primary" (click)="buySolarPanels()">Buy solar Panels</button>-->
+<!--  </div>-->
+<!--</app-townhall-card>-->

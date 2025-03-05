@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import {ExtendedGameDTO} from "../extendedGameDTO";
+import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 
 @Injectable({
   providedIn: 'root'

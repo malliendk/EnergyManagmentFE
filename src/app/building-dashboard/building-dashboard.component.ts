@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ExtendedGameDTO} from "../extendedGameDTO";
-import {mockGameObject} from "../mocks/mock-game-object";
+import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {Building} from "../dtos/building";
 import {GameDTOService} from "../services/game-dto.service";
 import {BuildingService} from "../services/building.service";
@@ -14,7 +13,7 @@ import {BuildingService} from "../services/building.service";
 export class BuildingDashboardComponent implements OnInit {
 
   @Input() gameDTO!: ExtendedGameDTO;
-  @Input() recievingViewType: string = '';
+  @Input() receivingViewType: string = '';
   @Output() passGameDTOToTopLevel = new EventEmitter<void>();
 
   allBuildings!: Building[];
@@ -56,6 +55,14 @@ export class BuildingDashboardComponent implements OnInit {
   }
 
   getBuildingViewType(emittedValue: string) {
-    this.recievingViewType = emittedValue;
+    this.receivingViewType = emittedValue;
+  }
+
+  getGameDTO() {
+    this.gameDTOService.getGameDto().subscribe(minimizedGameDTO => {
+      this.buildingService.getBuildingsById(minimizedGameDTO)
+        .subscribe(buildings =>
+          this.gameDTO = this.gameDTOService.extendGameDTO(minimizedGameDTO, buildings))
+    })
   }
 }

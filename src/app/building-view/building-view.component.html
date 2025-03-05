@@ -14,10 +14,16 @@
 
 <div *ngIf="isDetailView">
   <div class="d-flex justify-content-center align-items-center">
-  <div class="card card-large" [ngStyle]="{'border-color': building!.color}">
-    <div class="card-column justify-content-end align-items-center">
+  <div class="card card-large"
+       [ngStyle]="{'border-color': building!.color}">
+    <div class="card-column justify-content-end align-items-center"
+         [ngClass]="{'background-color-dark-brown': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
+            !building!.canBePurchased && !building!.isPurchased}">
       <div class="d-flex justify-content-between">
-        <div class="property-block-title" [ngStyle]="{'border-color': building!.color}">
+        <div class="property-block-title"
+             [ngStyle]="{'border-color': building!.color}"
+             [ngClass]="{'background-color-light-brown': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
+            !building!.canBePurchased && !building!.isPurchased}">
           <div class="justify-content-start">{{ building!.name }}</div>
         </div>
       </div>
@@ -25,11 +31,17 @@
         <img [src]="building?.imageUri" alt="{{building?.imageUri}} + ' image'" class="img-fluid img-radius">
       </div>
       <div class="d-flex flex-column align-items-center h-35">
-        <h6 class="property-block-theme mb-2 mt-4">Category: {{ building!.category }}</h6>
-        <h6 class="property-block-theme mt-2 mb-3">Price: {{ building!.price }}</h6>
+        <h6 class="property-block-theme mb-2 mt-4"
+            [ngClass]="{'background-color-light-brown': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
+            !building!.canBePurchased && !building!.isPurchased}">Category: {{ building!.category }}</h6>
+        <h6 class="property-block-theme mt-2 mb-3"
+            [ngClass]="{'background-color-light-brown': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
+            !building!.canBePurchased && !building!.isPurchased}">Price: {{ building!.price }}</h6>
       </div>
     </div>
-    <div class="card-column flex-column">
+    <div class="card-column flex-column"
+         [ngClass]="{'background-color-dark-brown': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
+            !building!.canBePurchased && !building!.isPurchased}">
       <div class="d-flex justify-content-evenly">
         <div class="property-column">
           <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.energyProduction)}">
@@ -56,8 +68,8 @@
         <div class="property-column">
           <button class="cancel" (click)="cancelDetailView()">X</button>
           <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.gridLoad)}">
-            <div>Grid Load</div>
-            <div>{{ building!.gridLoad }}</div>
+            <div>Solar Panels</div>
+            <div>{{ building!.solarPanelAmount }}</div>
           </div>
           <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.gridCapacity)}">
             <div>Grid Capacity</div>
@@ -72,22 +84,16 @@
             <div>Popularity income</div>
             <div>+{{ building!.popularityIncome }}</div>
           </div>
-          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.environmentalIncome)}">
+          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.environmentalScore)}">
             <div>Environmental income</div>
-            <div>+{{ building!.environmentalIncome }}</div>
+            <div>+{{ building!.environmentalScore }}</div>
           </div>
         </div>
       </div>
-      <div class="d-flex flex-column justify-content-center align-self-center mt-1">
-        <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.solarPanelAmount)}">
-          <div>Solar Panels</div>
-          <div>{{ building!.solarPanelAmount }}</div>
-        </div>
-        @if (!isPurchased) {
+        @if (!building!.isPurchased && building!.canBePurchased) {
           <button class="purchase-button btn btn-gold mb-2" (click)="purchaseBuilding(building!)">Purchase Building</button>
         }
       </div>
     </div>
   </div>
-</div>
 </div>

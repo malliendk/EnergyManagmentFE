@@ -1,4 +1,4 @@
-import {CampaignObject} from "../CampaignObject";
+import {CampaignObject} from "../campaignObject";
 
 export const mockCampagins: CampaignObject[] = [
   {id: 1, name: 'Flyeren', fundsCost: 250, popGain: 100},

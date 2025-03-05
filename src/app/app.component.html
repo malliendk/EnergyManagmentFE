@@ -14,7 +14,7 @@
       }
       @if (passingViewType === viewTypeBuildings) {
         <app-building-dashboard
-          [recievingViewType]="buildingViewComponentType"
+          [receivingViewType]="buildingViewComponentType"
           [gameDTO]="gameDTO"
           (passGameDTOToTopLevel)="getGameDTO()"
         ></app-building-dashboard>
@@ -29,6 +29,8 @@
     </div>
   </div>
 }
-<button class="btn btn-primary" (click)="initiateGame()">Start game</button>
+@if (!gameDTO) {
+  <button class="btn btn-primary" (click)="initiateGame()">Start game</button>
+}
 <!--<router-outlet></router-outlet>-->
 

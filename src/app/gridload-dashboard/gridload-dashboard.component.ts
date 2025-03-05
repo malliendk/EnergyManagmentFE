@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ExtendedGameDTO} from "../extendedGameDTO";
+import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {GameDTOService} from "../services/game-dto.service";
 import {TimeOfDay, TimesOfDay} from "../timeOfDay";
 import {WeatherType, WeatherTypes} from "../weatherType";

@@ -1,12 +1,12 @@
 import {Injectable, OnInit} from '@angular/core';
-import {BehaviorSubject, from, Observable, switchMap, tap} from "rxjs";
-import {ExtendedGameDTO} from "../extendedGameDTO";
-import {WebsocketService} from "./websocketService";
-import { HttpClient } from "@angular/common/http";
-import {mockGameObject} from "../mocks/mock-game-object";
+import {BehaviorSubject, Observable} from "rxjs";
+import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
+import {HttpClient} from "@angular/common/http";
 import {Building} from "../dtos/building";
-import {MinimizedGameDTO} from "../minimizedGameDTO";
-import {InitiateGameDto} from "../dtos/initiateGameDto";
+import {MinimizedGameDTO} from "../dtos/minimizedGameDTO";
+import {InitiateGameDTO} from "../dtos/initiateGameDTO";
+import {BuildingService} from "./building.service";
+import {BuildingRequest} from "../buildingRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -20,39 +20,61 @@ export class GameDTOService implements OnInit {
   private gameDtoSource = new BehaviorSubject<ExtendedGameDTO | null>(null);
   currentGameDto = this.gameDtoSource.asObservable();
 
-  constructor(private http: HttpClient, private webSocketService: WebsocketService) {
+  constructor(private http: HttpClient,
+              private buildingService: BuildingService) {
   }
 
   ngOnInit() {
 
   }
 
-  calculateTotalGridLoad(): number {
-    const loadSources: Building[] = mockGameObject.buildings;
-    return loadSources.reduce((totalLoad, source) => totalLoad + source.gridLoad, 0);
+  startGame(): Observable<InitiateGameDTO> {
+    return this.http.post<InitiateGameDTO>(this.initiateServiceUrl, {});
   }
-
-  startGame(): Observable<InitiateGameDto> {
-    return this.http.post<InitiateGameDto>(this.initiateServiceUrl, {}).pipe(
-      switchMap(() => this.getGameDto())
-    )
-  }
-
-  // startGame() {
-  //   return this.http.post<GameObject>(this.initiateServiceUrl, {}).pipe(
-  //     tap(gameDTO => this.gameDtoSource.next(gameDTO))
-  //   );
-  // }
 
   getGameDto(): Observable<MinimizedGameDTO> {
     return this.http.get<MinimizedGameDTO>(this.calculationServiceUrl);
   }
 
-  updateGameDTO(gameDto: ExtendedGameDTO): Observable<ExtendedGameDTO> {
-    return this.http.put<ExtendedGameDTO>(this.initiateServiceUrl, { gameDto: gameDto });
+  updateGameDTO(extendedGameDTO: ExtendedGameDTO): Observable<ExtendedGameDTO> {
+    const buildingsRequests: BuildingRequest[] = this.buildingService.minimizeBuildings(extendedGameDTO.buildings);
+    const initiateDTO: InitiateGameDTO = this.minimizeToInitiateDTO(extendedGameDTO, buildingsRequests);
+    return this.http.put<ExtendedGameDTO>(this.initiateServiceUrl, {gameDto: initiateDTO});
   }
 
-  extendGameDTO(minimizedDTO: MinimizedGameDTO, buildings: Building[]) {
-    (extendedGameDTO: ExtendedGameDTO) : {buildings}
+  extendGameDTO(minimizedGameDTO: MinimizedGameDTO, fetchedBuildingsById: Building[]): ExtendedGameDTO {
+    const ids: number[] = minimizedGameDTO.buildingRequests.map((request: BuildingRequest) => request.buildingId);
+    const completeBuildingList: Building[] = this.buildingService.duplicateBuildingsIfNecessary(ids, fetchedBuildingsById);
+    const fullyProcessedBuildings: Building[] = this.buildingService.updateBuildingValues(minimizedGameDTO, completeBuildingList);
+    return {
+      id: minimizedGameDTO.id,
+      supervisorName: minimizedGameDTO.supervisorName,
+      funds: minimizedGameDTO.funds,
+      popularity: minimizedGameDTO.popularity,
+      research: minimizedGameDTO.research,
+      environmentalScore: minimizedGameDTO.environmentalScore,
+      energyProduction: minimizedGameDTO.energyProduction,
+      energyConsumption: minimizedGameDTO.energyConsumption,
+      gridLoad: minimizedGameDTO.gridLoad,
+      gridCapacity: minimizedGameDTO.gridCapacity,
+      solarPanelAmount: minimizedGameDTO.solarPanelAmount,
+      solarPanelCapacity: minimizedGameDTO.solarPanelCapacity,
+      goldIncome: minimizedGameDTO.goldIncome,
+      popularityIncome: minimizedGameDTO.popularityIncome,
+      researchIncome: minimizedGameDTO.researchIncome,
+      buildings: fullyProcessedBuildings,
+      events: [],
+      timeOfDay: minimizedGameDTO.timeOfDay,
+      weatherType: minimizedGameDTO.weatherType
+    }
+  }
+
+  minimizeToInitiateDTO(extendedGameDTO: ExtendedGameDTO, buildingRequests: BuildingRequest[]): InitiateGameDTO {
+    return {
+      funds: extendedGameDTO.funds,
+      popularity: extendedGameDTO.popularity,
+      research: extendedGameDTO.research,
+      buildingRequests: buildingRequests
+    }
   }
 }

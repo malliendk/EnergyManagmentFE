@@ -1,73 +1,73 @@
-<app-townhall-card *ngIf="campaignType === ''">
-  <div card-title>
-    Choose your campaign
-  </div>
-  <div content>
-<!--    <p>Breng je inwoners op de hoogte van de realisatie van je visionaire plannen</p>-->
-<!--    <p>Kies in het menu rechts via welke kanalen je je successen deelt met de mensen</p>-->
-<!--    <p>Je verkijgt populariteit op basis van je <b>pop rate</b></p>-->
-  </div>
-</app-townhall-card>
-<app-townhall-card *ngIf="campaignType === flyerenString">
-  <div card-title>
-    {{ flyeren.name }}
-  </div>
-  <div top [style.background-image]="'url(/assets/photos/flyeren.png)'"
-       style="height: 100%; width: 100%; background-size: cover;"></div>
-  <div button>
-    <div class="d-flex flex-column justify-content-around margin-top-bottom">
-      <div class="d-flex justify-content-around">
-        <div class="funds">{{ flyeren.fundsCost | currency: 'USD' }}</div>
-        <div class="popularity">{{ flyeren.popGain }}p</div>
-      </div>
-      <div class="margin-top-bottom border-center"></div>
-      <div class="d-flex justify-content-center align-items-center">
-        <button type="button" class="btn btn-outline-primary" (click)="launchCampaign(flyeren, mockGameDto)">Launch
-          Campaign
-        </button>
-      </div>
-    </div>
-  </div>
-</app-townhall-card>
-<app-townhall-card *ngIf="campaignType === socialMediaString">
-  <div card-title>
-    {{ socialMediaCampaign.name }}
-  </div>
-  <div top [style.background-image]="'url(/assets/photos/social_media_campaign.png)'"
-       style="height: 100%; width: 100%; background-size: cover;"></div>
-  <div button>
-    <div class="d-flex flex-column justify-content-around margin-top-bottom">
-      <div class="d-flex justify-content-around">
-        <div class="funds">{{ socialMediaCampaign.fundsCost | currency: 'USD' }}</div>
-        <div class="popularity">{{ socialMediaCampaign.popGain }}p</div>
-      </div>
-      <div class="margin-top-bottom border-center"></div>
-      <div class="d-flex justify-content-center align-items-center">
-        <button type="button" class="btn btn-outline-primary" (click)="launchCampaign(socialMediaCampaign, mockGameDto)">Launch
-          Campaign
-        </button>
-      </div>
-    </div>
-  </div>
-</app-townhall-card>
-<app-townhall-card *ngIf="campaignType === vlogsPodcastString">
-  <div card-title>
-    {{ vlogsEnPodcasts.name }}
-  </div>
-  <div top [style.background-image]="'url(/assets/photos/vlog_podcast.png)'"
-       style="height: 100%; width: 100%; background-size: cover;"></div>
-  <div button>
-    <div class="d-flex flex-column justify-content-around margin-top-bottom">
-      <div class="d-flex justify-content-around">
-        <div class="funds">{{ vlogsEnPodcasts.fundsCost | currency: 'USD' }}</div>
-        <div class="popularity">{{ vlogsEnPodcasts.popGain }}p</div>
-      </div>
-      <div class="margin-top-bottom border-center"></div>
-      <div class="d-flex justify-content-center align-items-center">
-        <button type="button" class="btn btn-outline-primary" (click)="launchCampaign(vlogsEnPodcasts, mockGameDto)">Launch
-          Campaign
-        </button>
-      </div>
-    </div>
-  </div>
-</app-townhall-card>
+<!--<app-townhall-card *ngIf="campaignType === ''">-->
+<!--  <div card-title>-->
+<!--    Choose your campaign-->
+<!--  </div>-->
+<!--  <div content>-->
+<!--&lt;!&ndash;    <p>Breng je inwoners op de hoogte van de realisatie van je visionaire plannen</p>&ndash;&gt;-->
+<!--&lt;!&ndash;    <p>Kies in het menu rechts via welke kanalen je je successen deelt met de mensen</p>&ndash;&gt;-->
+<!--&lt;!&ndash;    <p>Je verkijgt populariteit op basis van je <b>pop rate</b></p>&ndash;&gt;-->
+<!--  </div>-->
+<!--</app-townhall-card>-->
+<!--<app-townhall-card *ngIf="campaignType === flyerenString">-->
+<!--  <div card-title>-->
+<!--    {{ flyeren.name }}-->
+<!--  </div>-->
+<!--  <div top [style.background-image]="'url(/assets/photos/flyeren.png)'"-->
+<!--       style="height: 100%; width: 100%; background-size: cover;"></div>-->
+<!--  <div button>-->
+<!--    <div class="d-flex flex-column justify-content-around margin-top-bottom">-->
+<!--      <div class="d-flex justify-content-around">-->
+<!--        <div class="funds">{{ flyeren.fundsCost | currency: 'USD' }}</div>-->
+<!--        <div class="popularity">{{ flyeren.popGain }}p</div>-->
+<!--      </div>-->
+<!--      <div class="margin-top-bottom border-center"></div>-->
+<!--      <div class="d-flex justify-content-center align-items-center">-->
+<!--        <button type="button" class="btn btn-outline-primary" (click)="launchCampaign(flyeren, mockGameDto)">Launch-->
+<!--          Campaign-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</app-townhall-card>-->
+<!--<app-townhall-card *ngIf="campaignType === socialMediaString">-->
+<!--  <div card-title>-->
+<!--    {{ socialMediaCampaign.name }}-->
+<!--  </div>-->
+<!--  <div top [style.background-image]="'url(/assets/photos/social_media_campaign.png)'"-->
+<!--       style="height: 100%; width: 100%; background-size: cover;"></div>-->
+<!--  <div button>-->
+<!--    <div class="d-flex flex-column justify-content-around margin-top-bottom">-->
+<!--      <div class="d-flex justify-content-around">-->
+<!--        <div class="funds">{{ socialMediaCampaign.fundsCost | currency: 'USD' }}</div>-->
+<!--        <div class="popularity">{{ socialMediaCampaign.popGain }}p</div>-->
+<!--      </div>-->
+<!--      <div class="margin-top-bottom border-center"></div>-->
+<!--      <div class="d-flex justify-content-center align-items-center">-->
+<!--        <button type="button" class="btn btn-outline-primary" (click)="launchCampaign(socialMediaCampaign, mockGameDto)">Launch-->
+<!--          Campaign-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</app-townhall-card>-->
+<!--<app-townhall-card *ngIf="campaignType === vlogsPodcastString">-->
+<!--  <div card-title>-->
+<!--    {{ vlogsEnPodcasts.name }}-->
+<!--  </div>-->
+<!--  <div top [style.background-image]="'url(/assets/photos/vlog_podcast.png)'"-->
+<!--       style="height: 100%; width: 100%; background-size: cover;"></div>-->
+<!--  <div button>-->
+<!--    <div class="d-flex flex-column justify-content-around margin-top-bottom">-->
+<!--      <div class="d-flex justify-content-around">-->
+<!--        <div class="funds">{{ vlogsEnPodcasts.fundsCost | currency: 'USD' }}</div>-->
+<!--        <div class="popularity">{{ vlogsEnPodcasts.popGain }}p</div>-->
+<!--      </div>-->
+<!--      <div class="margin-top-bottom border-center"></div>-->
+<!--      <div class="d-flex justify-content-center align-items-center">-->
+<!--        <button type="button" class="btn btn-outline-primary" (click)="launchCampaign(vlogsEnPodcasts, mockGameDto)">Launch-->
+<!--          Campaign-->
+<!--        </button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</app-townhall-card>-->

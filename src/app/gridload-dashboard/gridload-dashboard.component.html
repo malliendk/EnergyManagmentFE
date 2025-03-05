@@ -12,19 +12,20 @@
         {{ singleDashboardView == 'table' ? '<' : '>' }}
       </button>
       <div class="custom-container">
-        <div>{{ gameDTO.solarPanelAmount }}/{{ gameDTO.solarPanelCapacity }}</div>
-        <div class="grid-load">{{ gameDTO.gridLoadTotal }}/{{ gameDTO.gridCapacity }}</div>
-        <div class="energy-production">{{ gameDTO.energyProduction }}</div>
-        <div class="energy-consumption">{{ gameDTO.energyConsumption }}</div>
+        <div class="funds">Zonnepanelen: {{ gameDTO.solarPanelAmount }}/{{ gameDTO.solarPanelCapacity }}</div>
+        <div class="energy-production">Productie: {{ gameDTO.energyProduction }}</div>
+        <div class="energy-consumption">Consumptie: {{ gameDTO.energyConsumption }}</div>
+        <div class="grid-load">Netcapaciteit: {{ gameDTO.gridCapacity }}</div>
+        <div class="grid-load">Netbelasting: {{gameDTO.gridLoad | number:'1.2-2'}} </div>
       </div>
     </div>
   </div>
-  <div class="day-weather-box">
-    <div>Time of day</div>
-    <div [ngStyle]="{'background-color': gameDTO.timeOfDay.color}">{{ gameDTO.timeOfDay.name }}</div>
-    <div>Weather type</div>
-    <div [ngStyle]="{'background-color': gameDTO.weatherType.color}">{{ gameDTO.weatherType.name }}</div>
-  </div>
+<!--  <div class="day-weather-box">-->
+<!--    <div>Time of day</div>-->
+<!--    <div [ngStyle]="{'background-color': gameDTO.timeOfDay.color}">{{ gameDTO.timeOfDay.name }}</div>-->
+<!--    <div>Weather type</div>-->
+<!--    <div [ngStyle]="{'background-color': gameDTO.weatherType.color}">{{ gameDTO.weatherType.name }}</div>-->
+<!--  </div>-->
 </div>
 
 <div id="board-double-expanded" *ngIf="isDoubleExpanded" [ngClass]="doubleExpandedCss">
@@ -38,7 +39,7 @@
     <div class="custom-container d-flex justify-content-around">
       <div class="funds">{{ gameDTO.funds | currency: 'USD' }}</div>
       <div class="popularity">{{ gameDTO.popularity }}p</div>
-      <div class="grid-load">{{ gameDTO.gridLoadTotal }}/{{ gameDTO.gridCapacity }}</div>
+      <div class="grid-load">{{ gameDTO.gridLoad }}/{{ gameDTO.gridCapacity }}</div>
     </div>
   </div>
 </div>

@@ -1,10 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ExtendedGameDTO} from "../extendedGameDTO";
-import {ChartService} from "../services/chart.service";
-import {mockGameObject} from "../mocks/mock-game-object";
+import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {SupplyTypes} from "../supplyType";
 import {Account} from "../dtos/account";
-import {Router} from "@angular/router";
 import {AccountService} from "../services/account.service";
 
 @Component({
@@ -34,8 +31,6 @@ export class TownhallDashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.gameDTO = mockGameObject;
-    // this.getAccountNumberByType();
     this.customColors = this.setCustomColors();
     this.chartResults = this.setChartResults();
   }

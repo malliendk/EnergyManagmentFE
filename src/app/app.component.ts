@@ -1,12 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {GameDTOService} from "./services/game-dto.service";
-import {ExtendedGameDTO} from "./extendedGameDTO";
-import {mockGameObject} from "./mocks/mock-game-object";
-import {Observable} from "rxjs";
+import {ExtendedGameDTO} from "./dtos/extendedGameDTO";
+import {Observable, Subscription} from "rxjs";
 import {TimeOfDay, TimesOfDay} from "./timeOfDay";
 import {BuildingService} from "./services/building.service";
-import {MinimizedGameDTO} from "./minimizedGameDTO";
+import {MinimizedGameDTO} from "./dtos/minimizedGameDTO";
 import {Building} from "./dtos/building";
+import {BuildingRequest} from "./buildingRequest";
+import {GameEventsService} from "./game-events.service";
 
 @Component({
   selector: 'app-root',
@@ -14,10 +15,14 @@ import {Building} from "./dtos/building";
   styleUrls: ['./app.component.css'],
   standalone: false
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnDestroy {
   title = 'Energy Management';
 
+  minimizedGameDTO: MinimizedGameDTO | null = null;
   gameDTO!: ExtendedGameDTO;
+
+  connectionError: boolean = false;
+  private eventsSubscription: Subscription | null = null;
 
   buildingViewComponentType: string = '';
   passingViewType!: string;
@@ -26,18 +31,61 @@ export class AppComponent implements OnInit {
   viewTypeBuildings: string = 'buildings'
 
   constructor(private gameDTOService: GameDTOService,
+              private gameEventsService: GameEventsService,
               private buildingService: BuildingService) {
   }
 
-  ngOnInit(): void {
-  }
 
   initiateGame() {
     console.log("initiating game")
     this.gameDTOService.startGame()
-      .subscribe(gameDTO => {
+      .subscribe(() => {
+        this.getGameDTO();
+        this.subscribeToGameEvents();
+      });
+  }
 
-      })
+  getGameDTO() {
+    this.gameDTOService.getGameDto().subscribe(minimizedGameDTO => {
+      this.buildingService.getBuildingsById(minimizedGameDTO)
+        .subscribe(buildings => {
+          this.gameDTO = this.gameDTOService.extendGameDTO(minimizedGameDTO, buildings);
+          console.log(this.gameDTO)
+        })
+    })
+  }
+
+  subscribeToGameEvents(): void {
+    this.connectionError = false;
+    this.eventsSubscription = this.gameEventsService.subscribeToGameEvents()
+      .subscribe({
+        next: (minimizedDTO: MinimizedGameDTO) => {
+          console.log('Received event:', minimizedDTO); // Add detailed logging
+          this.minimizedGameDTO = minimizedDTO;
+          this.buildingService.getBuildingsById(minimizedDTO)
+            .subscribe({
+              next: (gameBuildings: Building[]) => {
+                this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, gameBuildings);
+                console.log('Updated gameDTO:', this.gameDTO);
+              },
+              error: (buildingError) => {
+                console.error('Error fetching buildings:', buildingError);
+              }
+            });
+          this.connectionError = false;
+        },
+        error: (error) => {
+          console.error('SSE connection error:', error);
+          this.connectionError = true;
+          setTimeout(() => this.subscribeToGameEvents(), 5000);
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventsSubscription) {
+      this.eventsSubscription.unsubscribe();
+    }
   }
 
   getViewType(value: string) {
@@ -48,51 +96,4 @@ export class AppComponent implements OnInit {
   getBuildingViewType(value: string) {
     this.buildingViewComponentType = value;
   }
-
-  getGameDTO() {
-    this.gameDTOService.getGameDto()
-      .subscribe((minimizedGameDTO => {
-        //new ExtendedGameDTO = blabla + buildings = getBuildingsByID
-      }
-  }
-
-  getBuildingsById(minimizedGameDTO: MinimizedGameDTO): Building[] {
-    const ids: number[] = minimizedGameDTO.buildingRequests.map(request => request.buildingId);
-    let finalBuildingList: Building[] = [];
-    this.buildingService.getBuildingsById(ids)
-      .subscribe(buildings => {
-          finalBuildingList = this.duplicateBuildingsIfNecessary(ids, buildings);
-          finalBuildingList = this.setSolarPanelAmountToBuildings(minimizedGameDTO, finalBuildingList);
-        }
-      )
-    return finalBuildingList;
-  }
-
-  duplicateBuildingsIfNecessary(ids: number[], retrievedBuildings: Building[]) {
-    let finalBuildingList: Building[] = [];
-    ids.forEach((id) => {
-      retrievedBuildings.forEach(building => {
-        if (building.id == id) {
-          finalBuildingList.push(building)
-        }
-      })
-    })
-    return finalBuildingList;
-  }
-
-  setSolarPanelAmountToBuildings(minimizedGameDTO: MinimizedGameDTO, buildings: Building[]): Building[] {
-    let requestMap = minimizedGameDTO.buildingRequests.map(request => ({
-      id: request.buildingId,
-      solarPanelAmount: request.solarPanelAmount
-    }));
-    buildings.forEach(building => {
-      requestMap.forEach(map => {
-        if (map.id == building.id) {
-          building.solarPanelAmount = map.solarPanelAmount;
-        }
-      })
-    })
-    return buildings;
-  }
-
 }

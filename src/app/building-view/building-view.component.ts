@@ -1,7 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Building} from '../dtos/building';
-import {mockBuildings} from "../mocks/mock-buildings";
-import {timeout} from "rxjs";
 
 @Component({
     selector: 'app-building-view',
@@ -10,8 +8,6 @@ import {timeout} from "rxjs";
     standalone: false
 })
 export class BuildingViewComponent {
-
-  protected readonly mockBuildings = mockBuildings;
 
   @Input() viewType: string = '';
   @Input() allBuildings!: Building[];
@@ -23,15 +19,10 @@ export class BuildingViewComponent {
 
   isDetailView: boolean = false;
   purchaseView : string = 'purchase';
-  isPurchased: boolean = false;
 
   toggleCardDetailView(id: number) {
     this.isDetailView = true;
     this.building = this.allBuildings.find(building => building.id === id) as Building | null;
-    const isPurchased = this.purchasedBuildings.find(building => building.id === id);
-    if (isPurchased) {
-      this.isPurchased = true;
-    }
   }
 
   purchaseBuilding(building: Building) {
@@ -50,7 +41,7 @@ export class BuildingViewComponent {
     return propertyValue > 0 ? '#e6b904' : 'black';
   }
 
-  findIfBuildingIsPurchased() {
-
+  getCardColumnBackgroundColor(building: Building) {
+    return building.canBePurchased ? 'background-color-dark-brown' : 'background-color-grey';
   }
 }
