@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Supervisor} from "../dtos/supervisor";
 import {Observable} from "rxjs";
 

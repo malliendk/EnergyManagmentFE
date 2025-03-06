@@ -12,6 +12,7 @@
         {{ singleDashboardView == 'table' ? '<' : '>' }}
       </button>
       <div class="custom-container">
+        <div class="popularity">Huishoudens: {{ gameDTO.houseHolds }}</div>
         <div class="funds">Zonnepanelen: {{ gameDTO.solarPanelAmount }}/{{ gameDTO.solarPanelCapacity }}</div>
         <div class="energy-production">Productie: {{ gameDTO.energyProduction }}</div>
         <div class="energy-consumption">Consumptie: {{ gameDTO.energyConsumption }}</div>

@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
-import {GameDTOService} from "../services/game-dto.service";
 import {BuildingService} from "../services/building.service";
 
 @Component({
@@ -9,13 +8,13 @@ import {BuildingService} from "../services/building.service";
     styleUrls: ['./navbar.component.css'],
     standalone: false
 })
-export class NavbarComponent implements OnInit{
+export class NavbarComponent{
 
   transitionClass = 'nav-demo navbar-expand-lg night'
   toMorning = 'morning';
   toAfternoon = 'afternoon';
 
-  @Input() gameDTO!: ExtendedGameDTO
+  @Input() gameDTO!: ExtendedGameDTO;
   @Output() passViewType = new EventEmitter<string>();
   @Output() passBuildingVieWType = new EventEmitter<string>();
 
@@ -23,27 +22,10 @@ export class NavbarComponent implements OnInit{
   viewTypeTownHall: string = 'town hall';
   viewTypeFactory: string = 'factory';
   viewTypeBuildings: string = 'buildings'
-  viewTypeBuildingPurchase: string = 'purchase';
+  viewTypeBuildingAll: string = 'purchase';
   viewTypeBuildingOverview: string = 'overview';
 
   constructor(private buildingService: BuildingService) {}
-
-  ngOnInit() {
-  }
-
-  transition() {
-    console.log(this.transitionClass);
-    if (this.transitionClass.includes('morning')) {
-      this.transitionClass = this.transitionClass.replace('morning', 'afternoon');
-    } else if (this.transitionClass.includes('afternoon')) {
-      this.transitionClass = this.transitionClass.replace('afternoon', 'evening');
-    } else if (this.transitionClass.includes('evening')) {
-      this.transitionClass = this.transitionClass.replace('evening', 'night');
-    } else if (this.transitionClass.includes('night')) {
-      this.transitionClass = this.transitionClass.replace('night', 'morning');
-    }
-      console.log(this.transitionClass);
-  }
 
   activateButtons() {
     this.showButtons = !this.showButtons;
@@ -52,6 +34,10 @@ export class NavbarComponent implements OnInit{
   emitBuildingViewType(viewType: string, viewTypeBuilding: string) {
     this.passViewType.emit(viewType);
     this.passBuildingVieWType.emit(viewTypeBuilding)
+  }
+
+  emitBuildingViewTypeAll() {
+    this.passBuildingVieWType.emit(this.viewTypeBuildingAll);
   }
 
   emitViewType(viewType: string) {

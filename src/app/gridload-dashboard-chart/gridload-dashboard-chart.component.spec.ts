@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GridloadDashboardChartComponent } from './gridload-dashboard-chart.component';
+import {GridloadDashboardChartComponent} from './gridload-dashboard-chart.component';
 
 describe('GridloadChartViewComponent', () => {
   let component: GridloadDashboardChartComponent;

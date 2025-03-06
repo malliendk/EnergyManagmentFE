@@ -1,13 +1,12 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GameDTOService} from "./services/game-dto.service";
 import {ExtendedGameDTO} from "./dtos/extendedGameDTO";
-import {Observable, Subscription} from "rxjs";
-import {TimeOfDay, TimesOfDay} from "./timeOfDay";
+import {Subscription} from "rxjs";
 import {BuildingService} from "./services/building.service";
 import {MinimizedGameDTO} from "./dtos/minimizedGameDTO";
 import {Building} from "./dtos/building";
-import {BuildingRequest} from "./buildingRequest";
 import {GameEventsService} from "./game-events.service";
+import {cloneDeep} from "lodash";
 
 @Component({
   selector: 'app-root',
@@ -15,11 +14,13 @@ import {GameEventsService} from "./game-events.service";
   styleUrls: ['./app.component.css'],
   standalone: false
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'Energy Management';
 
   minimizedGameDTO: MinimizedGameDTO | null = null;
   gameDTO!: ExtendedGameDTO;
+  allBuildings?: Building[];
+
 
   connectionError: boolean = false;
   private eventsSubscription: Subscription | null = null;
@@ -35,6 +36,10 @@ export class AppComponent implements OnDestroy {
               private buildingService: BuildingService) {
   }
 
+  ngOnInit() {
+    this.passingViewType = this.viewTypeBuildings;
+    this.buildingViewComponentType = this.viewTypeBuildings;
+  }
 
   initiateGame() {
     console.log("initiating game")
@@ -46,11 +51,11 @@ export class AppComponent implements OnDestroy {
   }
 
   getGameDTO() {
-    this.gameDTOService.getGameDto().subscribe(minimizedGameDTO => {
+    this.gameDTOService.getMinimizedGameDto().subscribe(minimizedGameDTO => {
       this.buildingService.getBuildingsById(minimizedGameDTO)
-        .subscribe(buildings => {
+        .subscribe((buildings: Building[]) => {
           this.gameDTO = this.gameDTOService.extendGameDTO(minimizedGameDTO, buildings);
-          console.log(this.gameDTO)
+          console.log('got gameDTO: {}', this.gameDTO)
         })
     })
   }
@@ -60,13 +65,14 @@ export class AppComponent implements OnDestroy {
     this.eventsSubscription = this.gameEventsService.subscribeToGameEvents()
       .subscribe({
         next: (minimizedDTO: MinimizedGameDTO) => {
-          console.log('Received event:', minimizedDTO); // Add detailed logging
           this.minimizedGameDTO = minimizedDTO;
           this.buildingService.getBuildingsById(minimizedDTO)
             .subscribe({
               next: (gameBuildings: Building[]) => {
-                this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, gameBuildings);
-                console.log('Updated gameDTO:', this.gameDTO);
+                let ownedBuildings: Building[] = cloneDeep(gameBuildings);
+                ownedBuildings.forEach(b => b.instanceId = this.buildingService.generateUniqueId());
+                this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, ownedBuildings);
+                console.log('owned building: {}', ownedBuildings)
               },
               error: (buildingError) => {
                 console.error('Error fetching buildings:', buildingError);
@@ -82,6 +88,15 @@ export class AppComponent implements OnDestroy {
       });
   }
 
+  updateGameDTO(passedGameDTO: ExtendedGameDTO) {
+    this.gameDTOService.updateGameDTO(passedGameDTO)
+      .subscribe(() => this.gameDTOService.getMinimizedGameDto()
+        .subscribe((minimizedDTO: MinimizedGameDTO) => {
+          this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, passedGameDTO.buildings);
+          this.getAllBuildings();
+        }));
+  }
+
   ngOnDestroy(): void {
     if (this.eventsSubscription) {
       this.eventsSubscription.unsubscribe();
@@ -90,10 +105,21 @@ export class AppComponent implements OnDestroy {
 
   getViewType(value: string) {
     this.passingViewType = value;
-    console.log(`passing view types from navbar: ${this.passingViewType}`, ` ${this.buildingViewComponentType}`)
   }
 
   getBuildingViewType(value: string) {
     this.buildingViewComponentType = value;
+    this.getAllBuildings();
+  }
+
+  getAllBuildings() {
+    console.log('getting buildings anew')
+    this.buildingService.getAll()
+      .subscribe((buildings: Building[]) => {
+        this.allBuildings = cloneDeep(buildings);
+        this.allBuildings.forEach((building: Building) => building.instanceId = undefined);
+
+        console.log(this.allBuildings)
+      });
   }
 }

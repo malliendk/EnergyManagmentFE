@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 
 @Injectable({

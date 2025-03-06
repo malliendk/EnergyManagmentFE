@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ChartBarHorizontalComponent } from './chart-bar-horizontal.component';
+import {ChartBarHorizontalComponent} from './chart-bar-horizontal.component';
 
 describe('HorizontalBarChartComponent', () => {
   let component: ChartBarHorizontalComponent;

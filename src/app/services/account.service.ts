@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
-import { HttpClient } from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {Account} from "../dtos/account";
-import {SupplyTypes} from "../supplyType";
-import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 
 @Injectable({
   providedIn: 'root'

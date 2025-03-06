@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TownhallCardComponent } from './townhall-card.component';
+import {TownhallCardComponent} from './townhall-card.component';
 
 describe('TownhallInfoCardComponent', () => {
   let component: TownhallCardComponent;

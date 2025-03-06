@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Building} from '../dtos/building';
 
 @Component({
@@ -7,29 +7,27 @@ import {Building} from '../dtos/building';
     styleUrls: ['./building-view.component.css'],
     standalone: false
 })
-export class BuildingViewComponent {
+export class BuildingViewComponent implements OnInit{
 
   @Input() viewType: string = '';
-  @Input() allBuildings!: Building[];
-  @Input() purchasedBuildings! : Building[];
+  @Input() buildings!: Building[];
   @Output() purchasedBuildingEmitter = new EventEmitter<Building>();
   @Output() passViewType = new EventEmitter<string>();
 
   building!: Building | null;
-
   isDetailView: boolean = false;
-  purchaseView : string = 'purchase';
+  categoryPowerPlant = "Energiecentrale";
+
+  ngOnInit(): void {}
 
   toggleCardDetailView(id: number) {
     this.isDetailView = true;
-    this.building = this.allBuildings.find(building => building.id === id) as Building | null;
+    this.building = this.buildings.find(building => building.id === id) || null;
+    console.log('this.building:', this.building);
   }
 
   purchaseBuilding(building: Building) {
     this.purchasedBuildingEmitter.emit(building);
-    setTimeout(() => {
-      this.cancelDetailView()
-    }, 500);
   }
 
   cancelDetailView() {
@@ -39,9 +37,5 @@ export class BuildingViewComponent {
 
   getBorderColor(propertyValue: number) {
     return propertyValue > 0 ? '#e6b904' : 'black';
-  }
-
-  getCardColumnBackgroundColor(building: Building) {
-    return building.canBePurchased ? 'background-color-dark-brown' : 'background-color-grey';
   }
 }

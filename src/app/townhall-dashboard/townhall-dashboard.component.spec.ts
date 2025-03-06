@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TownhallDashboardComponent } from './townhall-dashboard.component';
+import {TownhallDashboardComponent} from './townhall-dashboard.component';
 
 describe('TownhallDashboardComponent', () => {
   let component: TownhallDashboardComponent;

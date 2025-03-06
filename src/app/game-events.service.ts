@@ -1,6 +1,6 @@
 import {Injectable, NgZone} from '@angular/core';
 
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 import {MinimizedGameDTO} from "./dtos/minimizedGameDTO";
 
 
@@ -27,16 +27,11 @@ export class GameEventsService {
         // Use addEventListener instead of onmessage
         eventSource.addEventListener('game-update', (event: MessageEvent) => {
           console.group('SSE Game Update Received');
-          console.log('Raw Event:', event);
-          console.log('Event Type:', event.type);
-          console.log('Event Data:', event.data);
 
           try {
-            // Parse the event data
             const gameData: MinimizedGameDTO = JSON.parse(event.data);
             console.log('Parsed Game Data:', gameData);
 
-            // Ensure change detection
             this.zone.run(() => {
               observer.next(gameData);
             });

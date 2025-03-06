@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { GameModeSelectComponent } from './game-mode-select.component';
+import {GameModeSelectComponent} from './game-mode-select.component';
 
 describe('GameModeSelectComponent', () => {
   let component: GameModeSelectComponent;

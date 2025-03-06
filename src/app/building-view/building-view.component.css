@@ -89,6 +89,11 @@
   background-color: #b88157;
 }
 
+.background-color-gold {
+  background-color: goldenrod;
+  font-weight: bold;
+}
+
 .background-color-grey {
   background-color: grey;
 }

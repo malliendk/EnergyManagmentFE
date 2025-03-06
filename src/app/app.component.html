@@ -16,7 +16,8 @@
         <app-building-dashboard
           [receivingViewType]="buildingViewComponentType"
           [gameDTO]="gameDTO"
-          (passGameDTOToTopLevel)="getGameDTO()"
+          [allBuildings]="allBuildings"
+          (passGameDTOToTopLevel)="updateGameDTO($event)"
         ></app-building-dashboard>
       }
     </div>

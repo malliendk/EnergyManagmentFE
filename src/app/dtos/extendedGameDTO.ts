@@ -1,4 +1,3 @@
-import {Account} from "./account";
 import {Building} from "./building";
 import {EventDTO} from "./eventDTO";
 import {TimeOfDay} from "../timeOfDay";
@@ -15,6 +14,7 @@ export interface ExtendedGameDTO {
   energyConsumption: number;
   gridLoad: number;
   gridCapacity: number;
+  houseHolds: number;
   solarPanelAmount: number,
   solarPanelCapacity: number;
   goldIncome: number;

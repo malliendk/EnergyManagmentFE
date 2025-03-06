@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ChartPieComponent } from './chart-pie.component';
+import {ChartPieComponent} from './chart-pie.component';
 
 describe('ChartPieComponent', () => {
   let component: ChartPieComponent;

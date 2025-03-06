@@ -1,19 +1,16 @@
   <div *ngIf="receivingViewType === ownedBuildingsView">
-    @if (purchasedBuildings) {
     <app-building-view
       (passViewType)="getBuildingViewType($event)"
       [viewType]="ownedBuildingsView"
-      [allBuildings]="gameDTO.buildings"
+      [buildings]="gameDTO.buildings"
     ></app-building-view>
-    }
   </div>
   <div *ngIf="receivingViewType === purchaseView">
     @if (allBuildings) {
     <app-building-view
       [viewType]="purchaseView"
-      [allBuildings]="allBuildings"
-      [purchasedBuildings]="gameDTO.buildings"
-      (purchasedBuildingEmitter)="updateGameDTO($event)"
+      [buildings]="allBuildings"
+      (purchasedBuildingEmitter)="updateBuildings($event)"
     ></app-building-view>
     }
   </div>

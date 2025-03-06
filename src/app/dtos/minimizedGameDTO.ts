@@ -1,4 +1,3 @@
-import {Building} from "./building";
 import {EventDTO} from "./eventDTO";
 import {TimeOfDay} from "../timeOfDay";
 import {WeatherType} from "../weatherType";
@@ -16,6 +15,7 @@ export interface MinimizedGameDTO {
   energyConsumption: number;
   gridLoad: number;
   gridCapacity: number;
+  houseHolds: number;
   solarPanelAmount: number,
   solarPanelCapacity: number;
   goldIncome: number;

@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BorderBlockComponent } from './border-block.component';
+import {BorderBlockComponent} from './border-block.component';
 
 describe('BorderBlockComponent', () => {
   let component: BorderBlockComponent;

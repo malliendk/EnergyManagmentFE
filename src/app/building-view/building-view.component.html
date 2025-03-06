@@ -1,6 +1,6 @@
 <div *ngIf="!isDetailView">
   <div class="d-flex flex-wrap justify-content-center mt-1">
-    <div *ngFor="let building of allBuildings">
+    <div *ngFor="let building of buildings">
       <div class="card card-small" (click)="toggleCardDetailView(building.id)">
         <div class="card-img-top">
           <img [src]="building.imageUri" alt="{{building.imageUri}} + ' image'"
@@ -12,7 +12,7 @@
   </div>
 </div>
 
-<div *ngIf="isDetailView">
+@if (isDetailView) {
   <div class="d-flex justify-content-center align-items-center">
   <div class="card card-large"
        [ngStyle]="{'border-color': building!.color}">
@@ -35,7 +35,7 @@
             [ngClass]="{'background-color-light-brown': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
             !building!.canBePurchased && !building!.isPurchased}">Category: {{ building!.category }}</h6>
         <h6 class="property-block-theme mt-2 mb-3"
-            [ngClass]="{'background-color-light-brown': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
+            [ngClass]="{'background-color-gold': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
             !building!.canBePurchased && !building!.isPurchased}">Price: {{ building!.price }}</h6>
       </div>
     </div>
@@ -52,9 +52,9 @@
             <div>Energy Consumption</div>
             <div>{{ building!.energyConsumption }}</div>
           </div>
-          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.households)}">
+          <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.houseHolds)}">
             <div>Households</div>
-            <div>{{ building!.households }}</div>
+            <div>{{ building!.houseHolds }}</div>
           </div>
           <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.goldIncome)}">
             <div>Gold income</div>
@@ -85,15 +85,15 @@
             <div>+{{ building!.popularityIncome }}</div>
           </div>
           <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.environmentalScore)}">
-            <div>Environmental income</div>
+            <div>Environmental Score</div>
             <div>+{{ building!.environmentalScore }}</div>
           </div>
         </div>
       </div>
-        @if (!building!.isPurchased && building!.canBePurchased) {
+        @if (!building!.instanceId && !(building!.category === categoryPowerPlant)) {
           <button class="purchase-button btn btn-gold mb-2" (click)="purchaseBuilding(building!)">Purchase Building</button>
         }
       </div>
     </div>
   </div>
-</div>
+}

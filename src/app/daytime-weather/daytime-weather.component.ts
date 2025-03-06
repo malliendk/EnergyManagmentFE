@@ -1,6 +1,5 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {BehaviorSubject, Observable, Subscription} from "rxjs";
-import {ClockService} from "../services/clock.service";
+import {BehaviorSubject, Observable} from "rxjs";
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 
 @Component({

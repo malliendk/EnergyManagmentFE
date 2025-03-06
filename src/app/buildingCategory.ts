@@ -5,23 +5,23 @@ export interface BuildingCategory {
 
 export const BuildingCategories: { [key: string]: BuildingCategory } = {
   INDUSTRIAL: {
-    name: 'Industrial',
+    name: 'Industrieel',
     colorCode: ''
   },
   HOUSING: {
-    name: 'Housing',
+    name: 'Woning',
     colorCode: ''
   },
   PRODUCTION: {
-    name: 'Production',
+    name: 'Productie',
     colorCode: ''
   },
   PUBLIC: {
-    name: 'Public',
+    name: 'Openbaar gebouw',
     colorCode: ''
   },
   SPECIAL: {
-    name: 'Special',
+    name: 'Bijzonder gebouw',
     colorCode: ''
   }
 } as const;

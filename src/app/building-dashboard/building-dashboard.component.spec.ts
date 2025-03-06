@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BuildingDashboardComponent } from './building-dashboard.component';
+import {BuildingDashboardComponent} from './building-dashboard.component';
 
 describe('LoadsourceListComponent', () => {
   let component: BuildingDashboardComponent;

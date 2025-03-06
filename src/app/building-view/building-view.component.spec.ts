@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { BuildingViewComponent } from './building-view.component';
+import {BuildingViewComponent} from './building-view.component';
 
 describe('BuildingViewComponent', () => {
   let component: BuildingViewComponent;

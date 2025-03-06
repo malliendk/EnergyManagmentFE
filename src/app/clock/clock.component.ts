@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ClockService} from "../services/clock.service";
 import {Subscription} from "rxjs";
 

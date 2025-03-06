@@ -1,6 +1,7 @@
 export interface Building {
 
   id: number;
+  instanceId: number | undefined;
   name: string;
   description: string;
   price: number;
@@ -13,7 +14,7 @@ export interface Building {
   energyConsumption: number;
   solarPanelAmount: number
   solarPanelCapacity: number;
-  households: number;
+  houseHolds: number;
   popularityIncome: number;
   goldIncome: number;
   researchIncome: number;
