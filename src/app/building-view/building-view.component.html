@@ -17,13 +17,13 @@
   <div class="card card-large"
        [ngStyle]="{'border-color': building!.color}">
     <div class="card-column justify-content-end align-items-center"
-         [ngClass]="{'background-color-dark-brown': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
-            !building!.canBePurchased && !building!.isPurchased}">
+         [ngClass]="{'background-color-dark-brown': building!.canBePurchased, 'background-color-grey':
+            !building!.canBePurchased}">
       <div class="d-flex justify-content-between">
         <div class="property-block-title"
              [ngStyle]="{'border-color': building!.color}"
-             [ngClass]="{'background-color-light-brown': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
-            !building!.canBePurchased && !building!.isPurchased}">
+             [ngClass]="{'background-color-light-brown': building!.canBePurchased, 'background-color-grey':
+            !building!.canBePurchased}">
           <div class="justify-content-start">{{ building!.name }}</div>
         </div>
       </div>
@@ -32,16 +32,16 @@
       </div>
       <div class="d-flex flex-column align-items-center h-35">
         <h6 class="property-block-theme mb-2 mt-4"
-            [ngClass]="{'background-color-light-brown': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
-            !building!.canBePurchased && !building!.isPurchased}">Category: {{ building!.category }}</h6>
+            [ngClass]="{'background-color-light-brown': building!.canBePurchased, 'background-color-grey':
+            !building!.canBePurchased}">Category: {{ building!.category }}</h6>
         <h6 class="property-block-theme mt-2 mb-3"
-            [ngClass]="{'background-color-gold': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
-            !building!.canBePurchased && !building!.isPurchased}">Price: {{ building!.price }}</h6>
+            [ngClass]="{'background-color-gold': building!.canBePurchased, 'background-color-grey':
+            !building!.canBePurchased}">Price: {{ building!.price }}</h6>
       </div>
     </div>
     <div class="card-column flex-column"
-         [ngClass]="{'background-color-dark-brown': building!.canBePurchased || building!.isPurchased, 'background-color-grey':
-            !building!.canBePurchased && !building!.isPurchased}">
+         [ngClass]="{'background-color-dark-brown': building!.canBePurchased, 'background-color-grey':
+            !building!.canBePurchased}">
       <div class="d-flex justify-content-evenly">
         <div class="property-column">
           <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.energyProduction)}">

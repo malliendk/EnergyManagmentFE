@@ -17,7 +17,7 @@ import {UpdateButtonComponent} from "./buttons/update-button/update-button.compo
 import {NgModule} from "@angular/core";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {CommonModule} from "@angular/common";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -64,6 +64,7 @@ import {CommonModule} from "@angular/common";
     FormsModule,
     ReactiveFormsModule,
     NgxChartsModule,
+    NgOptimizedImage,
   ]
 })
 export class SharedModule { }

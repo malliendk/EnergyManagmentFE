@@ -54,7 +54,6 @@ export class BuildingService {
       solarPanelAmount: request.solarPanelAmount
     }));
     this.setSolarPanelAmounts(buildings, requestMap);
-    this.setPurchased(buildings);
     this.setInstanceId(buildings);
     return buildings;
   }
@@ -74,10 +73,6 @@ export class BuildingService {
         building.solarPanelAmount = map.solarPanelAmount;
       }
     }))
-  }
-
-  private setPurchased(buildings: Building[]) {
-    buildings.forEach((building: Building) => building.isPurchased = true);
   }
 
   sortBuildingsByCategoryAndPrice(buildings: Building[]): Building[] {

@@ -7,6 +7,7 @@ import {MinimizedGameDTO} from "./dtos/minimizedGameDTO";
 import {Building} from "./dtos/building";
 import {GameEventsService} from "./game-events.service";
 import {cloneDeep} from "lodash";
+import {DayWeatherService} from "./services/day-weather.service";
 
 @Component({
   selector: 'app-root',
@@ -21,7 +22,6 @@ export class AppComponent implements OnInit, OnDestroy {
   gameDTO!: ExtendedGameDTO;
   allBuildings?: Building[];
 
-
   connectionError: boolean = false;
   private eventsSubscription: Subscription | null = null;
 
@@ -29,11 +29,15 @@ export class AppComponent implements OnInit, OnDestroy {
   passingViewType!: string;
   viewTypeTownHall: string = 'town hall';
   viewTypeFactory: string = 'factory';
-  viewTypeBuildings: string = 'buildings'
+  viewTypeBuildings: string = 'buildings';
+
+  timeOfDayColor: string = '#FFFFF';
+  weatherTypeColor: string = '#FFFFF'
 
   constructor(private gameDTOService: GameDTOService,
               private gameEventsService: GameEventsService,
-              private buildingService: BuildingService) {
+              private buildingService: BuildingService,
+              private dayWeatherService: DayWeatherService) {
   }
 
   ngOnInit() {
@@ -56,6 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
         .subscribe((buildings: Building[]) => {
           this.gameDTO = this.gameDTOService.extendGameDTO(minimizedGameDTO, buildings);
           console.log('got gameDTO: {}', this.gameDTO)
+          this.updateDayWeather(this.gameDTO.timeOfDay, this.gameDTO.weatherType)
         })
     })
   }
@@ -72,7 +77,6 @@ export class AppComponent implements OnInit, OnDestroy {
                 let ownedBuildings: Building[] = cloneDeep(gameBuildings);
                 ownedBuildings.forEach(b => b.instanceId = this.buildingService.generateUniqueId());
                 this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, ownedBuildings);
-                console.log('owned building: {}', ownedBuildings)
               },
               error: (buildingError) => {
                 console.error('Error fetching buildings:', buildingError);
@@ -94,13 +98,8 @@ export class AppComponent implements OnInit, OnDestroy {
         .subscribe((minimizedDTO: MinimizedGameDTO) => {
           this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, passedGameDTO.buildings);
           this.getAllBuildings();
+          this.updateDayWeather(this.gameDTO.timeOfDay, this.gameDTO.weatherType)
         }));
-  }
-
-  ngOnDestroy(): void {
-    if (this.eventsSubscription) {
-      this.eventsSubscription.unsubscribe();
-    }
   }
 
   getViewType(value: string) {
@@ -113,13 +112,23 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   getAllBuildings() {
-    console.log('getting buildings anew')
     this.buildingService.getAll()
       .subscribe((buildings: Building[]) => {
         this.allBuildings = cloneDeep(buildings);
         this.allBuildings.forEach((building: Building) => building.instanceId = undefined);
-
-        console.log(this.allBuildings)
       });
+  }
+
+  updateDayWeather(timeOfDay: string, weatherType: string) {
+    this.timeOfDayColor = this.dayWeatherService.getTimeOfDayColor(timeOfDay);
+    this.weatherTypeColor = (weatherType === 'sunny')
+      ? this.timeOfDayColor
+      : this.dayWeatherService.getWeatherTypeColor(weatherType);
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventsSubscription) {
+      this.eventsSubscription.unsubscribe();
+    }
   }
 }

@@ -1,13 +1,9 @@
-// import {ExtendedGameDTO} from "../extendedGameDTO";
-// import {mockBuildings} from "./mock-buildings";
-// import {mockAccounts} from "./mock-accounts";
 // import {mockEvents} from "./mock-events";
-// import {TimesOfDay} from "../timeOfDay";
-// import {WeatherTypes} from "../weatherType";
+// import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
+//
 //
 // export const mockGameObject: ExtendedGameDTO = {
 //   id : 1,
-//   localityName : 'Zutphen',
 //   supervisorName : 'Amelia Lupina',
 //   funds : 10000,
 //   popularity : 5000,
@@ -22,9 +18,8 @@
 //   goldIncome: 300,
 //   researchIncome: 200,
 //   popularityIncome: 100,
-//   environmentalIncome: 100,
+//   environmentalScore: 100,
 //   buildings : mockBuildings,
-//   accounts: mockAccounts,
 //   events: mockEvents,
 //   timeOfDay: TimesOfDay['morning'],
 //   weatherType: WeatherTypes['overcast'],

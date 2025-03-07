@@ -1,8 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {GameDTOService} from "../services/game-dto.service";
-import {TimeOfDay, TimesOfDay} from "../timeOfDay";
-import {WeatherType, WeatherTypes} from "../weatherType";
 
 @Component({
     selector: 'app-gridload-dashboard',
@@ -10,11 +8,9 @@ import {WeatherType, WeatherTypes} from "../weatherType";
     styleUrls: ['./gridload-dashboard.component.css'],
     standalone: false
 })
-export class GridloadDashboardComponent implements OnInit {
+export class GridloadDashboardComponent {
 
   @Input() gameDTO!: ExtendedGameDTO
-  timeOfDay!: TimeOfDay;
-  weatherType!: WeatherType;
   singleDashboardView: string = 'table';
 
   isCollapsed: boolean = false;
@@ -33,16 +29,6 @@ export class GridloadDashboardComponent implements OnInit {
   constructor(private gameDtoService: GameDTOService) {
   }
 
-  ngOnInit(): void {
-    this.timeOfDay = TimesOfDay[this.gameDTO.timeOfDay.name]
-    this.weatherType = WeatherTypes[this.gameDTO.weatherType.name]
-  }
-
-  transition() {
-    console.log(this.dayWeatherClass)
-    this.dayWeatherClass = this.dayWeatherClass.replace('moderate', 'overcast')
-    console.log(this.dayWeatherClass)
-  }
 
   toggleSingleView() {
     if (this.singleDashboardView.includes('table')) {

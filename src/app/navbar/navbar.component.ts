@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {BuildingService} from "../services/building.service";
 
@@ -8,7 +8,7 @@ import {BuildingService} from "../services/building.service";
     styleUrls: ['./navbar.component.css'],
     standalone: false
 })
-export class NavbarComponent{
+export class NavbarComponent implements OnInit {
 
   transitionClass = 'nav-demo navbar-expand-lg night'
   toMorning = 'morning';
@@ -26,6 +26,10 @@ export class NavbarComponent{
   viewTypeBuildingOverview: string = 'overview';
 
   constructor(private buildingService: BuildingService) {}
+
+  ngOnInit() {
+    this.showButtons = true;
+  }
 
   activateButtons() {
     this.showButtons = !this.showButtons;
