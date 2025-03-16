@@ -1,9 +1,4 @@
-<div class="background-container">
-  <div class="left-half" [ngStyle]="{'background-color': timeOfDayColor}"></div>
-  <div class="right-half" [ngStyle]="{'background-color': weatherTypeColor}"></div>
-</div>
-
-@if (gameDTO) {
+  <app-daytime-weather [gameDTO]="gameDTO"></app-daytime-weather>
   <app-navbar
     [gameDTO]="gameDTO"
     (passViewType)="getViewType($event)"
@@ -28,15 +23,13 @@
     </div>
     <div class="d-flex flex-column">
       <app-gridload-dashboard [gameDTO]="gameDTO"></app-gridload-dashboard>
-      <app-daytime-weather
-        class="align-self-end"
-        [gameDTO]="gameDTO"
-      ></app-daytime-weather>
     </div>
   </div>
-}
-@if (!gameDTO) {
-  <button class="btn btn-primary" (click)="initiateGame()">Start game</button>
-}
+  <app-event (passEventResult)="processCompletedEvent($event)"></app-event>
+
+
+<!--@if (!gameDTO) {-->
+<!--  <button class="btn btn-primary" (click)="initiateGame()">Start game</button>-->
+<!--}-->
 <!--<router-outlet></router-outlet>-->
 

@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {MinimizedGameDTO} from "../dtos/minimizedGameDTO";
 import {BuildingRequest} from "../buildingRequest";
+import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -58,7 +59,6 @@ export class BuildingService {
     return buildings;
   }
 
-
   private setInstanceId(buildings: Building[]) {
     buildings.forEach(building => building.instanceId = this.generateUniqueId())
   }
@@ -94,5 +94,10 @@ export class BuildingService {
       }
       return categoryComparison;
     });
+  }
+
+  processPurchasedBuilding(building: Building, gameDTO: ExtendedGameDTO) {
+    gameDTO.buildings.push(building);
+    gameDTO.funds -= building.price;
   }
 }

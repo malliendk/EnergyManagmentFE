@@ -1,13 +1,18 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {Building} from "../dtos/building";
+import {CommonModule, CurrencyPipe} from "@angular/common";
+import {FormsModule} from "@angular/forms";
 
 
 @Component({
     selector: 'app-factory-dashboard',
     templateUrl: './factory-dashboard.component.html',
     styleUrls: ['./factory-dashboard.component.css'],
-    standalone: false
+    standalone: true,
+  imports:  [CommonModule,
+    FormsModule,
+    CurrencyPipe]
 })
 export class FactoryDashboardComponent implements OnInit{
 

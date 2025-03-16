@@ -10,7 +10,9 @@
         <button class="btn btn-secondary" (click)="emitBuildingViewType(viewTypeBuildings, viewTypeBuildingOverview)">
           View
         </button>
-        <button class="btn btn-gold" (click)="emitBuildingViewTypeAll()">Buy</button>
+        <button class="btn btn-gold" (click)="emitBuildingViewTypeAll()">
+          Buy
+        </button>
       </div>
     }
   </div>
@@ -21,7 +23,7 @@
       <div class="funds ml-1">+{{ gameDTO.goldIncome | currency: 'EUR' }}</div>
     </div>
     <div class="d-flex justify-content-center w-30 ml-1">
-      <div class="popularity">Pop:  {{ gameDTO.popularity }}</div>
+      <div class="popularity">Pop: {{ gameDTO.popularity }}</div>
       <div class="popularity ml-1">+{{ gameDTO.popularityIncome }}</div>
     </div>
     <div class="d-flex justify-content-center w-30">

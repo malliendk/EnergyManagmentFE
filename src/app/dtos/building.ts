@@ -19,5 +19,6 @@ export interface Building {
   goldIncome: number;
   researchIncome: number;
   environmentalScore: number;
+  popularityCost: number;
   canBePurchased: boolean;
 }

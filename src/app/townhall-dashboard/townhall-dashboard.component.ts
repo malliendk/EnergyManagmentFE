@@ -3,12 +3,14 @@ import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {SupplyTypes} from "../supplyType";
 import {Account} from "../dtos/account";
 import {AccountService} from "../services/account.service";
+import {CommonModule} from "@angular/common";
 
 @Component({
     selector: 'app-townhall-dashboard',
     templateUrl: './townhall-dashboard.component.html',
     styleUrls: ['./townhall-dashboard.component.css'],
-    standalone: false
+    standalone: true,
+  imports: [CommonModule]
 })
 export class TownhallDashboardComponent implements OnInit {
 

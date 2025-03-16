@@ -1,3 +1,21 @@
+.back-button {
+  position: relative;
+  display: block;
+  z-index: 10;
+}
+
+.building-held-amount {
+  display: flex;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+  color: red;
+  font-weight: bold;
+  background-color: #fde6d1;
+  border-radius: 50%;
+  border: 2px solid red;
+}
+
 .middle-layer-box {
   display: flex;
   width: 100%;
@@ -66,7 +84,6 @@
 }
 
 .card-img-top-small {
-  border-top: 0.25em;
   border-style: solid;
   border-left: none;
   border-right: none;
@@ -76,7 +93,7 @@
   display: flex;
   margin-right: 0.5em;
   margin-left: 0.5em;
-  /*background-color: #754226;*/
+  background-color: #754226;
   /*background-color: #61371f;*/
   border-radius: 3em;
 }
@@ -172,9 +189,9 @@
   .property-block-theme-small {
     position: absolute;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    width: 100%;
+    width: 105%;
     left: -10px;
     right: -10px;
     bottom: 6px;

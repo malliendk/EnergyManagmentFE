@@ -1,0 +1,197 @@
+.title {
+  font-size: 1rem;
+  color: #5a4a2d;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin: 0;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+  position: relative;
+  padding: 0 20px;
+}
+
+.description-font {
+  font-style: italic;
+  font-size: 95%;
+  color: #5a5a5a;
+  margin-bottom: 1.5em;
+  line-height: 1.5;
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.img-50 {
+  height: 50% !important;
+  width: 50% !important;
+  border: 7px groove;
+}
+
+.stats-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  background: linear-gradient(135deg, #2c3e50, #4a5568);
+  border: 7px groove;
+  border-radius: 10px;
+}
+
+.stats-inner-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 99%;
+  padding: 0.5em;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.05) 10px,
+    rgba(255, 255, 255, 0.1) 10px,
+    rgba(255, 255, 255, 0.1) 20px
+  );
+  border-radius: 8px;
+}
+
+.inner-box-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+  width: 150px;
+  border: 5px solid;
+  margin: 0.5em;
+  background-color: whitesmoke;
+  box-shadow: 1px 1px 3px black;
+}
+
+.description-font {
+  font-style: italic;
+  font-size: 95%;
+}
+
+.funds {
+  padding: 0.5em;
+  background: linear-gradient(to bottom, #fffde7, #fff9c4);
+}
+
+.popularity {
+  background: linear-gradient(to bottom, #fce4ec, #f8bbd0);
+  padding-right: 0.5em;
+}
+
+.research {
+  background: linear-gradient(to bottom, white, #cbe9ff);
+  padding: 0.5em;
+}
+
+.grid-load {
+  background: linear-gradient(to bottom, #fff3e0, #ffdbb2);
+  padding-right: 0.5em;
+}
+
+.environmental-score {
+  background: linear-gradient(to bottom, #e8f5e9, #b0e3b1);
+  padding: 0.5em;
+}
+
+.btn {
+  border-radius: 1.25em;
+  transform: translateY(0);
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.btn {
+  border-radius: 1.25em;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 8px 18px;
+  position: relative;
+  overflow: hidden;
+  border: none;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #ffb347, #ffcc33);
+  color: #703800;
+  border: 2px solid #e69500;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ff5252, #d32f2f);
+  color: #fff;
+  border: 2px solid #b71c1c;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+.btn-warning:hover {
+  background: linear-gradient(135deg, #ffcc33, #ffb347);
+  box-shadow: 0 4px 8px rgba(255, 179, 71, 0.4), 0 0 15px rgba(255, 204, 51, 0.3);
+}
+
+.btn-warning:hover::before {
+  transform: rotate(30deg) translateX(300px);
+}
+
+.btn-warning:active {
+  transform: translateY(1px); /* Only move down when clicked */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn-danger::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(30deg);
+  transition: all 0.6s ease;
+  pointer-events: none;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #ff1a1a, #c62828);
+  box-shadow: 0 4px 8px rgba(211, 47, 47, 0.4), 0 0 15px rgba(255, 82, 82, 0.3);
+}
+
+.btn-danger:hover::before {
+  transform: rotate(30deg) translateX(300px);
+}
+
+.btn-danger:active {
+  transform: translateY(1px); /* Only move down when clicked */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn div:first-child {
+  font-size: 1em; /* Slightly smaller font */
+}
+
+.btn div.funds, .btn div.popularity {
+  font-size: 0.8em; /* Slimmer font for costs */
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  margin-top: 4px !important;
+  padding: 3px 6px;
+  width: 100%;
+  text-align: center;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-warning div.funds {
+  color: #5d2d00;
+}
+
+.btn-danger div.popularity {
+  color: #ffebee;
+}

@@ -1,12 +1,14 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {BuildingService} from "../services/building.service";
+import {CommonModule, CurrencyPipe} from "@angular/common";
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.css'],
-    standalone: false
+    standalone: true,
+    imports : [CommonModule, CurrencyPipe]
 })
 export class NavbarComponent implements OnInit {
 

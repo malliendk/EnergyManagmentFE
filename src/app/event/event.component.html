@@ -1,0 +1,59 @@
+@if (event) {
+  <app-modal [isModalOpen]="isModalOpen">
+    <div modal-title>
+      <div class="title">{{ event.name }}</div>
+    </div>
+    <div modal-body>
+      <p class="text-center description-font">{{ event.description }}</p>
+      <div class="d-flex justify-content-between">
+        <img class="img-thumbnail img-50" [src]="imgUrl">
+        <div class="stats-box img-thumbnail">
+          <div class="stats-inner-box">
+            <div class="d-flex justify-content-center">
+              @if (goldIncome > 0) {
+                <p class="funds inner-box-items border-10" [ngStyle]="">
+                  <span>inkomen schatkist</span>
+                  <span>+{{ goldIncome }}</span>
+                </p>
+              }
+              @if (popIncome > 0) {
+                <p class="popularity inner-box-items">
+                  <span>inkomen populariteit</span>
+                  <span>+{{ popIncome }}</span>
+                </p>
+              }
+              @if (scienceIncome > 0) {
+                <div class="research inner-box-items">
+                  <span>inkomen research</span>
+                  <span>+{{ scienceIncome }}</span>
+                </div>
+              }
+            </div>
+            <div class="d-flex justify-content-around">
+              @if (score > 0) {
+                <p class="environmental-score inner-box-items">
+                  <span>score</span>
+                  <span>{{ score }}</span>
+                </p>
+              }
+              <p class="grid-load inner-box-items">
+                <span>energieverbruik</span>
+                <span>{{ energyConsumption }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-around mt-3">
+        <button class="btn btn-warning" (click)="acceptBuilding(event.buildingDTO!)">
+          <div>Accepteren</div>
+          <div class="funds mt-2">Prijs: {{ goldCost }}</div>
+        </button>
+        <button class="btn btn-danger" (click)="rejectBuilding(event.buildingDTO!)">
+          <div>Afwijzen</div>
+          <div class="popularity mt-2">Verlies populariteit: {{ popCost }}</div>
+        </button>
+      </div>
+    </div>
+  </app-modal>
+}

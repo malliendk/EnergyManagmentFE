@@ -3,6 +3,7 @@
       (passViewType)="getBuildingViewType($event)"
       [viewType]="ownedBuildingsView"
       [buildings]="gameDTO.buildings"
+      (passSolarPanelPurchase)="updatePurchasedSolarSets($event)"
     ></app-building-view>
   </div>
   <div *ngIf="receivingViewType === purchaseView">
@@ -10,7 +11,7 @@
     <app-building-view
       [viewType]="purchaseView"
       [buildings]="allBuildings"
-      (purchasedBuildingEmitter)="updateBuildings($event)"
+      (passBuilding)="updateBuildings($event)"
     ></app-building-view>
     }
   </div>

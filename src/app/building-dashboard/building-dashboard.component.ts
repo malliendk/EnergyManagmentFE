@@ -3,12 +3,14 @@ import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {Building} from "../dtos/building";
 import {BuildingService} from "../services/building.service";
 import {BuildingViewComponent} from "../building-view/building-view.component";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-building-dashboard',
   templateUrl: './building-dashboard.component.html',
   styleUrls: ['./building-dashboard.component.css'],
-  standalone: false
+  standalone: true,
+  imports: [CommonModule, BuildingViewComponent]
 })
 export class BuildingDashboardComponent implements OnInit {
 
@@ -35,13 +37,22 @@ export class BuildingDashboardComponent implements OnInit {
   }
 
   updateBuildings(building: Building): void {
-    this.gameDTO.buildings.push(building);
-    this.gameDTO.funds -= building.price;
-    this.passGameDTOToTopLevel.emit(this.gameDTO)
+    this.buildingService.processPurchasedBuilding(building, this.gameDTO);
+    this.passGameDTOToTopLevel.emit(this.gameDTO);
     if (this.buildingViewComponent) {
       this.buildingViewComponent.isDetailView = false
       this.buildingViewComponent.building = null;
     }
+  }
+
+  updatePurchasedSolarSets(purchasedSet: { building: Building, totalCost: number }) {
+    this.gameDTO.funds -= purchasedSet.totalCost;
+    this.gameDTO.buildings.forEach(building => {
+      if (building.instanceId === purchasedSet.building.instanceId) {
+        building.solarPanelAmount = purchasedSet.building.solarPanelAmount
+      }
+    })
+    this.passGameDTOToTopLevel.emit(this.gameDTO);
   }
 
   getBuildingViewType(emittedValue: string) {

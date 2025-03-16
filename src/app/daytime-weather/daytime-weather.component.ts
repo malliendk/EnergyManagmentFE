@@ -1,17 +1,20 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
+import {CommonModule, CurrencyPipe} from "@angular/common";
 
 @Component({
-    selector: 'app-daytime-weather',
-    templateUrl: './daytime-weather.component.html',
-    styleUrls: ['./daytime-weather.component.css'],
-    standalone: false
+  selector: 'app-daytime-weather',
+  templateUrl: './daytime-weather.component.html',
+  styleUrls: ['./daytime-weather.component.css'],
+  standalone: true,
+  imports: [CommonModule]
 })
-export class DaytimeWeatherComponent implements OnInit, OnDestroy{
+export class DaytimeWeatherComponent implements OnInit, OnDestroy {
+
+  @Input() gameDTO!: ExtendedGameDTO;
   private timer: any;
   private timeSubject = new BehaviorSubject<string>('00:00');
-  @Input() gameDTO!: ExtendedGameDTO
 
 
   ngOnInit() {
@@ -48,5 +51,43 @@ export class DaytimeWeatherComponent implements OnInit, OnDestroy{
       clearInterval(this.timer);
     }
   }
+
+  getTimeOfDayColor(timeOfDay: string): string {
+    switch (timeOfDay) {
+      case 'morning':
+        return 'morning transition'
+      case 'afternoon':
+        return 'afternoon transition'
+      case 'evening':
+        return 'evening transition'
+      case 'night':
+        return 'night transition'
+      default:
+        return ''
+    }
+  }
+
+  getWeatherColor(weatherType: string, timeOfDay: string): string {
+    const timeOfDayColor = this.getTimeOfDayColor(timeOfDay);
+    switch (weatherType) {
+      case 'clear':
+        return `${timeOfDayColor} transition`;
+      case 'moderate':
+        return 'moderate transition';
+      case 'overcast':
+        return 'overcast transition';
+      case 'rainy':
+        return 'rainy transition';
+      default:
+        return '';
+    }
+
+    // if (weatherType === 'sunny') {
+    //   return `${timeOfDayColor}`;
+    // } else {
+    //   return 'overcast'
+    // }
+  }
 }
+
 

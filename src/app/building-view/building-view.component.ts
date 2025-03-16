@@ -1,24 +1,43 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Building} from '../dtos/building';
+import {CommonModule} from "@angular/common";
+import { FormsModule } from '@angular/forms';
+import {
+  PurchaseSolarpanelsHousingComponent
+} from "../purchase-solarpanels-housing/purchase-solarpanels-housing.component";
 
 @Component({
     selector: 'app-building-view',
     templateUrl: './building-view.component.html',
     styleUrls: ['./building-view.component.css'],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule, PurchaseSolarpanelsHousingComponent]
 })
-export class BuildingViewComponent implements OnInit{
+export class BuildingViewComponent implements OnInit {
 
   @Input() viewType: string = '';
   @Input() buildings!: Building[];
-  @Output() purchasedBuildingEmitter = new EventEmitter<Building>();
+  @Output() passSolarPanelPurchase = new EventEmitter<{
+    building: Building, totalCost: number
+  }>();
+  @Output() passBuilding = new EventEmitter<Building>();
+
   @Output() passViewType = new EventEmitter<string>();
 
+  buildingMap!: { buildingToDisplay: Building, heldBuildings: Building[] }[];
+  isHeldBuildingsView: boolean = false;
+  selectedHeldBuildings: Building[] = [];
   building!: Building | null;
   isDetailView: boolean = false;
-  categoryPowerPlant = "Energiecentrale";
+  categoryPowerPlant: string = "Energiecentrale";
+  categoryHousing: string = 'Woning';
+  categoryPublicBuilding: string = "Openbare voorziening";
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.buildings) {
+      this.groupBuildingsById(this.buildings)
+    }
+  }
 
   toggleCardDetailView(id: number) {
     this.isDetailView = true;
@@ -27,12 +46,50 @@ export class BuildingViewComponent implements OnInit{
   }
 
   purchaseBuilding(building: Building) {
-    this.purchasedBuildingEmitter.emit(building);
+    this.passBuilding.emit(building);
+  }
+
+  onSolarPanelsPurchase(purchaseData: {amountOfSolarPanels: number, totalCost: number}) {
+    this.building!.solarPanelAmount = purchaseData.amountOfSolarPanels;
+    this.passSolarPanelPurchase.emit({building: this.building!, totalCost: purchaseData.totalCost});
+  }
+
+  groupBuildingsById(buildings: Building[]) {
+    let buildingMap = new Map<number, Building[]>();
+    buildings.forEach(building => {
+      if (!buildingMap.has(building.id)) {
+        buildingMap.set(building.id, []);
+      }
+      buildingMap.get(building.id)!.push(building);
+    });
+    this.buildingMap = Array.from(buildingMap).map(
+      ([id, buildings]): {buildingToDisplay: Building, heldBuildings: Building[]} => ({
+        buildingToDisplay: buildings[0],
+        heldBuildings: buildings
+      })
+    );
+  }
+
+  toggleHeldBuildings(entrySet: {buildingToDisplay: Building, heldBuildings: Building[]}) {
+    this.selectedHeldBuildings = entrySet.heldBuildings;
+    if ((entrySet.buildingToDisplay.category === this.categoryHousing ||
+      entrySet.buildingToDisplay.category === this.categoryPublicBuilding)
+      && this.selectedHeldBuildings.length > 1) {
+      this.isHeldBuildingsView = true;
+    } else {
+      this.building = entrySet.buildingToDisplay;
+      this.isDetailView = true;
+    }
+  }
+
+  backToMainView() {
+    this.isHeldBuildingsView = false;
+    this.selectedHeldBuildings = [];
   }
 
   cancelDetailView() {
-    this.building = null;
     this.isDetailView = false;
+    this.building = null;
   }
 
   getBorderColor(propertyValue: number) {

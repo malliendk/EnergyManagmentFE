@@ -1,12 +1,14 @@
 import {Component, Input} from '@angular/core';
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {GameDTOService} from "../services/game-dto.service";
+import {CommonModule, CurrencyPipe} from "@angular/common";
 
 @Component({
-    selector: 'app-gridload-dashboard',
-    templateUrl: './gridload-dashboard.component.html',
-    styleUrls: ['./gridload-dashboard.component.css'],
-    standalone: false
+  selector: 'app-gridload-dashboard',
+  templateUrl: './gridload-dashboard.component.html',
+  styleUrls: ['./gridload-dashboard.component.css'],
+  standalone: true,
+  imports: [CommonModule, CurrencyPipe]
 })
 export class GridloadDashboardComponent {
 
@@ -28,7 +30,6 @@ export class GridloadDashboardComponent {
 
   constructor(private gameDtoService: GameDTOService) {
   }
-
 
   toggleSingleView() {
     if (this.singleDashboardView.includes('table')) {
