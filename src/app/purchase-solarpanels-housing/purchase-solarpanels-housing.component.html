@@ -1,0 +1,28 @@
+<div class="centralize mt-4">
+  <div class="panel-container">
+    <div class="top-bar"></div>
+    <div class="main-body">
+      <div>
+        <button type="button" class="btn btn-outline-primary"
+                (click)="purchaseSolarPanels(solarPanelInput.valueAsNumber, totalCostSolarPanels)">
+          Purchase
+        </button>
+      </div>
+      <div class="centralize">
+        <input type="number"
+               class="form-control"
+               placeholder="0"
+               #solarPanelInput
+               [min]="minSolarPanelSets"
+               [max]="maxSolarSets"
+               (input)="calculateTotalSolarPanelPrice(solarPanelInput)"
+               (keydown)="preventNegativeInput($event)"
+               [(ngModel)]="solarPanelSetAmount">
+
+      </div>
+    </div>
+    <div class="lower-section centralize">
+      <div class="funds">{{totalCostSolarPanels | currency: 'EUR'}}</div>
+    </div>
+  </div>
+</div>
