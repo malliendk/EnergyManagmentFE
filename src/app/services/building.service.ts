@@ -96,8 +96,27 @@ export class BuildingService {
     });
   }
 
-  processPurchasedBuilding(building: Building, gameDTO: ExtendedGameDTO) {
-    gameDTO.buildings.push(building);
+  processPurchasedBuilding(building: Building, gameDTO: ExtendedGameDTO): ExtendedGameDTO {
+    gameDTO.buildings = [...gameDTO.buildings, building];
+    console.log('purchased building recieved: {}', building)
     gameDTO.funds -= building.price;
+    return gameDTO
   }
+
+  // groupBuildingsById(buildings: Building[]): {buildingToDisplay: Building, heldBuildings: Building[]}[] {
+  //   let buildingMap = new Map<number, Building[]>();
+  //   buildings.forEach(building => {
+  //     if (!buildingMap.has(building.id)) {
+  //       buildingMap.set(building.id, []);
+  //     }
+  //     buildingMap.get(building.id)!.push(building);
+  //   });
+  //   console.log('grouping method activated with buildings: {}', buildings);
+  //   return Array.from(buildingMap).map(
+  //     ([id, buildings]): {buildingToDisplay: Building, heldBuildings: Building[]} => ({
+  //       buildingToDisplay: buildings[0],
+  //       heldBuildings: buildings
+  //     })
+  //   );
+  // }
 }

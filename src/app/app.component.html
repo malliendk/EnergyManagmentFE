@@ -1,4 +1,5 @@
-  <app-daytime-weather [gameDTO]="gameDTO"></app-daytime-weather>
+@if (gameDTO) {
+<app-daytime-weather [gameDTO]="gameDTO"></app-daytime-weather>
   <app-navbar
     [gameDTO]="gameDTO"
     (passViewType)="getViewType($event)"
@@ -26,7 +27,7 @@
     </div>
   </div>
   <app-event (passEventResult)="processCompletedEvent($event)"></app-event>
-
+}
 
 <!--@if (!gameDTO) {-->
 <!--  <button class="btn btn-primary" (click)="initiateGame()">Start game</button>-->

@@ -6,39 +6,39 @@
     <div modal-body>
       <p class="text-center description-font">{{ event.description }}</p>
       <div class="d-flex justify-content-between">
-        <img class="img-thumbnail img-50" [src]="imgUrl">
+        <img class="img-thumbnail img-50" [src]="event.buildingDTO!.imageUri">
         <div class="stats-box img-thumbnail">
           <div class="stats-inner-box">
             <div class="d-flex justify-content-center">
-              @if (goldIncome > 0) {
+              @if (event.buildingDTO!.goldIncome > 0) {
                 <p class="funds inner-box-items border-10" [ngStyle]="">
                   <span>inkomen schatkist</span>
-                  <span>+{{ goldIncome }}</span>
+                  <span>+{{ event.buildingDTO!.goldIncome }}</span>
                 </p>
               }
-              @if (popIncome > 0) {
+              @if (event.buildingDTO!.popularityIncome > 0) {
                 <p class="popularity inner-box-items">
                   <span>inkomen populariteit</span>
-                  <span>+{{ popIncome }}</span>
+                  <span>+{{ event.buildingDTO!.popularityIncome }}</span>
                 </p>
               }
-              @if (scienceIncome > 0) {
+              @if (event.buildingDTO!.researchIncome > 0) {
                 <div class="research inner-box-items">
                   <span>inkomen research</span>
-                  <span>+{{ scienceIncome }}</span>
+                  <span>+{{ event.buildingDTO!.researchIncome }}</span>
                 </div>
               }
             </div>
             <div class="d-flex justify-content-around">
-              @if (score > 0) {
+              @if (event.buildingDTO!.environmentalScore > 0) {
                 <p class="environmental-score inner-box-items">
                   <span>score</span>
-                  <span>{{ score }}</span>
+                  <span>{{ event.buildingDTO!.environmentalScore }}</span>
                 </p>
               }
               <p class="grid-load inner-box-items">
                 <span>energieverbruik</span>
-                <span>{{ energyConsumption }}</span>
+                <span>{{ event.buildingDTO!.energyConsumption }}</span>
               </p>
             </div>
           </div>
@@ -47,11 +47,11 @@
       <div class="d-flex justify-content-around mt-3">
         <button class="btn btn-warning" (click)="acceptBuilding(event.buildingDTO!)">
           <div>Accepteren</div>
-          <div class="funds mt-2">Prijs: {{ goldCost }}</div>
+          <div class="funds mt-2">Prijs: {{ event.buildingDTO!.price }}</div>
         </button>
         <button class="btn btn-danger" (click)="rejectBuilding(event.buildingDTO!)">
           <div>Afwijzen</div>
-          <div class="popularity mt-2">Verlies populariteit: {{ popCost }}</div>
+          <div class="popularity mt-2">Verlies populariteit: {{ event.buildingDTO!.popularityCost }}</div>
         </button>
       </div>
     </div>

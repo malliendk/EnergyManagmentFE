@@ -33,14 +33,12 @@ export class BuildingDashboardComponent implements OnInit {
     this.receivingViewType = this.ownedBuildingsView;
     this.buildingService.getAll()
       .subscribe(buildings => this.allBuildings = buildings)
-    console.log('buildings retrieved for the first time: {}')
   }
 
   updateBuildings(building: Building): void {
     this.buildingService.processPurchasedBuilding(building, this.gameDTO);
     this.passGameDTOToTopLevel.emit(this.gameDTO);
     if (this.buildingViewComponent) {
-      this.buildingViewComponent.isDetailView = false
       this.buildingViewComponent.building = null;
     }
   }
@@ -53,6 +51,12 @@ export class BuildingDashboardComponent implements OnInit {
       }
     })
     this.passGameDTOToTopLevel.emit(this.gameDTO);
+  }
+
+  updateHeldBuildingsOverview() {
+    if (this.buildingViewComponent) {
+      this.buildingViewComponent.groupBuildingsById(this.gameDTO.buildings);
+    }
   }
 
   getBuildingViewType(emittedValue: string) {

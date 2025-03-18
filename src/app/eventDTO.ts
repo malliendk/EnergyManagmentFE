@@ -1,6 +1,6 @@
 import {Building} from "./dtos/building";
 
-export interface Event {
+export interface EventDTO {
   id: number;
   name: string;
   description: string;

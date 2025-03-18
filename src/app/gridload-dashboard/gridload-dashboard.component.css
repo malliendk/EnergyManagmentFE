@@ -150,10 +150,10 @@
 }
 
 .custom-container {
-  padding: 10% 0 0 0 ;
+  padding: 0.5em;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: end;
 }
 
 .sunny {

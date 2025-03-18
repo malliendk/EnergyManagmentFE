@@ -1,17 +1,18 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Building} from '../dtos/building';
 import {CommonModule} from "@angular/common";
-import { FormsModule } from '@angular/forms';
+import {FormsModule} from '@angular/forms';
 import {
   PurchaseSolarpanelsHousingComponent
 } from "../purchase-solarpanels-housing/purchase-solarpanels-housing.component";
+import {BuildingService} from "../services/building.service";
 
 @Component({
-    selector: 'app-building-view',
-    templateUrl: './building-view.component.html',
-    styleUrls: ['./building-view.component.css'],
-    standalone: true,
-    imports: [CommonModule, PurchaseSolarpanelsHousingComponent]
+  selector: 'app-building-view',
+  templateUrl: './building-view.component.html',
+  styleUrls: ['./building-view.component.css'],
+  standalone: true,
+  imports: [CommonModule, PurchaseSolarpanelsHousingComponent]
 })
 export class BuildingViewComponent implements OnInit {
 
@@ -21,7 +22,6 @@ export class BuildingViewComponent implements OnInit {
     building: Building, totalCost: number
   }>();
   @Output() passBuilding = new EventEmitter<Building>();
-
   @Output() passViewType = new EventEmitter<string>();
 
   buildingMap!: { buildingToDisplay: Building, heldBuildings: Building[] }[];
@@ -33,9 +33,12 @@ export class BuildingViewComponent implements OnInit {
   categoryHousing: string = 'Woning';
   categoryPublicBuilding: string = "Openbare voorziening";
 
+  constructor(private buildingService: BuildingService) {
+  }
+
   ngOnInit(): void {
     if (this.buildings) {
-      this.groupBuildingsById(this.buildings)
+      this.groupBuildingsById(this.buildings);
     }
   }
 
@@ -49,7 +52,7 @@ export class BuildingViewComponent implements OnInit {
     this.passBuilding.emit(building);
   }
 
-  onSolarPanelsPurchase(purchaseData: {amountOfSolarPanels: number, totalCost: number}) {
+  onSolarPanelsPurchase(purchaseData: { amountOfSolarPanels: number, totalCost: number }) {
     this.building!.solarPanelAmount = purchaseData.amountOfSolarPanels;
     this.passSolarPanelPurchase.emit({building: this.building!, totalCost: purchaseData.totalCost});
   }
@@ -62,18 +65,19 @@ export class BuildingViewComponent implements OnInit {
       }
       buildingMap.get(building.id)!.push(building);
     });
+    console.log('grouping method activated with buildings: {}', buildings);
     this.buildingMap = Array.from(buildingMap).map(
-      ([id, buildings]): {buildingToDisplay: Building, heldBuildings: Building[]} => ({
+      ([id, buildings]): { buildingToDisplay: Building, heldBuildings: Building[] } => ({
         buildingToDisplay: buildings[0],
         heldBuildings: buildings
       })
     );
   }
 
-  toggleHeldBuildings(entrySet: {buildingToDisplay: Building, heldBuildings: Building[]}) {
+  toggleHeldBuildings(entrySet: { buildingToDisplay: Building, heldBuildings: Building[] }) {
     this.selectedHeldBuildings = entrySet.heldBuildings;
     if ((entrySet.buildingToDisplay.category === this.categoryHousing ||
-      entrySet.buildingToDisplay.category === this.categoryPublicBuilding)
+        entrySet.buildingToDisplay.category === this.categoryPublicBuilding)
       && this.selectedHeldBuildings.length > 1) {
       this.isHeldBuildingsView = true;
     } else {

@@ -43,6 +43,7 @@ export class GameDTOService implements OnInit {
     const completeBuildingList: Building[] = this.buildingService.duplicateBuildingsIfNecessary(ids, fetchedBuildingsById);
     const fullyProcessedBuildings: Building[] = this.buildingService.updateBuildingValues(minimizedGameDTO, completeBuildingList);
     const sortedBuildings: Building[] = this.buildingService.sortBuildingsByCategoryAndPrice(fullyProcessedBuildings);
+    console.log('number of buildings after sorting: {}', sortedBuildings.length);
     const {buildingRequests, ...restOfProperties} = minimizedGameDTO;
     return {
       ...restOfProperties,

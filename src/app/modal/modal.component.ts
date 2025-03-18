@@ -13,6 +13,5 @@ import {Building} from "../dtos/building";
 })
 export class ModalComponent {
 
-  @Input() isModalOpen: boolean = true;
-
+  @Input() isModalOpen: boolean = false;
 }
