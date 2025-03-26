@@ -156,6 +156,10 @@
   align-items: end;
 }
 
+.custom-container > div {
+  margin: 1em;
+}
+
 .sunny {
   background-color: lightblue;
 }

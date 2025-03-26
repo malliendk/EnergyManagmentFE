@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {MinimizedGameDTO} from "../dtos/minimizedGameDTO";
 import {BuildingRequest} from "../buildingRequest";
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
+import {buildApplication} from "@angular-devkit/build-angular";
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,8 @@ export class BuildingService {
     return buildings.map(
       building => ({
         buildingId: building.id,
-        solarPanelAmount: building.solarPanelAmount
+        solarPanelAmount: building.solarPanelAmount,
+        propertiesMap: this.getPropertyMap(buildings, building.id)
       })
     )
   }
@@ -50,39 +52,22 @@ export class BuildingService {
   }
 
   updateBuildingValues(minimizedGameDTO: MinimizedGameDTO, buildings: Building[]): Building[] {
-    let requestMap: BuildingRequest[] = minimizedGameDTO.buildingRequests.map(request => ({
-      buildingId: request.buildingId,
-      solarPanelAmount: request.solarPanelAmount
-    }));
-    this.setSolarPanelAmounts(buildings, requestMap);
-    this.setInstanceId(buildings);
+    const compressedBuildings: BuildingRequest[] = minimizedGameDTO.buildingRequests;
+    this.setSolarPanelAmounts(compressedBuildings, buildings);
+    this.updatePowerPlants(compressedBuildings, buildings)
+    buildings.forEach((building: Building) => this.generateInstanceId(building));
     return buildings;
-  }
-
-  private setInstanceId(buildings: Building[]) {
-    buildings.forEach(building => building.instanceId = this.generateUniqueId())
-  }
-
-  generateUniqueId(): number {
-    return window.crypto.getRandomValues(new Uint32Array(1))[0];
-  }
-
-  private setSolarPanelAmounts(buildings: Building[], requestMap: BuildingRequest[]) {
-    buildings.forEach((building: Building) => requestMap.forEach(map => {
-      if (map.buildingId == building.id) {
-        building.solarPanelAmount = map.solarPanelAmount;
-      }
-    }))
   }
 
   sortBuildingsByCategoryAndPrice(buildings: Building[]): Building[] {
     const CATEGORY_PRIORITY: { [key: string]: number } = {
       'Woning': 0,
       'Openbare voorziening': 1,
-      'Industrieel': 2,
-      'Energiecentrale': 3,
-      'Bijzonder gebouw': 4,
-      'Transport': 5
+      'Productie': 2,
+      'Industrieel': 3,
+      'Energiecentrale': 4,
+      'Bijzonder gebouw': 5,
+      'Transport': 6
     };
 
     return buildings.sort((a, b) => {
@@ -98,25 +83,49 @@ export class BuildingService {
 
   processPurchasedBuilding(building: Building, gameDTO: ExtendedGameDTO): ExtendedGameDTO {
     gameDTO.buildings = [...gameDTO.buildings, building];
-    console.log('purchased building recieved: {}', building)
     gameDTO.funds -= building.price;
     return gameDTO
   }
 
-  // groupBuildingsById(buildings: Building[]): {buildingToDisplay: Building, heldBuildings: Building[]}[] {
-  //   let buildingMap = new Map<number, Building[]>();
-  //   buildings.forEach(building => {
-  //     if (!buildingMap.has(building.id)) {
-  //       buildingMap.set(building.id, []);
-  //     }
-  //     buildingMap.get(building.id)!.push(building);
-  //   });
-  //   console.log('grouping method activated with buildings: {}', buildings);
-  //   return Array.from(buildingMap).map(
-  //     ([id, buildings]): {buildingToDisplay: Building, heldBuildings: Building[]} => ({
-  //       buildingToDisplay: buildings[0],
-  //       heldBuildings: buildings
-  //     })
-  //   );
-  // }
+  generateInstanceId(building: Building) {
+    building.instanceId = window.crypto.getRandomValues(new Uint32Array(1))[0];
+  }
+
+
+  private updatePowerPlants(requests: BuildingRequest[], buildings: Building[]) {
+    let extractedMap: Map<string, any>[] = requests.map(request => request.propertiesMap);
+    extractedMap.forEach(propertyMap => {
+      let powerPlant: Building = buildings.find(building => building.name === propertyMap.get('name'))!;
+      if (powerPlant) {
+        this.extractPropertyMap(propertyMap, powerPlant);
+      }
+    })
+  }
+
+  private extractPropertyMap(propertiesMap: Map<string, any>, building: Building) {
+    building.energyProduction = propertiesMap.get('energyProduction');
+    building.goldIncome = propertiesMap.get('goldIncome');
+    building.researchIncome = propertiesMap.get('researchIncome');
+    building.environmentalScore = propertiesMap.get('score');
+    return building;
+  }
+
+  private getPropertyMap(buildings: Building[], buildingId: number): Map<string, any> {
+    let propertiesMap: Map<string, any> = new Map<string, any>
+    let powerPlant: Building = buildings.find(building => building.id === buildingId)!
+    propertiesMap.set('name', powerPlant.name);
+    propertiesMap.set('energyProduction', powerPlant.energyProduction);
+    propertiesMap.set('goldIncome', powerPlant.goldIncome);
+    propertiesMap.set('researchIncome', powerPlant.researchIncome);
+    propertiesMap.set('score', powerPlant.environmentalScore);
+    return propertiesMap;
+  }
+
+  private setSolarPanelAmounts(requests: BuildingRequest[], buildings: Building[]) {
+    buildings.forEach((building: Building) => requests.forEach(map => {
+      if (map.buildingId == building.id) {
+        building.solarPanelAmount = map.solarPanelAmount;
+      }
+    }))
+  }
 }

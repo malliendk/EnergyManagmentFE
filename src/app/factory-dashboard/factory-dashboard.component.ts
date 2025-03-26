@@ -3,86 +3,113 @@ import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {Building} from "../dtos/building";
 import {CommonModule, CurrencyPipe} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {BuildingService} from "../services/building.service";
+import {
+  CATEGORY_POWER_PLANT,
+  COAL_PLANT_NAME,
+  GAS_PLANT_NAME,
+  HYDROGEN_PLANT_NAME,
+  NUCLEAR_PLANT_NAME
+} from "../constants";
+import {GameDTOService} from "../services/game-dto.service";
 
 
 @Component({
-    selector: 'app-factory-dashboard',
-    templateUrl: './factory-dashboard.component.html',
-    styleUrls: ['./factory-dashboard.component.css'],
-    standalone: true,
-  imports:  [CommonModule,
+  selector: 'app-factory-dashboard',
+  templateUrl: './factory-dashboard.component.html',
+  styleUrls: ['./factory-dashboard.component.css'],
+  standalone: true,
+  imports: [CommonModule,
     FormsModule,
     CurrencyPipe]
 })
-export class FactoryDashboardComponent implements OnInit{
+export class FactoryDashboardComponent implements OnInit {
 
   @Input() gameDTO!: ExtendedGameDTO
-  coalPlant!: Building;
-  gasPlant!: Building;
-  sliderMinValue: number = 0.0;
-  sliderMaxValue: number = 6.0;
-  sliderStepValue: number = 0.1;
-  coalPlantGridLoadStartingValue: number = 0;
-  gasPlantGridLoadStartingValue: number = 0;
-  isInitialized: boolean = false;
+  powerPlants: Building[] = [];
+  minimumProduction: number = 0.0;
+  maximumProduction: number = 5000;
+  sliderStepValue: number = 1;
+  totalScalingCost: number = 0;
+  temporaryScalingCost: number = 0;
+  goldPerProductionUnit: number = 5;
+  scorePerProductionUnit: number = 0.5;
+
+  initialProductionMap = new Map<string, number>();
 
   //chart values start
   showGridLines = false;
   showYAxis: boolean = true;
   fundsScaleMax: number = 15000;
   gridLoadScaleMax = 15;
-  fundsVariableName: string[] = [
-    'Funds'
-  ];
-  gridLoadVariableName: string [] = [
-    "Total grid load"
-  ]
-  fundsColor: string[] = [
-    '#dfc700'
-  ];
-  totalGridLoadColor: string[] = [
-    '#ae0000'
-  ];
   fundsChartResults: number[] = []
-  gridLoadChartResults: number[] = []
+
   //chart values end
 
-  cssFactoryContainer1BackgroundColor: string =
-    'conic-gradient(#7c7c7c, #e1e1e1, #b5b5b5, #7c7c7c, #e1e1e1, #acacac, #e1e1e1, #7c7c7c)';
-  cssFactoryContainer2BackgroundColor: string =
-    'conic-gradient(#7c7c7c, #e1e1e1, #b5b5b5, #7c7c7c, #e1e1e1, #acacac, #e1e1e1, #7c7c7c';
-
-
-  constructor() {
+  constructor(private gameDTOService: GameDTOService) {
   }
 
   ngOnInit(): void {
-    this.fundsChartResults = [this.gameDTO.funds]
-    this.gridLoadChartResults = [this.gameDTO.gridLoad]
-    this.coalPlant = this.selectPowerPlant('Kolencentrale');
-    this.gasPlant = this.selectPowerPlant('Gascentrale');
-    this.coalPlantGridLoadStartingValue = this.coalPlant.gridLoad;
-    this.gasPlantGridLoadStartingValue = this.gasPlant.gridLoad;
-    this.isInitialized = true;
+    this.powerPlants = this.filterPowerPlants();
+    this.setSecondaryImages();
+    this.initializeProductionMap();
   }
 
-  selectPowerPlant(sourceName: string) {
-    return <Building>this.gameDTO.buildings.find(source => source.name === sourceName);
+  private filterPowerPlants(): Building[] {
+    return this.gameDTO.buildings.filter(building => building.category === CATEGORY_POWER_PLANT);
   }
 
-  calculateNewValues(powerPlant: Building, startingValue: number, powerPlantGridLoad: HTMLInputElement) {
-    this.calculateNewFunds(powerPlant, startingValue, powerPlantGridLoad);
+  private setSecondaryImages() {
+    this.selectPowerPlant(COAL_PLANT_NAME).imageUri = 'assets/photos/coal-plant-inside-cut.jpg';
+    this.selectPowerPlant(GAS_PLANT_NAME).imageUri = 'assets/photos/gas-plant-inside-cut.jpg';
+    this.selectPowerPlant(HYDROGEN_PLANT_NAME).imageUri = 'assets/photos/nuclear-plant-inside-cut.jpg';
+    this.selectPowerPlant(NUCLEAR_PLANT_NAME).imageUri = 'assets/photos/hydrogen-plant-cut.jpg';
   }
 
+  private initializeProductionMap() {
+    this.powerPlants.forEach(powerPlant => {
+      this.initialProductionMap.set(powerPlant.name, powerPlant.energyProduction);
+    });
+  }
 
-  calculateNewFunds(powerPlant: Building, startingValue: number, powerPlantGridLoad: HTMLInputElement): void {
-    const gridLoadDifference: number = startingValue - powerPlantGridLoad.valueAsNumber;
-    this.gameDTO.funds = this.gameDTO.funds - (gridLoadDifference * 1000);
-    if (powerPlant === this.coalPlant) {
-      this.coalPlantGridLoadStartingValue -= gridLoadDifference;
-    } else if (powerPlant === this.gasPlant) {
-      this.gasPlantGridLoadStartingValue -= gridLoadDifference;
+  private selectPowerPlant(Name: string) {
+    return <Building>this.powerPlants.find(source => source.name === Name);
+  }
+
+  update() {
+    this.gameDTOService.updateGameDTO(this.gameDTO)
+      .subscribe(() => this.gameDTOService.getMinimizedGameDto()
+        .subscribe(minimizedGameDTO => {
+          this.gameDTO = this.gameDTOService.extendGameDTO(minimizedGameDTO, this.gameDTO.buildings)
+        }))
+  }
+
+  recalculateValues(powerPlant: Building, energyProduction: HTMLInputElement): void {
+    this.calculateScalingCost(powerPlant, energyProduction);
+    this.calculateScore(powerPlant, energyProduction);
+  }
+
+  calculateScalingCost(powerPlant: Building, energyProduction: HTMLInputElement): void {
+    this.powerPlants.forEach((candidate: Building) => {
+      if (powerPlant.name === candidate.name) {
+        const initialEnergyProduction: number = this.initialProductionMap.get(candidate.name)!.valueOf();
+        const productionDifference: number = initialEnergyProduction - energyProduction.valueAsNumber;
+        this.totalScalingCost += productionDifference * this.goldPerProductionUnit;
+      }
+    })
+  }
+
+  calculateScore(powerPlant: Building, energyProduction: HTMLInputElement): void {
+    const productionDifference: number = this.maximumProduction - energyProduction.valueAsNumber;
+    powerPlant.environmentalScore = productionDifference * this.scorePerProductionUnit;
+  }
+
+  applyGrayScale(powerPlant: Building): string {
+    const candidate = this.gameDTO.buildings.find(building => powerPlant.id === building.id);
+    if (candidate) {
+      return ''
+    } else {
+      return 'grayScale'
     }
-    this.fundsChartResults = [this.gameDTO.funds];
   }
 }

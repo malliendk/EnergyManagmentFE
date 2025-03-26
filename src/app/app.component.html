@@ -7,13 +7,13 @@
   ></app-navbar>
   <div class="d-flex justify-content-between">
     <div>
-      @if (passingViewType === viewTypeTownHall) {
+      @if (dashboardType === townHallDashboard) {
         <app-townhall-dashboard [gameDTO]="gameDTO"></app-townhall-dashboard>
       }
-      @if (passingViewType === viewTypeFactory) {
+      @if (dashboardType === factoryDashboard) {
         <app-factory-dashboard [gameDTO]="gameDTO"></app-factory-dashboard>
       }
-      @if (passingViewType === viewTypeBuildings) {
+      @if (dashboardType === buildingDashboard) {
         <app-building-dashboard
           [receivingViewType]="buildingViewComponentType"
           [gameDTO]="gameDTO"
@@ -22,9 +22,11 @@
         ></app-building-dashboard>
       }
     </div>
+    @if (showGridLoadDashboard) {
     <div class="d-flex flex-column">
       <app-gridload-dashboard [gameDTO]="gameDTO"></app-gridload-dashboard>
     </div>
+    }
   </div>
   <app-event (passEventResult)="processCompletedEvent($event)"></app-event>
 }

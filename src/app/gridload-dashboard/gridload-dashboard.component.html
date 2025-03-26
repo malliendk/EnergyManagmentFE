@@ -13,13 +13,10 @@
       </button>
       <div class="custom-container">
         <div class="popularity">Huishoudens: {{ gameDTO.houseHolds }}</div>
-        <div class="funds">Zonnepanelen: {{ gameDTO.solarPanelAmount }}/{{ gameDTO.solarPanelCapacity }}</div>
         <div class="energy-production">Productie: {{ gameDTO.energyProduction }}</div>
         <div class="energy-consumption">Consumptie: {{ gameDTO.energyConsumption }}</div>
         <div class="grid-load">Netcapaciteit: {{ gameDTO.gridCapacity }}</div>
         <div class="grid-load">Netbelasting: {{gameDTO.gridLoad | number:'1.2-2'}} </div>
-        <div class="research">Tijd van de dag: {{gameDTO.timeOfDay}}</div>
-        <div class="research">Weer: {{gameDTO.weatherType}}</div>
       </div>
     </div>
   </div>

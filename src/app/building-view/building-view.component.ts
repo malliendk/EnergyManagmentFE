@@ -58,7 +58,7 @@ export class BuildingViewComponent implements OnInit {
   }
 
   groupBuildingsById(buildings: Building[]) {
-    let buildingMap = new Map<number, Building[]>();
+    let buildingMap: Map<number, Building[]> = new Map<number, Building[]>();
     buildings.forEach(building => {
       if (!buildingMap.has(building.id)) {
         buildingMap.set(building.id, []);

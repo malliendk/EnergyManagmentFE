@@ -1,130 +1,79 @@
-.switcher {
-  display: flex;
-  flex-direction: column;
-  height: 25%;
-  background-color: #e1e1e1;
-  border: 1px solid black;
-  box-shadow: -1px -1px 8px 2px;
-}
-
 .factory-display {
   display: flex;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
-  height: 75%;
+  height: 92.5vh;
+  padding: 0 1rem;
   border: 1px solid black;
   background-image: url("/assets/photos/power-plant-background.png");
   background-size: cover;
   background-position: center;
   box-shadow: 1px 1px 10px 3px;
+  position: relative;
 }
 
-.stats {
+.button-container {
+  position: absolute;
+  top: 0;        /* 10px from the top edge */
+  left: 50%;
+  transform: translateX(-50%);
+  height: 200px;
+  width: 140px;
   display: flex;
-  justify-content: center;
-  height: 30%;
-  width: 100%;
-}
-
-.deco-border {
-  display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  height: 10%;
-  width: 100%;
-}
-
-.border-block {
-  height: 90%;
-  width: 4%;
-  background-image: linear-gradient(45deg, #b8c5d6, whitesmoke, #b8c5d6);
-  border: 4px ridge #D3DDEA;
-  box-shadow: 1px 1px 1px;
-}
-
-.border-block:first-child {
-  border-left: none;
-}
-
-.border-block:last-child {
-  border-right: none;
-}
-
-.slider-space {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  height: 65%;
-  width: 100%;
+  border: 5px ridge;
+  box-shadow: 2px 2px 5px 3px #454545;
+  border-radius: 25px;
+  background-image: conic-gradient(#7c7c7c, ghostwhite, #8e8e8e, ghostwhite, #7c7c7c, ghostwhite, #7c7c7c);
+  z-index: 10;
 }
 
 .card {
   display: flex;
-  justify-content: center;
-  height: 70%;
-  background-color: antiquewhite;
-  border: 15px solid silver;
+  flex-direction: row;
+  height: 45%;
+  width: 45%;
+  background-color: lightgrey;
+  border: 7px ridge silver;
   box-shadow: 1px 1px 10px 5px;
 }
+
+.factory-image {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.factory-stats {
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center; /* Center horizontally */
+  text-align: center; /* Ensure text is centered */
+  padding-left: 3.3em;
+}
+
 
 .card-img-top {
   padding: 5% 5% 5% 5%;
   border-radius: 70px;
 }
 
-.red-button {
-  height: 7vh;
-  width: 3.7vw;
-  border-radius: 50%;
-  background-image: radial-gradient(circle, #e1200f, #A10E0E 70%); /* Maintained radial gradient */
-  border: 4px dotted #c3250b;
-  box-shadow:
-    1px 1px 2px 1px ;
-  cursor: pointer;  /* Cursor indicates button */
-  outline: none;  /* Remove focus border on click */
-  transition: all 0.1s ease;  /* Smooth transition for interactions */
-}
-
-.red-button:active {
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.3),  /* Less intense outer shadow when pressed */
-    0 1px 2px #8B0C0C inset;  /* Less intense and smaller inset shadow when pressed */
-  transform: translateY(2px);  /* Simulate button being pressed */
-}
-
-.button-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80%;
-  width: 10%;
-  border: 5px ridge;
-  box-shadow: 2px 2px 5px 3px #454545;
-  border-radius: 25px;
-  background-image: conic-gradient(#7c7c7c, ghostwhite, #8e8e8e, ghostwhite, #7c7c7c, ghostwhite, #7c7c7c);
-}
-
-
-.list-group {
-  border-radius: 0;
-  background-color: rgba(240, 195, 136, 0.60);
-}
-
-.list-group-item {
-  border-radius: 15px;
-  background-image: linear-gradient(rgba(240, 195, 136, 0.60),
-  antiquewhite,
-  rgba(240, 195, 136, 0.60));
-}
-
 .slider-container {
+  position: absolute;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60%;
-  width: 30%;
+  bottom: -1px;
+  left: -1px;
+  height: 20%;
+  width: 400px;
+  background-color: lightgrey;
   border: 5px ridge;
-  box-shadow: 1px 1px 3px 1px;
+  box-shadow: 1px 1px
 }
 
 .slider {
@@ -153,7 +102,69 @@
 }
 
 
+.red-button {
+  height: 60px;
+  width: 50%;
+  border-radius: 50%;
+  background-image: radial-gradient(circle, #e1200f, #A10E0E 70%); /* Maintained radial gradient */
+  border: 4px dotted #c3250b;
+  box-shadow:
+    1px 1px 2px 1px ;
+  cursor: pointer;  /* Cursor indicates button */
+  outline: none;  /* Remove focus border on click */
+  transition: all 0.1s ease;  /* Smooth transition for interactions */
+}
+
+.red-button:active {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.3),  /* Less intense outer shadow when pressed */
+    0 1px 2px #8B0C0C inset;  /* Less intense and smaller inset shadow when pressed */
+  transform: translateY(2px);  /* Simulate button being pressed */
+}
 
 
+.funds {
+  font-weight: bold;
+  font-family: sans-serif;
+  color: goldenrod;
+  background: linear-gradient(to bottom, #fffde7, #fff9c4);
+  border-radius: 10px;
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+  margin-top: 5px;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+
+.cost-label {
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+  font-family: 'Arial Narrow', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #333;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+.cost-label div {
+  padding: 2px 0;
+  font-size: 14px;
+}
+
+
+.grid-load {
+  background: linear-gradient(to bottom, #fff3e0, #ffdbb2);
+  padding: 0.75em;
+}
+
+.environmental-score {
+  background: linear-gradient(to bottom, #e8f5e9, #b0e3b1);
+  padding: 0.5em;
+}
+
+.grayScale {
+  filter: grayscale(100%);
+}
 
 

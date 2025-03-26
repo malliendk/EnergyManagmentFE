@@ -81,12 +81,6 @@ export class DaytimeWeatherComponent implements OnInit, OnDestroy {
       default:
         return '';
     }
-
-    // if (weatherType === 'sunny') {
-    //   return `${timeOfDayColor}`;
-    // } else {
-    //   return 'overcast'
-    // }
   }
 }
 

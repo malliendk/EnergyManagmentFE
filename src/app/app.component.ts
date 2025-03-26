@@ -38,7 +38,7 @@ import {BuildingViewComponent} from "./building-view/building-view.component";
     EventComponent,
   ]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   @ViewChild(BuildingDashboardComponent) buildingDashboardComponent?: BuildingDashboardComponent;
 
   title = 'Energy Management';
@@ -53,10 +53,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   buildingViewComponentType: string = '';
   buildingViewOverview: string = 'overview';
-  passingViewType!: string;
-  viewTypeTownHall: string = 'town hall';
-  viewTypeFactory: string = 'factory';
-  viewTypeBuildings: string = 'buildings';
+  dashboardType!: string;
+  townHallDashboard: string = 'town hall';
+  factoryDashboard: string = 'factory';
+  buildingDashboard: string = 'buildings';
+  showGridLoadDashboard: boolean = false;
 
   constructor(private gameDTOService: GameDTOService,
               private gameEventsService: GameEventsService,
@@ -64,8 +65,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.passingViewType = this.viewTypeBuildings;
-    this.buildingViewComponentType = this.viewTypeBuildings;
+    this.dashboardType = this.factoryDashboard;
+    this.buildingViewComponentType = this.buildingDashboard;
     this.initiateGame();
   }
 
@@ -75,7 +76,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.gameDTOService.startGame()
       .subscribe(() => {
         this.getGameDTO();
-        // this.subscribeToGameDTO();
+        this.gameDTO.timeOfDay = 'night';
+        this.subscribeToGameDTO();
       });
   }
 
@@ -96,7 +98,7 @@ export class AppComponent implements OnInit, OnDestroy {
           this.buildingService.getBuildingsById(minimizedDTO)
             .subscribe({
               next: (gameBuildings: Building[]) => {
-                gameBuildings.forEach(b => b.instanceId = this.buildingService.generateUniqueId());
+                gameBuildings.forEach(building => this.buildingService.generateInstanceId(building));
                 this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, gameBuildings);
               },
               error: (buildingError) => {
@@ -121,10 +123,7 @@ export class AppComponent implements OnInit, OnDestroy {
       this.updateGameDTO(this.gameDTO);
       if (this.buildingDashboardComponent) {
         this.buildingDashboardComponent.updateHeldBuildingsOverview();
-      } else {
-        console.log('no buildingviewcomponent present');
       }
-
     } else {
       this.gameDTO.popularity -= eventResult.popularityLoss;
     }
@@ -140,8 +139,9 @@ export class AppComponent implements OnInit, OnDestroy {
         }));
   }
 
-  getViewType(value: string) {
-    this.passingViewType = value;
+  getViewType(viewTypeset: {viewType: string, showGridLoadDashboard: boolean}) {
+    this.dashboardType = viewTypeset.viewType;
+    this.showGridLoadDashboard = viewTypeset.showGridLoadDashboard;
   }
 
   getBuildingViewType(value: string) {
@@ -158,14 +158,4 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
 
-  ngOnDestroy(): void {
-    this.unsubscribeEvents();
-  }
-
-  unsubscribeEvents() {
-    if (this.gameDTOSubscription) {
-      this.gameDTOSubscription.unsubscribe();
-      // this.gameEventsService.unsubscribe();
-    }
-  }
 }

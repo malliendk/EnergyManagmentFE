@@ -1,13 +1,13 @@
 <div [class]="transitionClass">
   <div class="d-flex">
     <div class="d-flex">
-      <div class="nav-demo-items" (click)="emitViewType(viewTypeTownHall)">Town Hall</div>
-      <div class="nav-demo-items" (click)="emitViewType(viewTypeFactory)">Factories</div>
+      <div class="nav-demo-items" (click)="emitViewType(townHallDashboard, false)">Town Hall</div>
+      <div class="nav-demo-items" (click)="emitViewType(factoryDashboard, false)">Factories</div>
       <div class="nav-demo-items" (click)="activateButtons()">Buildings</div>
     </div>
     @if (showButtons) {
       <div class="view-type-buttons">
-        <button class="btn btn-secondary" (click)="emitBuildingViewType(viewTypeBuildings, viewTypeBuildingOverview)">
+        <button class="btn btn-secondary" (click)="emitBuildingViewType(buildingDashboard, viewTypeBuildingOverview)">
           View
         </button>
         <button class="btn btn-gold" (click)="emitBuildingViewTypeAll()">

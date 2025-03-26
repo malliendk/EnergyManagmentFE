@@ -13,17 +13,18 @@ import {CommonModule, CurrencyPipe} from "@angular/common";
 export class NavbarComponent implements OnInit {
 
   transitionClass = 'nav-demo navbar-expand-lg night'
-  toMorning = 'morning';
-  toAfternoon = 'afternoon';
 
   @Input() gameDTO!: ExtendedGameDTO;
-  @Output() passViewType = new EventEmitter<string>();
+  @Output() passViewType = new EventEmitter<{
+    viewType: string,
+    showGridLoadDashboard: boolean
+  }>();
   @Output() passBuildingVieWType = new EventEmitter<string>();
 
   showButtons: boolean = false;
-  viewTypeTownHall: string = 'town hall';
-  viewTypeFactory: string = 'factory';
-  viewTypeBuildings: string = 'buildings'
+  townHallDashboard: string = 'town hall';
+  factoryDashboard: string = 'factory';
+  buildingDashboard: string = 'buildings'
   viewTypeBuildingAll: string = 'purchase';
   viewTypeBuildingOverview: string = 'overview';
 
@@ -38,7 +39,7 @@ export class NavbarComponent implements OnInit {
   }
 
   emitBuildingViewType(viewType: string, viewTypeBuilding: string) {
-    this.passViewType.emit(viewType);
+    this.passViewType.emit({viewType: viewType, showGridLoadDashboard: true});
     this.passBuildingVieWType.emit(viewTypeBuilding)
   }
 
@@ -46,7 +47,7 @@ export class NavbarComponent implements OnInit {
     this.passBuildingVieWType.emit(this.viewTypeBuildingAll);
   }
 
-  emitViewType(viewType: string) {
-    this.passViewType.emit(viewType)
+  emitViewType(viewType: string, showGridLoadDashboard: boolean) {
+    this.passViewType.emit({viewType, showGridLoadDashboard});
   }
 }
