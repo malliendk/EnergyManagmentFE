@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {GameDTOService} from "./services/game-dto.service";
 import {ExtendedGameDTO} from "./dtos/extendedGameDTO";
-import {Subscription} from "rxjs";
+import {map, Subscription, switchMap, tap} from "rxjs";
 import {BuildingService} from "./services/building.service";
 import {MinimizedGameDTO} from "./dtos/minimizedGameDTO";
 import {Building} from "./dtos/building";
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
   private eventSubscription: Subscription | null = null;
 
   buildingViewComponentType: string = '';
-  buildingViewOverview: string = 'overview';
+  buildingViewPurchase: string = 'purchase';
   dashboardType!: string;
   townHallDashboard: string = 'town hall';
   factoryDashboard: string = 'factory';
@@ -92,27 +92,29 @@ export class AppComponent implements OnInit {
 
   subscribeToGameDTO(): void {
     this.connectionError = false;
-    this.gameDTOSubscription = this.gameEventsService.subscribeToGameDTO()
-      .subscribe({
-        next: (minimizedDTO: MinimizedGameDTO) => {
-          this.buildingService.getBuildingsById(minimizedDTO)
-            .subscribe({
-              next: (gameBuildings: Building[]) => {
-                gameBuildings.forEach(building => this.buildingService.generateInstanceId(building));
-                this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, gameBuildings);
-              },
-              error: (buildingError) => {
-                console.error('Error fetching buildings:', buildingError);
-              }
-            });
-          this.connectionError = false;
-        },
-        error: (error) => {
-          console.error('SSE connection error:', error);
-          this.connectionError = true;
-          setTimeout(() => this.subscribeToGameDTO(), 5000);
-        }
-      });
+    this.gameDTOSubscription = this.gameEventsService.subscribeToGameDTO().pipe(
+      tap(() => this.connectionError = false),
+      switchMap(minimizedDTO =>
+        this.buildingService.getBuildingsById(minimizedDTO).pipe(
+          map(gameBuildings => {
+            gameBuildings.forEach(building => this.buildingService.generateInstanceId(building));
+            return { minimizedDTO, gameBuildings };
+          })
+        )
+      ),
+      map(({ minimizedDTO, gameBuildings }) =>
+        this.gameDTOService.extendGameDTO(minimizedDTO, gameBuildings)
+      )
+    ).subscribe({
+      next: (extendedGameDTO) => {
+        this.gameDTO = extendedGameDTO;
+      },
+      error: (error) => {
+        console.error('SSE connection or building fetch error:', error);
+        this.connectionError = true;
+        setTimeout(() => this.subscribeToGameDTO(), 5000);
+      }
+    });
   }
 
   processCompletedEvent(eventResult: {building: Building | null, popularityLoss: number}) {
@@ -156,6 +158,4 @@ export class AppComponent implements OnInit {
         this.allBuildings.forEach((building: Building) => building.instanceId = undefined);
       });
   }
-
-
 }

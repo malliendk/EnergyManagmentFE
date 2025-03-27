@@ -12,6 +12,8 @@ import {
   NUCLEAR_PLANT_NAME
 } from "../constants";
 import {GameDTOService} from "../services/game-dto.service";
+import {BuildingRequest} from "../buildingRequest";
+import {map, switchMap} from "rxjs";
 
 
 @Component({
@@ -35,6 +37,9 @@ export class FactoryDashboardComponent implements OnInit {
   goldPerProductionUnit: number = 5;
   scorePerProductionUnit: number = 0.5;
 
+  isDisabled: boolean = false;
+
+  originalImagesMap = new Map<number, string>();
   initialProductionMap = new Map<string, number>();
 
   //chart values start
@@ -46,25 +51,35 @@ export class FactoryDashboardComponent implements OnInit {
 
   //chart values end
 
-  constructor(private gameDTOService: GameDTOService) {
+  constructor(private buildingService: BuildingService,
+              private gameDTOService: GameDTOService) {
   }
 
   ngOnInit(): void {
-    this.powerPlants = this.filterPowerPlants();
-    this.setSecondaryImages();
-    this.initializeProductionMap();
+    this.buildingService.getPowerPlants()
+      .subscribe(powerPlants => {
+        this.powerPlants = powerPlants;
+        this.mapToClassPlant();
+        this.collectOriginalImages();
+        this.setSecondaryImages();
+        this.initializeProductionMap();
+      });
   }
 
-  private filterPowerPlants(): Building[] {
-    return this.gameDTO.buildings.filter(building => building.category === CATEGORY_POWER_PLANT);
+  private collectOriginalImages() {
+    this.powerPlants.forEach(plant => {
+      this.originalImagesMap.set(plant.id, plant.imageUri);
+    })
   }
 
   private setSecondaryImages() {
     this.selectPowerPlant(COAL_PLANT_NAME).imageUri = 'assets/photos/coal-plant-inside-cut.jpg';
     this.selectPowerPlant(GAS_PLANT_NAME).imageUri = 'assets/photos/gas-plant-inside-cut.jpg';
-    this.selectPowerPlant(HYDROGEN_PLANT_NAME).imageUri = 'assets/photos/nuclear-plant-inside-cut.jpg';
-    this.selectPowerPlant(NUCLEAR_PLANT_NAME).imageUri = 'assets/photos/hydrogen-plant-cut.jpg';
+    this.selectPowerPlant(HYDROGEN_PLANT_NAME).imageUri = 'assets/photos/hydrogen-plant-cut.jpg';
+    this.selectPowerPlant(NUCLEAR_PLANT_NAME).imageUri = 'assets/photos/nuclear-plant-inside-cut.jpg';
   }
+
+
 
   private initializeProductionMap() {
     this.powerPlants.forEach(powerPlant => {
@@ -72,16 +87,44 @@ export class FactoryDashboardComponent implements OnInit {
     });
   }
 
-  private selectPowerPlant(Name: string) {
-    return <Building>this.powerPlants.find(source => source.name === Name);
+  private mapToClassPlant() {
+     this.powerPlants = this.powerPlants.map(plant => {
+        const ownedPowerPlant= this.gameDTO.buildings.find(building => building.id === plant.id);
+        return ownedPowerPlant ? {...ownedPowerPlant} : plant;
+      });
+  }
+
+  private selectPowerPlant(name: string) {
+    return <Building>this.powerPlants.find(source => source.name === name);
   }
 
   update() {
+    this.mapFromClassPlant();
     this.gameDTOService.updateGameDTO(this.gameDTO)
-      .subscribe(() => this.gameDTOService.getMinimizedGameDto()
-        .subscribe(minimizedGameDTO => {
-          this.gameDTO = this.gameDTOService.extendGameDTO(minimizedGameDTO, this.gameDTO.buildings)
-        }))
+      .pipe(
+        switchMap(() => {
+          return this.gameDTOService.getMinimizedGameDto();
+        }),
+        map(minimizedGameDTO => {
+          return this.gameDTOService.extendGameDTO(minimizedGameDTO, this.gameDTO.buildings);
+        })
+      )
+      .subscribe(extendedGameDTO => {
+        console.log('Final Extended GameDTO:', extendedGameDTO);
+        this.gameDTO = extendedGameDTO;
+        this.initializeProductionMap();
+      });
+  }
+
+  private mapFromClassPlant() {
+    this.gameDTO.buildings = this.gameDTO.buildings.map(building => {
+      const classPowerPlant = this.powerPlants.find(plant => building.id === plant.id);
+      if (!classPowerPlant) return building;
+      const originalImage = this.originalImagesMap.get(classPowerPlant.id);
+      return originalImage
+        ? {...classPowerPlant, imageUri: originalImage}
+        : classPowerPlant;
+    });
   }
 
   recalculateValues(powerPlant: Building, energyProduction: HTMLInputElement): void {
@@ -92,24 +135,33 @@ export class FactoryDashboardComponent implements OnInit {
   calculateScalingCost(powerPlant: Building, energyProduction: HTMLInputElement): void {
     this.powerPlants.forEach((candidate: Building) => {
       if (powerPlant.name === candidate.name) {
-        const initialEnergyProduction: number = this.initialProductionMap.get(candidate.name)!.valueOf();
-        const productionDifference: number = initialEnergyProduction - energyProduction.valueAsNumber;
+        const initialEnergyProduction = this.initialProductionMap.get(candidate.name)!.valueOf();
+        const productionDifference = initialEnergyProduction - energyProduction.valueAsNumber;
         this.totalScalingCost += productionDifference * this.goldPerProductionUnit;
       }
     })
   }
 
   calculateScore(powerPlant: Building, energyProduction: HTMLInputElement): void {
-    const productionDifference: number = this.maximumProduction - energyProduction.valueAsNumber;
+    const productionDifference = this.maximumProduction - energyProduction.valueAsNumber;
     powerPlant.environmentalScore = productionDifference * this.scorePerProductionUnit;
   }
 
   applyGrayScale(powerPlant: Building): string {
-    const candidate = this.gameDTO.buildings.find(building => powerPlant.id === building.id);
+    const candidate: Building | undefined = this.checkIfPowerPlantIsOwned(powerPlant);
     if (candidate) {
-      return ''
+      return '';
     } else {
-      return 'grayScale'
+      this.toggleDisabled();
+      return 'disabled';
     }
+  }
+
+  toggleDisabled() {
+    this.isDisabled = !this.isDisabled;
+  }
+
+  private checkIfPowerPlantIsOwned(powerPlant: Building) {
+    return this.gameDTO.buildings.find(building => powerPlant.id === building.id);
   }
 }

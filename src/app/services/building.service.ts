@@ -26,12 +26,16 @@ export class BuildingService {
     return this.http.post<Building[]>(this.buildingAPIBaseURL + 'ids', ids);
   }
 
+  getPowerPlants() {
+    return this.http.get<Building[]>(this.buildingAPIBaseURL + 'power-plants');
+  }
+
   minimizeBuildings(buildings: Building[]): BuildingRequest[] {
     return buildings.map(
       building => ({
         buildingId: building.id,
         solarPanelAmount: building.solarPanelAmount,
-        propertiesMap: this.getPropertyMap(buildings, building.id)
+        propertiesMap: this.createPropertyMap(buildings, building.id)
       })
     )
   }
@@ -91,34 +95,37 @@ export class BuildingService {
     building.instanceId = window.crypto.getRandomValues(new Uint32Array(1))[0];
   }
 
-
   private updatePowerPlants(requests: BuildingRequest[], buildings: Building[]) {
-    let extractedMap: Map<string, any>[] = requests.map(request => request.propertiesMap);
-    extractedMap.forEach(propertyMap => {
-      let powerPlant: Building = buildings.find(building => building.name === propertyMap.get('name'))!;
-      if (powerPlant) {
-        this.extractPropertyMap(propertyMap, powerPlant);
-      }
-    })
+    requests.forEach((request: BuildingRequest) => {
+        if (request.propertiesMap) {
+          const propertiesMap = request.propertiesMap;
+          const powerPlantName = propertiesMap['name'];
+          let powerPlant: Building | undefined = buildings.find(building => building.name === powerPlantName);
+          if (powerPlant) {
+            this.readPropertyMap(propertiesMap, powerPlant);
+          }
+        }
+      })
   }
 
-  private extractPropertyMap(propertiesMap: Map<string, any>, building: Building) {
-    building.energyProduction = propertiesMap.get('energyProduction');
-    building.goldIncome = propertiesMap.get('goldIncome');
-    building.researchIncome = propertiesMap.get('researchIncome');
-    building.environmentalScore = propertiesMap.get('score');
+  private readPropertyMap(propertiesMap: Record<string, any>, building: Building): Building {
+    building.energyProduction = propertiesMap['energyProduction'];
+    building.goldIncome = propertiesMap['goldIncome'];
+    building.researchIncome = propertiesMap['researchIncome'];
+    building.environmentalScore = propertiesMap['score'];
     return building;
   }
 
-  private getPropertyMap(buildings: Building[], buildingId: number): Map<string, any> {
-    let propertiesMap: Map<string, any> = new Map<string, any>
+  private createPropertyMap(buildings: Building[], buildingId: number): Record<string, any> {
     let powerPlant: Building = buildings.find(building => building.id === buildingId)!
-    propertiesMap.set('name', powerPlant.name);
-    propertiesMap.set('energyProduction', powerPlant.energyProduction);
-    propertiesMap.set('goldIncome', powerPlant.goldIncome);
-    propertiesMap.set('researchIncome', powerPlant.researchIncome);
-    propertiesMap.set('score', powerPlant.environmentalScore);
-    return propertiesMap;
+    return {
+        name: powerPlant.name,
+        energyProduction: powerPlant.energyProduction,
+        goldIncome: powerPlant.goldIncome,
+        researchIncome: powerPlant.researchIncome,
+        score: powerPlant.environmentalScore,
+        id: powerPlant.id
+      };
   }
 
   private setSolarPanelAmounts(requests: BuildingRequest[], buildings: Building[]) {

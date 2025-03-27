@@ -2,5 +2,5 @@ export interface BuildingRequest {
 
   buildingId: number;
   solarPanelAmount: number;
-  propertiesMap: Map<string, any>;
+  propertiesMap: Record<string, any>;
 }

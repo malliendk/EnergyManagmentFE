@@ -39,7 +39,7 @@ export class PurchaseSolarpanelsHousingComponent implements OnInit {
       numberOfSolarSets.value = this.minSolarPanelSets.toString();
     }
     numberOfSolarSets.valueAsNumber ?
-      this.totalCostSolarPanels = SOLAR_PANEL_PRICE.price * numberOfSolarSets.valueAsNumber :
+      this.totalCostSolarPanels = SOLAR_PANEL_PRICE * numberOfSolarSets.valueAsNumber :
       this.totalCostSolarPanels = 0;
   }
 

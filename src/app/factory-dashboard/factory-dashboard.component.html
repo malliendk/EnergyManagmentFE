@@ -1,11 +1,10 @@
 @if (powerPlants) {
   <div class="factory-display">
     @for (powerPlant of powerPlants; track powerPlant) {
-      <div class="card">
+      <div class="card" [ngClass]="applyGrayScale(powerPlant)">
         <div class="factory-image">
           <img class="img-fluid"
-                [src]="powerPlant.imageUri" alt="{{powerPlant.imageUri}}"
-                [ngClass]="applyGrayScale(powerPlant)">
+                [src]="powerPlant.imageUri" alt="{{powerPlant.imageUri}}">
           <div class="slider-container">
             <input type="range" id="range-slider" class="slider"
                    min="{{minimumProduction}}"
@@ -14,6 +13,7 @@
                    [(ngModel)]="powerPlant.energyProduction"
                    #newProduction
                    (input)="recalculateValues(powerPlant, newProduction)"
+                   [disabled]="isDisabled"
             >
           </div>
         </div>

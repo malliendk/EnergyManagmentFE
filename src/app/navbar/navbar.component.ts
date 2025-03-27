@@ -28,14 +28,10 @@ export class NavbarComponent implements OnInit {
   viewTypeBuildingAll: string = 'purchase';
   viewTypeBuildingOverview: string = 'overview';
 
-  constructor(private buildingService: BuildingService) {}
+  constructor() {}
 
   ngOnInit() {
     this.showButtons = true;
-  }
-
-  activateButtons() {
-    this.showButtons = !this.showButtons;
   }
 
   emitBuildingViewType(viewType: string, viewTypeBuilding: string) {

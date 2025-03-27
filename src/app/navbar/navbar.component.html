@@ -3,7 +3,7 @@
     <div class="d-flex">
       <div class="nav-demo-items" (click)="emitViewType(townHallDashboard, false)">Town Hall</div>
       <div class="nav-demo-items" (click)="emitViewType(factoryDashboard, false)">Factories</div>
-      <div class="nav-demo-items" (click)="activateButtons()">Buildings</div>
+      <div class="nav-demo-items" (click)="emitBuildingViewType(buildingDashboard, viewTypeBuildingOverview)">Buildings</div>
     </div>
     @if (showButtons) {
       <div class="view-type-buttons">
@@ -37,7 +37,7 @@
       <div class="research">+{{ gameDTO.researchIncome }}</div>
     </div>
     <div class="d-flex justify-content-center w-30">
-      <div class="environmental-score">Score:  {{ gameDTO.environmentalScore }}</div>
+      <div class="environmental-score">Score:  {{ gameDTO.score }}</div>
     </div>
   </div>
 </div>

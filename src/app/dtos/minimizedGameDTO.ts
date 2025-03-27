@@ -10,7 +10,7 @@ export interface MinimizedGameDTO {
   funds: number;
   popularity: number;
   research: number;
-  environmentalScore: number;
+  score: number;
   energyProduction: number;
   energyConsumption: number;
   gridLoad: number;

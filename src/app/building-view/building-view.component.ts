@@ -33,7 +33,7 @@ export class BuildingViewComponent implements OnInit {
   categoryHousing: string = 'Woning';
   categoryPublicBuilding: string = "Openbare voorziening";
 
-  constructor(private buildingService: BuildingService) {
+  constructor() {
   }
 
   ngOnInit(): void {
@@ -65,7 +65,6 @@ export class BuildingViewComponent implements OnInit {
       }
       buildingMap.get(building.id)!.push(building);
     });
-    console.log('grouping method activated with buildings: {}', buildings);
     this.buildingMap = Array.from(buildingMap).map(
       ([id, buildings]): { buildingToDisplay: Building, heldBuildings: Building[] } => ({
         buildingToDisplay: buildings[0],

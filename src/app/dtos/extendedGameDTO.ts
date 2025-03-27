@@ -9,7 +9,7 @@ export interface ExtendedGameDTO {
   funds: number;
   popularity: number;
   research: number;
-  environmentalScore: number;
+  score: number;
   energyProduction: number;
   energyConsumption: number;
   gridLoad: number;
@@ -21,7 +21,6 @@ export interface ExtendedGameDTO {
   popularityIncome: number;
   researchIncome: number;
   buildings: Building[];
-  events: EventDTO[];
   timeOfDay: TimeOfDay;
   weatherType: WeatherType
 }

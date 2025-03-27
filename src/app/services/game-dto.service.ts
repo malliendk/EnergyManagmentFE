@@ -33,8 +33,10 @@ export class GameDTOService implements OnInit {
   }
 
   updateGameDTO(extendedGameDTO: ExtendedGameDTO): Observable<InitiateGameDTO> {
+    console.log(extendedGameDTO)
     const buildingsRequests: BuildingRequest[] = this.buildingService.minimizeBuildings(extendedGameDTO.buildings);
     const initiateDTO: InitiateGameDTO = this.minimizeToInitiateDTO(extendedGameDTO, buildingsRequests);
+    console.log('outgoing gameDTO: {}', initiateDTO);
     return this.http.put<InitiateGameDTO>(`${this.initiateServiceUrl}/${extendedGameDTO.id}`, initiateDTO);
   }
 
@@ -43,12 +45,10 @@ export class GameDTOService implements OnInit {
     const completeBuildingList: Building[] = this.buildingService.duplicateBuildingsIfNecessary(ids, fetchedBuildingsById);
     const fullyProcessedBuildings: Building[] = this.buildingService.updateBuildingValues(minimizedGameDTO, completeBuildingList);
     const sortedBuildings: Building[] = this.buildingService.sortBuildingsByCategoryAndPrice(fullyProcessedBuildings);
-    const {buildingRequests, ...restOfProperties} = minimizedGameDTO;
-    return {
-      ...restOfProperties,
-      buildings: sortedBuildings,
-      events: []
-    };
+    const {buildingRequests, ...propertyValues} = minimizedGameDTO;
+    const gameDTO: ExtendedGameDTO = {...propertyValues, buildings: sortedBuildings}
+    console.log("successfully extended gameDTO: {}", gameDTO)
+    return gameDTO;
   }
 
   minimizeToInitiateDTO(extendedGameDTO: ExtendedGameDTO, buildingRequests: BuildingRequest[]): InitiateGameDTO {
