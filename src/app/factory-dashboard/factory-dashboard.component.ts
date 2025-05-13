@@ -4,15 +4,8 @@ import {Building} from "../dtos/building";
 import {CommonModule, CurrencyPipe} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {BuildingService} from "../services/building.service";
-import {
-  CATEGORY_POWER_PLANT,
-  COAL_PLANT_NAME,
-  GAS_PLANT_NAME,
-  HYDROGEN_PLANT_NAME,
-  NUCLEAR_PLANT_NAME
-} from "../constants";
+import {COAL_PLANT_NAME, GAS_PLANT_NAME, HYDROGEN_PLANT_NAME, NUCLEAR_PLANT_NAME} from "../constants";
 import {GameDTOService} from "../services/game-dto.service";
-import {BuildingRequest} from "../buildingRequest";
 import {map, switchMap} from "rxjs";
 
 
@@ -65,6 +58,7 @@ export class FactoryDashboardComponent implements OnInit {
         this.initializeProductionMap();
       });
   }
+
 
   private collectOriginalImages() {
     this.powerPlants.forEach(plant => {

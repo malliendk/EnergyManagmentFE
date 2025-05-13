@@ -4,6 +4,7 @@ import {Building} from "../dtos/building";
 import {BuildingService} from "../services/building.service";
 import {BuildingViewComponent} from "../building-view/building-view.component";
 import {CommonModule} from "@angular/common";
+import {Tile} from "../dtos/tile";
 
 @Component({
   selector: 'app-building-dashboard',
@@ -22,6 +23,7 @@ export class BuildingDashboardComponent implements OnInit {
   @Output() passGameDTOToTopLevel = new EventEmitter<ExtendedGameDTO>();
 
   building: Building | null = null;
+  // tiles!: Tile[];
 
   ownedBuildingsView: string = 'overview';
   purchaseView: string = 'purchase';
@@ -32,16 +34,33 @@ export class BuildingDashboardComponent implements OnInit {
   ngOnInit() {
     this.receivingViewType = this.ownedBuildingsView;
     this.buildingService.getAll()
-      .subscribe(buildings => this.allBuildings = buildings)
+      .subscribe(buildings => this.allBuildings = buildings);
   }
 
-  updateBuildings(building: Building): void {
-    this.buildingService.processPurchasedBuilding(building, this.gameDTO);
+  updateBuildings(purchase: { building: Building; tile: Tile }): void {
+    const purchasedBuilding: Building = purchase.building;
+    const selectedTile: Tile = purchase.tile;
+    this.replaceTileInGameDTO(selectedTile);
+    this.buildingService.processPurchasedBuilding(purchasedBuilding, this.gameDTO);
     this.passGameDTOToTopLevel.emit(this.gameDTO);
     if (this.buildingViewComponent) {
       this.buildingViewComponent.building = null;
     }
+    setTimeout(() => {
+      this.receivingViewType = this.ownedBuildingsView;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 500);
   }
+
+  private replaceTileInGameDTO(newTile: Tile) {
+    const index = this.gameDTO.tiles.findIndex(tile => tile.id === newTile.id);
+    if (index !== -1) {
+      this.gameDTO.tiles[index] = newTile;
+    } else {
+      console.log('Tile with the specified ID not found.');
+    }
+  }
+
 
   updatePurchasedSolarSets(purchasedSet: { building: Building, totalCost: number }) {
     this.gameDTO.funds -= purchasedSet.totalCost;

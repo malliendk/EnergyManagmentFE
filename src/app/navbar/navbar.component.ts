@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
-import {BuildingService} from "../services/building.service";
 import {CommonModule, CurrencyPipe} from "@angular/common";
 
 @Component({
@@ -45,5 +44,9 @@ export class NavbarComponent implements OnInit {
 
   emitViewType(viewType: string, showGridLoadDashboard: boolean) {
     this.passViewType.emit({viewType, showGridLoadDashboard});
+  }
+
+  pauseGameDTOEmitter() {
+
   }
 }

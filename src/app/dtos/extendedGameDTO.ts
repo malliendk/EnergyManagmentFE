@@ -1,7 +1,8 @@
 import {Building} from "./building";
-import {EventDTO} from "./eventDTO";
 import {TimeOfDay} from "../timeOfDay";
 import {WeatherType} from "../weatherType";
+import {Tile} from "./tile";
+import {District} from "./district";
 
 export interface ExtendedGameDTO {
   id: number;
@@ -21,6 +22,8 @@ export interface ExtendedGameDTO {
   popularityIncome: number;
   researchIncome: number;
   buildings: Building[];
+  tiles: Tile[];
+  districts: District[];
   timeOfDay: TimeOfDay;
   weatherType: WeatherType
 }

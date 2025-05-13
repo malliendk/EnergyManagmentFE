@@ -16,6 +16,7 @@
         </div>
       </div>
     </div>
+    <app-grid [gameDTO]="gameDTO"></app-grid>
   } @else {
     <div class="d-flex">
       <div *ngFor="let heldBuilding of selectedHeldBuildings">
@@ -107,11 +108,19 @@
           ></app-purchase-solarpanels-housing>
         }
         @if (!building!.instanceId && !(building!.category === categoryPowerPlant)) {
-          <button class="purchase-button btn btn-gold mb-2" (click)="purchaseBuilding(building!)">
-            Purchase Building
+          <button class="purchase-button btn btn-gold mb-2" (click)="selectBuilding(building!)">
+            Start aankoop
           </button>
         }
       </div>
     </div>
   </div>
+  @if (isPurchasing) {
+  <app-grid
+    (passSelectedTile)="confirmBuildingPurchase($event)"
+    [gameDTO]="gameDTO"
+    [isPurchasing]="true"
+    [building]="building!"></app-grid>
+  }
 }
+

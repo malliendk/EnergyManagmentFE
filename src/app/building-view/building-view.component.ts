@@ -1,39 +1,43 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Building} from '../dtos/building';
 import {CommonModule} from "@angular/common";
-import {FormsModule} from '@angular/forms';
 import {
   PurchaseSolarpanelsHousingComponent
 } from "../purchase-solarpanels-housing/purchase-solarpanels-housing.component";
-import {BuildingService} from "../services/building.service";
+import {GridComponent} from "../grid/grid.component";
+import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
+import {GameDTOService} from "../services/game-dto.service";
+import {Tile} from "../dtos/tile";
 
 @Component({
   selector: 'app-building-view',
   templateUrl: './building-view.component.html',
   styleUrls: ['./building-view.component.css'],
   standalone: true,
-  imports: [CommonModule, PurchaseSolarpanelsHousingComponent]
+    imports: [CommonModule, PurchaseSolarpanelsHousingComponent, GridComponent]
 })
 export class BuildingViewComponent implements OnInit {
 
+  @Input() gameDTO!: ExtendedGameDTO;
   @Input() viewType: string = '';
   @Input() buildings!: Building[];
   @Output() passSolarPanelPurchase = new EventEmitter<{
     building: Building, totalCost: number
   }>();
-  @Output() passBuilding = new EventEmitter<Building>();
+  @Output() passPurchase = new EventEmitter<{building: Building, tile: Tile}>();
   @Output() passViewType = new EventEmitter<string>();
 
+  building!: Building | null;
   buildingMap!: { buildingToDisplay: Building, heldBuildings: Building[] }[];
   isHeldBuildingsView: boolean = false;
+  isPurchasing = false;
   selectedHeldBuildings: Building[] = [];
-  building!: Building | null;
   isDetailView: boolean = false;
   categoryPowerPlant: string = "Energiecentrale";
   categoryHousing: string = 'Woning';
   categoryPublicBuilding: string = "Openbare voorziening";
 
-  constructor() {
+  constructor(private gameDTOService: GameDTOService) {
   }
 
   ngOnInit(): void {
@@ -45,11 +49,22 @@ export class BuildingViewComponent implements OnInit {
   toggleCardDetailView(id: number) {
     this.isDetailView = true;
     this.building = this.buildings.find(building => building.id === id) || null;
+    if (!this.building?.instanceId) {
+      this.isPurchasing = true
+    }
+    console.log(this.isPurchasing);
     console.log('this.building:', this.building);
   }
 
-  purchaseBuilding(building: Building) {
-    this.passBuilding.emit(building);
+  selectBuilding(building: Building) {
+    // this.passBuilding.emit(building);
+    this.isPurchasing = true;
+  }
+
+  confirmBuildingPurchase(tile: Tile) {
+    this.passPurchase.emit({ building: this.building!, tile: tile });
+    this.isPurchasing = false;
+    this.isDetailView = false;
   }
 
   onSolarPanelsPurchase(purchaseData: { amountOfSolarPanels: number, totalCost: number }) {
@@ -93,6 +108,7 @@ export class BuildingViewComponent implements OnInit {
   cancelDetailView() {
     this.isDetailView = false;
     this.building = null;
+    this.isPurchasing = false;
   }
 
   getBorderColor(propertyValue: number) {

@@ -22,11 +22,11 @@
         ></app-building-dashboard>
       }
     </div>
-    @if (showGridLoadDashboard) {
-    <div class="d-flex flex-column">
-      <app-gridload-dashboard [gameDTO]="gameDTO"></app-gridload-dashboard>
-    </div>
-    }
+<!--    @if (showGridLoadDashboard) {-->
+<!--    <div class="d-flex flex-column">-->
+<!--      <app-gridload-dashboard [gameDTO]="gameDTO"></app-gridload-dashboard>-->
+<!--    </div>-->
+<!--    }-->
   </div>
   <app-event (passEventResult)="processCompletedEvent($event)"></app-event>
 }

@@ -1,4 +1,6 @@
 import {BuildingRequest} from "../buildingRequest";
+import {Tile} from "./tile";
+import {District} from "./district";
 
 export interface InitiateGameDTO {
 
@@ -7,4 +9,6 @@ export interface InitiateGameDTO {
   popularity: number;
   research: number;
   buildingRequests: BuildingRequest[];
+  tiles: Tile[];
+  districts: District[];
 }

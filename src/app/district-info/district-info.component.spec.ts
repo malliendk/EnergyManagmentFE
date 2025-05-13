@@ -1,18 +1,18 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {EventComponent} from './event.component';
+import {DistrictInfoComponent} from './district-info.component';
 
-describe('EventComponent', () => {
-  let component: EventComponent;
-  let fixture: ComponentFixture<EventComponent>;
+describe('DistrictInfoComponent', () => {
+  let component: DistrictInfoComponent;
+  let fixture: ComponentFixture<DistrictInfoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EventComponent]
+      imports: [DistrictInfoComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(EventComponent);
+    fixture = TestBed.createComponent(DistrictInfoComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

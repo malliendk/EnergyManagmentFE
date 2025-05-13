@@ -2,6 +2,8 @@ import {EventDTO} from "./eventDTO";
 import {TimeOfDay} from "../timeOfDay";
 import {WeatherType} from "../weatherType";
 import {BuildingRequest} from "../buildingRequest";
+import {Tile} from "./tile";
+import {District} from "./district";
 
 export interface MinimizedGameDTO {
 
@@ -26,6 +28,8 @@ export interface MinimizedGameDTO {
   taxRate: number;
   popRate: number;
   buildingRequests: BuildingRequest[];
+  tiles: Tile[];
+  districts: District[];
   events: EventDTO[];
   timeOfDay: TimeOfDay;
   weatherType: WeatherType

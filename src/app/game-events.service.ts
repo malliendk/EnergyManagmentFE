@@ -1,5 +1,5 @@
 import {Injectable, NgZone} from '@angular/core';
-import {Observable, Subject, share} from 'rxjs';
+import {Observable, share, Subject} from 'rxjs';
 import {MinimizedGameDTO} from "./dtos/minimizedGameDTO";
 import {EventDTO} from "./eventDTO";
 

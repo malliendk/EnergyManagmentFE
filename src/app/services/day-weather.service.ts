@@ -1,6 +1,4 @@
 import {Injectable} from '@angular/core';
-import {TimeOfDay} from "../timeOfDay";
-import {WeatherType} from "../weatherType";
 
 @Injectable({
   providedIn: 'root'

@@ -1,0 +1,130 @@
+.grid {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  height: auto;
+  width: 80vw;
+  margin: 2em auto 2em auto;
+  background-color: ghostwhite;
+  border: 3px ridge;
+}
+
+.grid:nth-of-type(2) {
+  background-color: antiquewhite;
+}
+
+.info-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  height: auto;
+  width: 80vw;
+  margin: 2em auto 2em auto;
+  background-color: transparent;
+}
+
+.district {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+  height: auto;
+  border: 2px solid black;
+}
+
+.district:hover {
+  background-color: darkblue;
+}
+
+.tile {
+  height: 67px;
+  width: 115.5px;
+  margin: 0.25em auto;
+  background-color: rgba(255, 0, 0, 0.4);
+  border: 1px solid silver;
+  cursor: pointer;
+}
+
+.info-pad {
+  width: 20%;
+  height: 250px;
+  margin: 1em 1em;
+  background-color: white;
+  border-radius: 0.75em;
+}
+
+.tile:hover {
+  background-color: rgba(0, 0, 255, 0.6);
+}
+
+.tile-selected {
+  background-color: rgba(0, 0, 255, 0.6);
+}
+
+.tooltip-box {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  min-width: 200px;
+  max-width: 300px; /* Added max-width to prevent very wide tooltips */
+  pointer-events: none; /* Ensures tooltip doesn't interfere with mouse events */
+}
+
+.tooltip-content h4 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.tooltip-content p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.btn {
+  padding-left: 2em;
+}
+
+.btn-gold {
+  border: 2px solid gold;
+  color: white;
+  background-color: #e1ab81;
+}
+
+.btn-gold:hover {
+  color: black;
+  background-color: gold;
+  transition: 500ms;
+}
+
+.funds-color {
+  color: goldenrod;
+}
+
+.popularity-color {
+  color: #b902d3;
+}
+
+.research-color {
+  color: #00cbfb;
+}
+
+.environmental-score-color {
+  color: #209f01;
+}
+
+.energy-production-color {
+  color: #FFA500;
+}
+
+.energy-consumption-color {
+  color: #c56c00;
+}
+
+pre {
+  margin: 0;
+  padding: 0;
+}

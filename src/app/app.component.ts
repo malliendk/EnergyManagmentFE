@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {GameDTOService} from "./services/game-dto.service";
 import {ExtendedGameDTO} from "./dtos/extendedGameDTO";
 import {map, Subscription, switchMap, tap} from "rxjs";
@@ -6,21 +6,14 @@ import {BuildingService} from "./services/building.service";
 import {MinimizedGameDTO} from "./dtos/minimizedGameDTO";
 import {Building} from "./dtos/building";
 import {GameEventsService} from "./game-events.service";
-import {cloneDeep} from "lodash";
-import {DayWeatherService} from "./services/day-weather.service";
 import {BuildingDashboardComponent} from "./building-dashboard/building-dashboard.component";
 import {FactoryDashboardComponent} from "./factory-dashboard/factory-dashboard.component";
 import {TownhallDashboardComponent} from "./townhall-dashboard/townhall-dashboard.component";
 import {NavbarComponent} from "./navbar/navbar.component";
 import {CommonModule} from "@angular/common";
-import {GridloadDashboardComponent} from "./gridload-dashboard/gridload-dashboard.component";
 import {EventDTO} from "./eventDTO";
-import {SharedModule} from "./shared.module";
-import {ModalComponent} from "./modal/modal.component";
 import {DaytimeWeatherComponent} from "./daytime-weather/daytime-weather.component";
 import {EventComponent} from "./event/event.component";
-import {Router} from "@angular/router";
-import {BuildingViewComponent} from "./building-view/building-view.component";
 
 @Component({
   selector: 'app-root',
@@ -33,7 +26,7 @@ import {BuildingViewComponent} from "./building-view/building-view.component";
     TownhallDashboardComponent,
     FactoryDashboardComponent,
     BuildingDashboardComponent,
-    GridloadDashboardComponent,
+    // GridloadDashboardComponent,
     DaytimeWeatherComponent,
     EventComponent,
   ]
@@ -83,7 +76,7 @@ export class AppComponent implements OnInit {
 
   getGameDTO() {
     this.gameDTOService.getMinimizedGameDto().subscribe(minimizedGameDTO => {
-      this.buildingService.getBuildingsById(minimizedGameDTO)
+      this.buildingService.findAllById(minimizedGameDTO)
         .subscribe((buildings: Building[]) => {
           this.gameDTO = this.gameDTOService.extendGameDTO(minimizedGameDTO, buildings);
         })
@@ -95,7 +88,7 @@ export class AppComponent implements OnInit {
     this.gameDTOSubscription = this.gameEventsService.subscribeToGameDTO().pipe(
       tap(() => this.connectionError = false),
       switchMap(minimizedDTO =>
-        this.buildingService.getBuildingsById(minimizedDTO).pipe(
+        this.buildingService.findAllById(minimizedDTO).pipe(
           map(gameBuildings => {
             gameBuildings.forEach(building => this.buildingService.generateInstanceId(building));
             return { minimizedDTO, gameBuildings };

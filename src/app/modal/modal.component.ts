@@ -1,6 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {NgClass, NgStyle} from "@angular/common";
-import {Building} from "../dtos/building";
+import {Component, Input} from '@angular/core';
+import {NgClass} from "@angular/common";
 
 @Component({
   selector: 'app-modal',

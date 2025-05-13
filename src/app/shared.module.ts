@@ -2,7 +2,6 @@ import {BorderBlockComponent} from "./border-block/border-block.component";
 import {SliderComponent} from "./slider/slider.component";
 import {SideBarComponent} from "./side-bar/side-bar.component";
 import {ClockComponent} from "./clock/clock.component";
-import {ModalComponent} from "./modal/modal.component";
 import {ChoiceCreateSupervisorComponent} from "./choice-create-supervisor/choice-create-supervisor.component";
 import {NavigateButtonComponent} from "./buttons/navigate-button/navigate-button.component";
 import {CreateButtonComponent} from "./buttons/create-button/create-button.component";
