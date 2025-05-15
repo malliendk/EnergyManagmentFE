@@ -15,9 +15,7 @@
       }
       @if (dashboardType === buildingDashboard) {
         <app-building-dashboard
-          [receivingViewType]="buildingViewComponentType"
           [gameDTO]="gameDTO"
-          [allBuildings]="allBuildings"
           (passGameDTOToTopLevel)="updateGameDTO($event)"
         ></app-building-dashboard>
       }

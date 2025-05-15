@@ -1,5 +1,7 @@
 @if (event) {
-  <app-modal [isModalOpen]="isModalOpen">
+  <app-modal
+    [isModalOpen]="isModalOpen"
+    [showHeader]="true">
     <div modal-title>
       <div class="title">{{ event.name }}</div>
     </div>

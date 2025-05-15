@@ -9,18 +9,6 @@
   margin-right: auto;
 }
 
-.building-held-amount {
-  display: flex;
-  justify-content: center;
-  width: 2em;
-  height: 2em;
-  color: red;
-  font-weight: bold;
-  background-color: #fde6d1;
-  border-radius: 50%;
-  border: 2px solid red;
-}
-
 .middle-layer-box {
   display: flex;
   width: 100%;
@@ -38,21 +26,6 @@
   background-color: antiquewhite;
 }
 
-.card {
-  border-radius: 1rem;
-  overflow: hidden;
-  box-shadow: 0 0 10px 2px rgba(60, 60, 60, 0.8);
-}
-
-.card-margins {
-  margin: 1vh 1vw 2% 1vw;
-}
-
-.card-top {
-  height: 2em;
-  width: 100%;
-  background-color: #cc0303;
-}
 
 .bar-chart-container {
   width: 10%;
@@ -80,19 +53,8 @@
   cursor: default;
 }
 
-.card-small {
-  height: 28vh;
-  width: 17vw;
-  margin: 0.5em;
-  color: white;
-  background-color: #61371f;
-}
 
-.card-img-top-small {
-  border-style: solid;
-  border-left: none;
-  border-right: none;
-}
+
 
 .card-column {
   display: flex;
@@ -270,18 +232,7 @@
   transition: 500ms;
 }
 
-.cancel {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  top: 5px;
-  right: 5px;
-  color: white;
-  background-color: #cc0303;
-  font-size: large;
-  font-weight: bold;
-}
+
 
 @media screen and (max-width: 1500px) {
   .cancel {

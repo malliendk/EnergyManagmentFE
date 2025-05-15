@@ -1,1 +1,29 @@
-<p>district-info works!</p>
+<div class="info-container">
+  @for (district of districts; track district) {
+    <div class="info-pad">
+      <div class="header">
+        <p>District {{ district.id }}</p>
+      </div>
+      <div class="main-info">
+        <p>Netbelasting: {{ district.gridLoad }}</p>
+      </div>
+      <div class="primary-body">
+        <p>{{ district.energyProduction }}</p>
+        <p>{{ district.energyConsumption }}</p>
+        <p>Netcapaciteit: {{ district.gridCapacity }}</p>
+      </div>
+      <div>
+        @if (district.excessBalance > 0) {
+          <p>Energie overschot: {{ district.excessBalance }}</p>
+        }
+        @if (district.excessBalance < 0) {
+          <p>Energie tekort: {{ district.excessBalance}}</p>
+        }
+        <p>Elektriciteit uit overige districten: </p>
+        @for (excess of district.incomingExcessBalances; track excess) {
+          <div>{{ excess }}</div>
+        }
+      </div>
+    </div>
+  }
+</div>

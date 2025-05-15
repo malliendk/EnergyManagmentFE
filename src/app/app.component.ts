@@ -116,9 +116,6 @@ export class AppComponent implements OnInit {
       this.gameDTO = this.buildingService.processPurchasedBuilding(eventResult.building!, this.gameDTO);
       this.gameDTO = {...this.gameDTO}
       this.updateGameDTO(this.gameDTO);
-      if (this.buildingDashboardComponent) {
-        this.buildingDashboardComponent.updateHeldBuildingsOverview();
-      }
     } else {
       this.gameDTO.popularity -= eventResult.popularityLoss;
     }
@@ -145,7 +142,7 @@ export class AppComponent implements OnInit {
   }
 
   getAllBuildings() {
-    this.buildingService.getAll()
+    this.buildingService.findAll()
       .subscribe((buildings: Building[]) => {
         this.allBuildings = buildings;
         this.allBuildings.forEach((building: Building) => building.instanceId = undefined);

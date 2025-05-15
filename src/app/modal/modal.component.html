@@ -1,9 +1,13 @@
-<div class="modal" [ngClass]="{ 'show': isModalOpen, 'hide': !isModalOpen}">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+<div class="modal"
+     [ngClass]="{ 'show': isModalOpen, 'hide': !isModalOpen}">
+  <div class="modal-dialog modal-dialog-centered modal-lg"
+       [ngClass]="customWidthClass">
     <div class="modal-content rounded-4">
-      <div class="modal-header d-flex justify-content-center">
-        <ng-content select="[modal-title]"></ng-content>
-      </div>
+      @if (showHeader) {
+        <div class="modal-header d-flex justify-content-center">
+          <ng-content select="[modal-title]"></ng-content>
+        </div>
+      }
       <div class="modal-body d-flex justify-content-center align-items-center">
         <ng-content select="[modal-body]"></ng-content>
       </div>

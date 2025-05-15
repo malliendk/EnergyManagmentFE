@@ -1,4 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
+import {District} from "../dtos/district";
 
 @Component({
   selector: 'app-district-info',
@@ -7,6 +9,13 @@ import {Component} from '@angular/core';
   standalone: true,
   styleUrl: './district-info.component.css'
 })
-export class DistrictInfoComponent {
+export class DistrictInfoComponent implements OnInit{
 
+  @Input() gameDTO!: ExtendedGameDTO;
+
+  districts!: District[]
+
+  ngOnInit() {
+    this.districts = this.gameDTO.districts;
+  }
 }

@@ -28,7 +28,6 @@ export interface MinimizedGameDTO {
   taxRate: number;
   popRate: number;
   buildingRequests: BuildingRequest[];
-  tiles: Tile[];
   districts: District[];
   events: EventDTO[];
   timeOfDay: TimeOfDay;

@@ -22,8 +22,7 @@ export interface ExtendedGameDTO {
   popularityIncome: number;
   researchIncome: number;
   buildings: Building[];
-  tiles: Tile[];
   districts: District[];
-  timeOfDay: TimeOfDay;
-  weatherType: WeatherType
+  timeOfDay: string;
+  weatherType: string
 }

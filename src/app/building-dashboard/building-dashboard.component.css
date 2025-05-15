@@ -1,0 +1,61 @@
+.card {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0 10px 2px rgba(60, 60, 60, 0.8);
+}
+
+.card-small {
+  height: 28vh;
+  width: 17vw;
+  margin: 0.5em;
+  color: white;
+  background-color: #61371f;
+}
+
+
+.card-img-top-small {
+  border-style: solid;
+  border-left: none;
+  border-right: none;
+}
+
+.card-margins {
+  margin: 1vh 1vw 2% 1vw;
+}
+
+.card-top {
+  height: 2em;
+  width: 100%;
+  background-color: #cc0303;
+}
+
+.property-block-theme-small {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 105%;
+  left: -10px;
+  right: -10px;
+  bottom: 6px;
+  margin-top: 0.5em;
+  padding-left: 20px;
+  background-color: #cf8c5c;
+  border: 2px solid black;
+  border-radius: 0.5em;
+  text-align: left;
+  font-size: 90%;
+}
+
+.building-held-amount {
+  display: flex;
+  justify-content: center;
+  width: 2em;
+  height: 2em;
+  color: red;
+  font-weight: bold;
+  background-color: #fde6d1;
+  border-radius: 50%;
+  border: 2px solid red;
+}
+

@@ -36,3 +36,9 @@
   text-decoration: none;
   cursor: pointer;
 }
+
+.width-90 {
+  max-width: 90vw !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}

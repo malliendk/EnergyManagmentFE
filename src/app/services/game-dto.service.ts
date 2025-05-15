@@ -82,7 +82,8 @@ export class GameDTOService implements OnInit {
 
   minimizeToInitiateDTO(extendedGameDTO: ExtendedGameDTO): InitiateGameDTO {
     const buildingRequests: BuildingRequest[] = this.buildingService.minimizeBuildingsToBuildingRequests(extendedGameDTO.buildings);
-    const simplifiedTiles: Tile[] = this.buildingService.removeBuildingsFromTiles(extendedGameDTO.tiles);
+    const tiles: Tile[] = this.buildingService.collectAllTiles(extendedGameDTO);
+    const simplifiedTiles: Tile[] = this.buildingService.removeBuildingsFromTiles(tiles);
     return {
       id: extendedGameDTO.id,
       funds: extendedGameDTO.funds,

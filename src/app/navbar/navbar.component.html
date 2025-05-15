@@ -3,18 +3,8 @@
     <div class="d-flex">
       <div class="nav-demo-items" (click)="emitViewType(townHallDashboard, false)">Town Hall</div>
       <div class="nav-demo-items" (click)="emitViewType(factoryDashboard, false)">Factories</div>
-      <div class="nav-demo-items" (click)="emitBuildingViewType(buildingDashboard, viewTypeBuildingOverview)">Buildings</div>
+      <div class="nav-demo-items" (click)="emitViewType(buildingDashboard, false)">Buildings</div>
     </div>
-    @if (showButtons) {
-      <div class="view-type-buttons">
-        <button class="btn btn-secondary" (click)="emitBuildingViewType(buildingDashboard, viewTypeBuildingOverview)">
-          View
-        </button>
-        <button class="btn btn-gold" (click)="emitBuildingViewTypeAll()">
-          Buy
-        </button>
-      </div>
-    }
   </div>
 
   <div class="stats">

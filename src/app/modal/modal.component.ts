@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {NgClass} from "@angular/common";
+import {NgClass, NgStyle} from "@angular/common";
 
 @Component({
   selector: 'app-modal',
@@ -13,4 +13,6 @@ import {NgClass} from "@angular/common";
 export class ModalComponent {
 
   @Input() isModalOpen: boolean = false;
+  @Input() customWidthClass?: string;
+  @Input() showHeader!: boolean;
 }

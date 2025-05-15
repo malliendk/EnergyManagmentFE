@@ -1,21 +1,29 @@
-<div *ngIf="receivingViewType === ownedBuildingsView">
-  @if (gameDTO) {
-    <app-building-view
-      (passViewType)="getBuildingViewType($event)"
+@if (gameDTO) {
+  @if (!isDetailView) {
+    <div class="d-flex flex-wrap justify-content-center mt-1">
+      @for (entry of groupedBuildings; track entry.id) {
+        <div class="card card-small" (click)="toggleDetailView(entry.building)">
+          <div class="card-img-top">
+            <img [src]="entry.building.imageUri" alt="{{entry.building.imageUri}} + ' image'"
+                 class="card-img-top-small img-fluid">
+          </div>
+          <div class="property-block-theme-small">
+            <div> {{ entry.building.name }}</div>
+            <div class="mr-1 building-held-amount"> {{ entry.count }}</div>
+          </div>
+        </div>
+      }
+    </div>
+    <app-grid
       [gameDTO]="gameDTO"
-      [viewType]="ownedBuildingsView"
-      [buildings]="gameDTO.buildings"
-      (passSolarPanelPurchase)="updatePurchasedSolarSets($event)"
-    ></app-building-view>
+    ></app-grid>
+    <app-district-info [gameDTO]="gameDTO"></app-district-info>
   }
-</div>
-<div *ngIf="receivingViewType === purchaseView">
-  @if (allBuildings) {
+  @if (isDetailView) {
     <app-building-view
-      [gameDTO]="gameDTO"
-      [viewType]="purchaseView"
-      [buildings]="allBuildings"
-      (passPurchase)="updateBuildings($event)"
-    ></app-building-view>
+      [building]="building!"
+      (cancelDetailView)="toggleDetailView(null)">
+    </app-building-view>
   }
-</div>
+}
+

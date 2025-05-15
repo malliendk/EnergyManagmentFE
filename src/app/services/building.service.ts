@@ -18,7 +18,7 @@ export class BuildingService {
   constructor(private http: HttpClient) {
   }
 
-  getAll(): Observable<Building[]> {
+  findAll(): Observable<Building[]> {
     return this.http.get<Building[]>(this.buildingAPIBaseURL);
   }
 
@@ -113,7 +113,7 @@ export class BuildingService {
           // Create a new tile object with the building property populated
           return {
             ...tile,
-            building: { ...matchingBuilding }
+            building: {...matchingBuilding}
           };
         }
       }
@@ -128,12 +128,9 @@ export class BuildingService {
    * @returns The updated ExtendedGameDTO with buildings mapped to tiles
    */
   updateTilesWithBuildings(gameDTO: ExtendedGameDTO): ExtendedGameDTO {
-    const updatedTiles = this.mapBuildingsToTiles(gameDTO.tiles, gameDTO.buildings);
-
-    return {
-      ...gameDTO,
-      tiles: updatedTiles
-    };
+    const tiles: Tile[] = this.collectAllTiles(gameDTO)
+    this.mapBuildingsToTiles(tiles, gameDTO.buildings);
+    return gameDTO
   }
 
   /**
@@ -141,6 +138,7 @@ export class BuildingService {
    * @param tiles The tiles to process
    * @returns Tiles with only id and buildingId properties
    */
+
   removeBuildingsFromTiles(tiles: Tile[]): Tile[] {
     return tiles.map(tile => ({
       id: tile.id,
@@ -150,21 +148,25 @@ export class BuildingService {
     }));
   }
 
+  collectAllTiles(gameDTO: ExtendedGameDTO): Tile[] {
+    return gameDTO.districts.flatMap(district => district.tiles);
+  }
+
   generateInstanceId(building: Building) {
     building.instanceId = window.crypto.getRandomValues(new Uint32Array(1))[0];
   }
 
   private updatePowerPlants(requests: BuildingRequest[], buildings: Building[]) {
     requests.forEach((request: BuildingRequest) => {
-        if (request.propertiesMap) {
-          const propertiesMap = request.propertiesMap;
-          const powerPlantName = propertiesMap['name'];
-          let powerPlant: Building | undefined = buildings.find(building => building.name === powerPlantName);
-          if (powerPlant) {
-            this.readPropertyMap(propertiesMap, powerPlant);
-          }
+      if (request.propertiesMap) {
+        const propertiesMap = request.propertiesMap;
+        const powerPlantName = propertiesMap['name'];
+        let powerPlant: Building | undefined = buildings.find(building => building.name === powerPlantName);
+        if (powerPlant) {
+          this.readPropertyMap(propertiesMap, powerPlant);
         }
-      })
+      }
+    })
   }
 
   private readPropertyMap(propertiesMap: Record<string, any>, building: Building): Building {
@@ -178,13 +180,13 @@ export class BuildingService {
   private createPropertyMap(buildings: Building[], buildingId: number): Record<string, any> {
     let powerPlant: Building = buildings.find(building => building.id === buildingId)!
     return {
-        name: powerPlant.name,
-        energyProduction: powerPlant.energyProduction,
-        goldIncome: powerPlant.goldIncome,
-        researchIncome: powerPlant.researchIncome,
-        score: powerPlant.environmentalScore,
-        id: powerPlant.id
-      };
+      name: powerPlant.name,
+      energyProduction: powerPlant.energyProduction,
+      goldIncome: powerPlant.goldIncome,
+      researchIncome: powerPlant.researchIncome,
+      score: powerPlant.environmentalScore,
+      id: powerPlant.id
+    };
   }
 
   private setSolarPanelAmounts(requests: BuildingRequest[], buildings: Building[]) {

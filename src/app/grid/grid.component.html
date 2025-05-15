@@ -1,15 +1,15 @@
-@if (isInitialized) {
-  @if (isPurchasing) {
-    <h4 class="grid mt-5 p-1 btn-gold">Kies een perceel</h4>
-  }
+@if (isPurchasing) {
+  <h4 class="grid mt-5 p-1 btn-gold">Kies een perceel</h4>
+}
 
-  @if (isTutorial) {
-    <div class="grid">
-      @for (tile of tiles; track tile) {
+<div class="grid">
+  @for (district of districts; track district) {
+    <div class="district" [ngClass]="applyStatusColor(district)">
+      @for (tile of district.tiles; track tile) {
         <div class="tile"
              (mouseenter)="showTooltip(tile, $event)"
              (mouseleave)="hideTooltip()"
-             (click)="selectTileValues(tile.id, building!.id, building!)"
+             (click)="initializePurchase(tile)"
              [ngClass]="toggleSelectedTile(tile.id)">
           @if (tile.building) {
             <img class="img-fluid" [src]="tile.building.imageUri">
@@ -17,72 +17,92 @@
         </div>
       }
     </div>
-  } @else {
-    <div class="grid">
-      @for (district of districts; track district) {
-        <div class="district">
-          @for (tile of district.tiles; track tile) {
-            <div class="tile"
-                 (mouseenter)="showTooltip(tile, $event)"
-                 (mouseleave)="hideTooltip()"
-                 (click)="selectTileValues(tile.id, building!.id, building!)"
-                 [ngClass]="toggleSelectedTile(tile.id)">
-              @if (tile.building) {
-                <img class="img-fluid" [src]="tile.building.imageUri">
-              }
+  }
+</div>
+
+@if (isPurchaseModalOpen) {
+  <app-modal
+    [isModalOpen]="isPurchaseModalOpen"
+    [showHeader]="false"
+    [customWidthClass]="modalCustomWidth"
+  >
+    <div modal-body>
+      @if (!isDetailView) {
+        <div class="d-flex flex-wrap" id="purchase-buildings">
+          @for (building of allBuildings; track building) {
+            <div class="card card-small"
+                 (click)="selectBuilding(building)"
+                 [ngClass]="toggleSelectedBuilding(building.id)">
+              <div class="card-img-top">
+                <img [src]="building.imageUri" alt="{{building.imageUri}} + ' image'"
+                     class="card-img-top-small img-fluid" [ngStyle]="{'border-color': building.color}">
+              </div>
+              <div class="property-block-theme-small">{{ building.name }}</div>
             </div>
           }
         </div>
+        <div class="grid">
+            <div class="district">
+              @for (tile of district!.tiles; track tile) {
+                <div class="tile"
+                     (mouseenter)="showTooltip(tile, $event)"
+                     (mouseleave)="hideTooltip()"
+                     (click)="initializePurchase(tile)"
+                     [ngClass]="toggleSelectedTile(tile.id)">
+                  @if (tile.building) {
+                    <img class="img-fluid" [src]="tile.building.imageUri">
+                  }
+                </div>
+              }
+            </div>
+        </div>
+        @if (building) {
+          <div class="d-flex justify-content-around" id="purchase-buttons">
+            <button class="btn btn-gold" (click)="toggleBuildingDetailView()">Details</button>
+            <button class="btn-btn-gold">Aankopen</button>
+          </div>
+        }
+      }
+      @if (building && isDetailView) {
+        <app-building-view
+          [gameDTO]="gameDTO"
+          [building]="building!">
+        </app-building-view>
+      }
+
+      @if (activeTile) {
+        <div class="tooltip-box"
+             [style.top.px]="tooltipY"
+             [style.left.px]="tooltipX">
+          <div class="tooltip-content">
+            <h4>Perceel informatie</h4>
+            <p>District: {{ activeTile.districtId }}</p>
+            <p>Gebouw: {{ activeTile.building?.name }}</p>
+            <div class="d-flex">
+              <pre>Inkomen: </pre>
+              @if (activeTile.building?.goldIncome) {
+                <pre class="funds-color"> +{{ activeTile.building?.goldIncome }}</pre>
+              }
+              @if (activeTile.building?.popularityIncome) {
+                <p class="popularity-color"> +{{ activeTile.building?.popularityIncome }}</p>
+              }
+            </div>
+            <div class="d-flex">
+              @if (activeTile.building?.energyProduction) {
+                <p>Energieopwekking: </p>
+                <p class="energy-production-color">{{ activeTile.building?.energyProduction }}</p>
+              }
+            </div>
+            <div class="d-flex">
+              @if (activeTile.building?.energyConsumption) {
+                <pre>Stroomverbruik: </pre>
+                <pre class="energy-consumption-color">{{ activeTile.building?.energyConsumption }}</pre>
+              }
+            </div>
+          </div>
+        </div>
       }
     </div>
-  }
-
-  @if (isPurchasing) {
-    <div class="grid">
-      <button class="btn btn-gold p-2 mt-1 mb-1" (click)="emitSelectedTile()">
-        Bevestigen
-      </button>
-    </div>
-  }
-
-  @if (activeTile) {
-    <div class="tooltip-box"
-         [style.top.px]="tooltipY"
-         [style.left.px]="tooltipX">
-      <div class="tooltip-content">
-        <h4>Perceel informatie</h4>
-        <p>District: {{ activeTile.districtId }}</p>
-        <p>Gebouw: {{ activeTile.building?.name }}</p>
-        <div class="d-flex">
-          <pre>Inkomen: </pre>
-          @if (activeTile.building?.goldIncome) {
-            <pre class="funds-color"> +{{ activeTile.building?.goldIncome }}</pre>
-          }
-          @if (activeTile.building?.popularityIncome) {
-            <p class="popularity-color"> +{{ activeTile.building?.popularityIncome }}</p>
-          }
-        </div>
-        <div class="d-flex">
-          @if (activeTile.building?.energyProduction) {
-            <p>Energieopwekking: </p>
-            <p class="energy-production-color">{{ activeTile.building?.energyProduction }}</p>
-          }
-        </div>
-        <div class="d-flex">
-          @if (activeTile.building?.energyConsumption) {
-            <pre>Stroomverbruik: </pre>
-            <pre class="energy-consumption-color">{{ activeTile.building?.energyConsumption }}</pre>
-          }
-        </div>
-      </div>
-    </div>
-  }
+  </app-modal>
 }
 
-@if (!isPurchasing) {
-  <div class="info-container">
-    @for (district of districts; track district) {
-      <div class="info-pad"></div>
-    }
-  </div>
-}
