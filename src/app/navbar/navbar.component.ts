@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {CommonModule, CurrencyPipe} from "@angular/common";
 
@@ -9,7 +9,7 @@ import {CommonModule, CurrencyPipe} from "@angular/common";
     standalone: true,
     imports : [CommonModule, CurrencyPipe]
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnChanges {
 
   transitionClass = 'nav-demo navbar-expand-lg night'
 
@@ -24,8 +24,6 @@ export class NavbarComponent implements OnInit {
   townHallDashboard: string = 'town hall';
   factoryDashboard: string = 'factory';
   buildingDashboard: string = 'buildings'
-  viewTypeBuildingAll: string = 'purchase';
-  viewTypeBuildingOverview: string = 'overview';
 
   constructor() {}
 
@@ -33,20 +31,14 @@ export class NavbarComponent implements OnInit {
     this.showButtons = true;
   }
 
-  emitBuildingViewType(viewType: string, viewTypeBuilding: string) {
-    this.passViewType.emit({viewType: viewType, showGridLoadDashboard: true});
-    this.passBuildingVieWType.emit(viewTypeBuilding)
-  }
-
-  emitBuildingViewTypeAll() {
-    this.passBuildingVieWType.emit(this.viewTypeBuildingAll);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['gameDTO'] && changes['gameDTO'].currentValue) {
+      this.gameDTO = changes['gameDTO'].currentValue;
+      console.log('Updated gameDTO in NavbarComponent:', this.gameDTO);
+    }
   }
 
   emitViewType(viewType: string, showGridLoadDashboard: boolean) {
     this.passViewType.emit({viewType, showGridLoadDashboard});
-  }
-
-  pauseGameDTOEmitter() {
-
   }
 }

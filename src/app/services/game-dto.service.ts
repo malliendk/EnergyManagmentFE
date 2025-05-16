@@ -16,7 +16,6 @@ export class GameDTOService implements OnInit {
   private initiateServiceUrl = 'http://localhost:8080';
   private calculationServiceUrl: string = 'http://localhost:8093';
 
-
   constructor(private http: HttpClient,
               private buildingService: BuildingService) {
   }
@@ -65,7 +64,7 @@ export class GameDTOService implements OnInit {
     // Update tiles with buildings
     gameDTO = this.buildingService.updateTilesWithBuildings(gameDTO);
 
-    console.log("successfully extended gameDTO:", gameDTO);
+    console.log("successfully extended gameDTO: {}", gameDTO);
     return gameDTO;
   }
 

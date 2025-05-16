@@ -28,8 +28,6 @@ export class BuildingDashboardComponent implements OnInit {
   building: Building | null = null;
   tiles!: Tile[];
   isDetailView: boolean = false;
-  isPurchasing = false;
-
 
   constructor(private buildingService: BuildingService) {
   }
@@ -68,21 +66,8 @@ export class BuildingDashboardComponent implements OnInit {
     }));
   }
 
-  updateBuildings(purchase: { building: Building; tile: Tile }): void {
-    const purchasedBuilding: Building = purchase.building;
-    const selectedTile: Tile = purchase.tile;
-    this.replaceTileInGameDTO(selectedTile);
-    this.buildingService.processPurchasedBuilding(purchasedBuilding, this.gameDTO);
-    this.passGameDTOToTopLevel.emit(this.gameDTO);
-  }
-
-  private replaceTileInGameDTO(newTile: Tile) {
-    const index = this.tiles.findIndex(tile => tile.id === newTile.id);
-    if (index !== -1) {
-      this.tiles[index] = newTile;
-    } else {
-      console.log('Tile with the specified ID not found.');
-    }
+  updateGameDTO(gameDTO: ExtendedGameDTO): void {
+    this.passGameDTOToTopLevel.emit(gameDTO);
   }
 
   updatePurchasedSolarSets(purchasedSet: { building: Building, totalCost: number }) {

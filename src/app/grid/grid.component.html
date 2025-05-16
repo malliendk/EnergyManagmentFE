@@ -1,7 +1,3 @@
-@if (isPurchasing) {
-  <h4 class="grid mt-5 p-1 btn-gold">Kies een perceel</h4>
-}
-
 <div class="grid">
   @for (district of districts; track district) {
     <div class="district" [ngClass]="applyStatusColor(district)">
@@ -28,6 +24,7 @@
   >
     <div modal-body>
       @if (!isDetailView) {
+        <button class="cancel" (click)="closePurchaseModal()">X</button>
         <div class="d-flex flex-wrap" id="purchase-buildings">
           @for (building of allBuildings; track building) {
             <div class="card card-small"
@@ -59,14 +56,16 @@
         @if (building) {
           <div class="d-flex justify-content-around" id="purchase-buttons">
             <button class="btn btn-gold" (click)="toggleBuildingDetailView()">Details</button>
-            <button class="btn-btn-gold">Aankopen</button>
+            <button class="btn-btn-gold" (click)="purchaseBuilding(this.tile)">Aankopen</button>
           </div>
         }
       }
       @if (building && isDetailView) {
         <app-building-view
           [gameDTO]="gameDTO"
-          [building]="building!">
+          [building]="building!"
+          (cancelDetailView)="cancelDetailView()"
+        >
         </app-building-view>
       }
 

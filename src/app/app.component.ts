@@ -14,6 +14,7 @@ import {CommonModule} from "@angular/common";
 import {EventDTO} from "./eventDTO";
 import {DaytimeWeatherComponent} from "./daytime-weather/daytime-weather.component";
 import {EventComponent} from "./event/event.component";
+import {UpdateDTOService} from "./services/update-dto.service";
 
 @Component({
   selector: 'app-root',
@@ -43,6 +44,8 @@ export class AppComponent implements OnInit {
   connectionError: boolean = false;
   private gameDTOSubscription: Subscription | null = null;
   private eventSubscription: Subscription | null = null;
+  private incomeDTOSubscription: Subscription | null = null;
+  private dayWeatherSubscription: Subscription | null = null;
 
   buildingViewComponentType: string = '';
   buildingViewPurchase: string = 'purchase';
@@ -54,7 +57,8 @@ export class AppComponent implements OnInit {
 
   constructor(private gameDTOService: GameDTOService,
               private gameEventsService: GameEventsService,
-              private buildingService: BuildingService) {
+              private buildingService: BuildingService,
+              private updateDTOService: UpdateDTOService) {
   }
 
   ngOnInit() {
@@ -83,6 +87,23 @@ export class AppComponent implements OnInit {
     })
   }
 
+  subscribeToIncomeDTO(): void {
+    this.connectionError = false;
+    this.incomeDTOSubscription = this.gameEventsService.subscribeToIncomeAddDTO()
+      .subscribe(incomeDTO => {
+          this.gameDTO = this.updateDTOService.processIncomeAddDTO(incomeDTO, this.gameDTO);
+        }
+      )
+  }
+
+  subscribeToDayWeatherDTO(): void {
+    this.connectionError = false;
+    this.incomeDTOSubscription = this.gameEventsService.subscribeToDayWeatherUpdateDTO()
+      .subscribe(dayWeatherDTO => {
+        this.gameDTO = this.updateDTOService.processDayWeatherUpdateDTO(dayWeatherDTO, this.gameDTO);
+      })
+  }
+
   subscribeToGameDTO(): void {
     this.connectionError = false;
     this.gameDTOSubscription = this.gameEventsService.subscribeToGameDTO().pipe(
@@ -91,11 +112,11 @@ export class AppComponent implements OnInit {
         this.buildingService.findAllById(minimizedDTO).pipe(
           map(gameBuildings => {
             gameBuildings.forEach(building => this.buildingService.generateInstanceId(building));
-            return { minimizedDTO, gameBuildings };
+            return {minimizedDTO, gameBuildings};
           })
         )
       ),
-      map(({ minimizedDTO, gameBuildings }) =>
+      map(({minimizedDTO, gameBuildings}) =>
         this.gameDTOService.extendGameDTO(minimizedDTO, gameBuildings)
       )
     ).subscribe({
@@ -110,7 +131,7 @@ export class AppComponent implements OnInit {
     });
   }
 
-  processCompletedEvent(eventResult: {building: Building | null, popularityLoss: number}) {
+  processCompletedEvent(eventResult: { building: Building | null, popularityLoss: number }) {
     const processedBuilding: Building | null = eventResult.building;
     if (processedBuilding) {
       this.gameDTO = this.buildingService.processPurchasedBuilding(eventResult.building!, this.gameDTO);
@@ -131,7 +152,7 @@ export class AppComponent implements OnInit {
         }));
   }
 
-  getViewType(viewTypeset: {viewType: string, showGridLoadDashboard: boolean}) {
+  getViewType(viewTypeset: { viewType: string, showGridLoadDashboard: boolean }) {
     this.dashboardType = viewTypeset.viewType;
     this.showGridLoadDashboard = viewTypeset.showGridLoadDashboard;
   }

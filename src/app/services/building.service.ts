@@ -87,7 +87,6 @@ export class BuildingService {
   }
 
   processPurchasedBuilding(building: Building, gameDTO: ExtendedGameDTO): ExtendedGameDTO {
-    gameDTO.buildings = [...gameDTO.buildings, building];
     gameDTO.funds -= building.price;
     return gameDTO
   }

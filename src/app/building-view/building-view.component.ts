@@ -21,7 +21,7 @@ export class BuildingViewComponent implements OnInit {
 
   @Input() gameDTO!: ExtendedGameDTO;
   @Input() building!: Building
-  @Output() cancelDetailView = new EventEmitter<Building | null>();
+  @Output() cancelDetailView = new EventEmitter<void>();
   @Output() passPurchase = new EventEmitter<{building: Building, tile: Tile}>();
 
   isPurchasing = false;
@@ -36,8 +36,8 @@ export class BuildingViewComponent implements OnInit {
 
   }
 
-  toggleDetailView(possibleBuilding: Building | null) {
-    this.cancelDetailView.emit(possibleBuilding);
+  toggleDetailView() {
+    this.cancelDetailView.emit();
   }
 
 

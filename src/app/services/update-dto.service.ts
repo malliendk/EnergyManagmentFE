@@ -10,18 +10,21 @@ export class UpdateDTOService {
 
   constructor() { }
 
-
-  processDayWeatherUpdateDTO(dayWeatherUpdateDTO: DayWeatherUpdateDTO, extendedGameDTO: ExtendedGameDTO) {
-    if (dayWeatherUpdateDTO.timeOfDay) {
-      extendedGameDTO.timeOfDay = dayWeatherUpdateDTO.timeOfDay;
-    }
-    extendedGameDTO.weatherType = dayWeatherUpdateDTO.weatherType;
-    extendedGameDTO.districts = dayWeatherUpdateDTO.districts;
+  processDayWeatherUpdateDTO(dayWeatherUpdateDTO: DayWeatherUpdateDTO, extendedGameDTO: ExtendedGameDTO): ExtendedGameDTO {
+    return {
+      ...extendedGameDTO,
+      timeOfDay: dayWeatherUpdateDTO.timeOfDay ?? extendedGameDTO.timeOfDay,
+      weatherType: dayWeatherUpdateDTO.weatherType,
+      districts: dayWeatherUpdateDTO.districts
+    };
   }
 
-  processIncomeAddDTO(incomeDTO: IncomeAddDTO, gameDTO: ExtendedGameDTO) {
-    gameDTO.funds = incomeDTO.newFunds;
-    gameDTO.popularity = incomeDTO.newPopularity;
-    gameDTO.research = incomeDTO.newResearch;
+  processIncomeAddDTO(incomeDTO: IncomeAddDTO, gameDTO: ExtendedGameDTO): ExtendedGameDTO {
+    return {
+      ...gameDTO,
+      funds: incomeDTO.newFunds,
+      popularity: incomeDTO.newPopularity,
+      research: incomeDTO.newResearch
+    };
   }
 }

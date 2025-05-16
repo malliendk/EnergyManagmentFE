@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Building} from "../dtos/building";
 import {NgClass, NgForOf, NgStyle} from "@angular/common";
 import {District} from "../dtos/district";
@@ -24,17 +24,15 @@ import {BuildingViewComponent} from "../building-view/building-view.component";
   standalone: true,
   styleUrl: './grid.component.css'
 })
-export class GridComponent implements OnInit {
+export class GridComponent implements OnInit, OnChanges {
   @Input() gameDTO!: ExtendedGameDTO;
-  @Input() building?: Building | undefined;
-  @Input() isPurchasing: boolean = false;
-  @Output() passSelectedTile = new EventEmitter<Tile>();
+  @Input() building?: Building | null;
+  @Output() passUpdatedGameDTO = new EventEmitter<ExtendedGameDTO>();
   districts!: District[];
   district?: District;
   tiles!: Tile[];
   tile!: Tile;
   allBuildings!: Building[];
-  selectedTileId: number = 0;
   activeTile: Tile | null = null;
   tooltipX: number = 0;
   tooltipY: number = 0;
@@ -50,10 +48,20 @@ export class GridComponent implements OnInit {
   ngOnInit() {
     this.districts = this.gameDTO.districts;
     this.tiles = this.collectAllTiles(this.gameDTO);
-    this.tile = {id: 0, buildingId: 0, building: null, districtId: 0};
+    this.reinitializeTile();
     this.buildingService.addBuildingsToTiles(this.gameDTO.buildings, this.districts);
     this.findAllBuildings();
     console.log('districts: {}', this.gameDTO.districts);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['gameDTO'] && changes['gameDTO'].currentValue) {
+      this.districts = this.gameDTO.districts;
+    }
+  }
+
+  reinitializeTile() {
+    this.tile = {id: 0, buildingId: 0, building: null, districtId: 0};
   }
 
   findAllBuildings() {
@@ -79,11 +87,6 @@ export class GridComponent implements OnInit {
     return this.buildingService.collectAllTiles(gameDTO);
   }
 
-  emitSelectedTile() {
-    this.passSelectedTile.emit(this.tile);
-    console.log('emitting tile: {}', this.tile);
-  }
-
   applyStatusColor(district: District) {
     if (district.gridLoad > 1) {
       return 'status-critical';
@@ -97,10 +100,25 @@ export class GridComponent implements OnInit {
   }
 
   initializePurchase(tile: Tile) {
-    console.log('ínitializing purchase');
-    this.isPurchaseModalOpen = true;
-    this.tile = tile;
-    this.district = this.districts.find(district => district.id === tile.districtId);
+    if (!tile.building) {
+      console.log('ínitializing purchase');
+      this.togglePurchaseModal();
+      this.tile = tile;
+      this.district = this.districts.find(district => district.id === tile.districtId);
+    }
+  }
+
+  purchaseBuilding(tile: Tile) {
+      tile.building = this.building!;
+      tile.buildingId = this.building!.id;
+      console.log('building: {} in district {}', this.building, this.district);
+      console.log('passing gameDTO: {}', this.gameDTO);
+      this.gameDTO.buildings.push(this.building!)
+      this.buildingService.processPurchasedBuilding(this.building!, this.gameDTO);
+      this.passUpdatedGameDTO.emit(this.gameDTO);
+      this.isPurchaseModalOpen = false;
+      this.building = null;
+      this.reinitializeTile();
   }
 
   selectBuilding(building: Building) {
@@ -116,11 +134,17 @@ export class GridComponent implements OnInit {
     this.isDetailView = !this.isDetailView;
   }
 
-  getBorderColor(propertyValue: number) {
-    return propertyValue > 0 ? '#e6b904' : 'black';
+  cancelDetailView() {
+    this.isDetailView = false;
   }
 
-  setModalWidth90(): string {
-    return 'width-90';
+  closePurchaseModal() {
+    this.building = null;
+    this.reinitializeTile();
+    this.togglePurchaseModal();
+  }
+
+  togglePurchaseModal() {
+    this.isPurchaseModalOpen = !this.isPurchaseModalOpen;
   }
 }

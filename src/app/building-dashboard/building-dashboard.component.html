@@ -16,6 +16,7 @@
     </div>
     <app-grid
       [gameDTO]="gameDTO"
+      (passUpdatedGameDTO)="updateGameDTO($event)"
     ></app-grid>
     <app-district-info [gameDTO]="gameDTO"></app-district-info>
   }

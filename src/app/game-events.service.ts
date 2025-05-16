@@ -2,6 +2,9 @@ import {Injectable, NgZone} from '@angular/core';
 import {Observable, share, Subject} from 'rxjs';
 import {MinimizedGameDTO} from "./dtos/minimizedGameDTO";
 import {EventDTO} from "./eventDTO";
+import {IncomeAddDTO} from "./IncomeAddDTO";
+import {UpdateDTOService} from "./services/update-dto.service";
+import {DayWeatherUpdateDTO} from "./dayWeatherUpdateDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -9,17 +12,63 @@ import {EventDTO} from "./eventDTO";
 export class GameEventsService {
 
   private GAME_DTO_EVENT_URL: string = 'http://localhost:8093/events';
+  private INCOME_ADD_DTO_URL: string = 'http://localhost:8093/something'
+  private DAY_WEATHER_DTO_URL: string = 'http://localhost:8093/somethingsomething'
   private BUILDING_EVENT_URL: string = 'http://localhost:8090/event/stream';
 
   // Map to store multiple EventSource connections
   private eventSources: Map<string, EventSource> = new Map();
 
+  private incomeDTO = new Subject<IncomeAddDTO>();
+  private dayWeatherDTO = new Subject<DayWeatherUpdateDTO>()
   private gameDTO$ = new Subject<MinimizedGameDTO>();
   private event$ = new Subject<EventDTO>();
   private connectionCountGameDTO: number = 0;
   private connectionCountEvent: number = 0;
+  private connectionCountIncome: number = 0;
+  private connectionCountDayWeather: number = 0;
 
   constructor(private zone: NgZone) {}
+
+  /**
+   * Subscribe to game events using Server-Sent Events
+   * @returns Observable of IncomeAddDTO objects
+   */
+  subscribeToIncomeAddDTO(): Observable<IncomeAddDTO> {
+    this.connectionCountIncome++;
+    console.log(`New game subscription. Total game subscribers: ${this.connectionCountIncome}`);
+
+    if (!this.eventSources.has(this.INCOME_ADD_DTO_URL)) {
+      console.log('Creating new Income EventSource connection');
+      this.createEventSource<IncomeAddDTO>(this.INCOME_ADD_DTO_URL, this.incomeDTO, 'income-update');
+    } else {
+      console.log('Reusing existing Income EventSource connection');
+    }
+
+    return this.incomeDTO.asObservable().pipe(
+      share()
+    );
+  }
+
+  /**
+   * Subscribe to game events using Server-Sent Events
+   * @returns Observable of IncomeAddDTO objects
+   */
+  subscribeToDayWeatherUpdateDTO(): Observable<DayWeatherUpdateDTO> {
+    this.connectionCountDayWeather++;
+    console.log(`New day-weather subscription. Total day-weather subscribers: ${this.connectionCountDayWeather}`);
+
+    if (!this.eventSources.has(this.DAY_WEATHER_DTO_URL)) {
+      console.log('Creating new Day-Weather EventSource connection');
+      this.createEventSource<DayWeatherUpdateDTO>(this.DAY_WEATHER_DTO_URL, this.dayWeatherDTO, 'day-weather-update');
+    } else {
+      console.log('Reusing existing Day-weather EventSource connection');
+    }
+
+    return this.dayWeatherDTO.asObservable().pipe(
+      share()
+    );
+  }
 
   /**
    * Subscribe to game events using Server-Sent Events

@@ -41,12 +41,7 @@
           </div>
         </div>
         <div class="property-column">
-          @if (building.instanceId) {
-            <button class="cancel" (click)="toggleDetailView(null)">X</button>
-          }
-          @if (!building.instanceId) {
-            <button class="cancel" (click)="toggleDetailView(building)">X</button>
-          }
+            <button class="cancel" (click)="toggleDetailView()">X</button>
           <div class="property-block" [ngStyle]="{'border-color': getBorderColor(building!.gridLoad)}">
             <div>Solar Panels</div>
             <div>{{ building!.solarPanelAmount }}</div>
@@ -71,7 +66,7 @@
         </div>
       </div>
       @if (!building!.instanceId && !(building!.category === categoryPowerPlant)) {
-        <button class="purchase-button btn btn-gold mb-2" (click)="selectBuilding(building!)">
+        <button class="purchase-button btn btn-gold mb-2" (click)="toggleDetailView()">
           Selecteer
         </button>
       }
