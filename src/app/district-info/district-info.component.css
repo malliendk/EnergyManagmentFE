@@ -1,22 +1,243 @@
-.info-container {
+.districts-container {
   display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  height: auto;
-  width: 80vw;
-  margin: 2em auto 2em auto;
-  background-color: transparent;
+  gap: 12px;
+  width: 100%;
+  flex-wrap: wrap; /* Allow wrapping for many districts */
+  padding: 0 16px;
 }
 
-.info-pad {
-  width: 20%;
-  height: 250px;
-  margin: 1em 1em;
-  background-color: white;
-  border-radius: 0.75em;
+
+.district-card {
+  flex: 1;
+  min-width: 280px; /* Minimum width to prevent crushing */
+  max-width: 320px; /* Maximum width to maintain consistency */
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e5e5;
+  border-left: 4px solid #e5e5e5; /* Default left border */
+  margin-bottom: 16px; /* Space for wrapped rows */
 }
 
-.primary-body {
-  border-top: solid 1px black;
-  border-bottom: solid 1px black;
+
+/* Status-based header colors integrated with stress levels */
+.district-header {
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+
+/* Color the entire header based on stress level and matching left border */
+.district-card.warning {
+  border-left-color: #f39c12;
+}
+
+
+.district-card.warning .district-header {
+  background: linear-gradient(135deg, #f39c12 0%, #f5a623 100%);
+  color: white;
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+
+.district-card.danger {
+  border-left-color: #e74c3c;
+}
+
+
+.district-card.danger .district-header {
+  background: linear-gradient(135deg, #e74c3c 0%, #ec7063 100%);
+  color: white;
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+
+.district-card.critical {
+  border-left-color: #c0392b;
+}
+
+
+.district-card.critical .district-header {
+  background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+  color: white;
+  border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+
+.district-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+}
+
+
+.district-card.warning .district-title,
+.district-card.danger .district-title,
+.district-card.critical .district-title {
+  color: white;
+}
+
+
+/* Remove separate stress indicator styling since it's now integrated */
+.stress-indicator {
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
+.district-card.warning .stress-indicator,
+.district-card.danger .stress-indicator,
+.district-card.critical .stress-indicator {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+
+/* Hide the old stress classes if they exist */
+.stress-normal,
+.stress-minor,
+.stress-moderate,
+.stress-severe,
+.stress-critical {
+  /* These are now handled by the header color changes above */
+}
+
+
+.district-body {
+  padding: 16px;
+}
+
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+
+.metric {
+  text-align: center;
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+}
+
+
+.metric-label {
+  font-size: 10px;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+
+.metric-value {
+  font-size: 14px; /* Reduced from larger sizes */
+  font-weight: 600;
+  color: #495057;
+}
+
+
+.metric-value.positive {
+  color: #28a745;
+}
+
+
+.metric-value.negative {
+  color: #dc3545;
+}
+
+
+/* Section dividers for better visual separation */
+.power-flow-section::before,
+.cost-impact::before {
+  content: '';
+  display: block;
+  height: 1px;
+  background: #e9ecef;
+  margin: 16px 0 12px 0;
+}
+
+
+.power-flow-section,
+.cost-impact {
+  margin-bottom: 12px;
+}
+
+
+.section-title {
+  font-size: 11px;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+
+.power-flow,
+.cost-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+}
+
+
+.flow-label,
+.cost-label {
+  font-size: 11px;
+  color: #6c757d;
+}
+
+
+.flow-value,
+.cost-value {
+  font-size: 11px;
+  color: #495057;
+  font-weight: 500;
+}
+
+
+/* Responsive behavior for different screen sizes */
+@media (max-width: 1400px) {
+  .district-card {
+    min-width: 250px;
+    max-width: 280px;
+  }
+}
+
+
+@media (max-width: 1200px) {
+  .districts-container {
+    gap: 8px;
+  }
+
+  .district-card {
+    min-width: 220px;
+    max-width: 250px;
+  }
+}
+
+
+@media (max-width: 900px) {
+  .districts-container {
+    flex-direction: column;
+  }
+
+  .district-card {
+    min-width: auto;
+    max-width: none;
+  }
+}
+

@@ -10,7 +10,7 @@ export interface ExtendedGameDTO {
   funds: number;
   popularity: number;
   research: number;
-  score: number;
+  environmentalScore: number;
   energyProduction: number;
   energyConsumption: number;
   gridLoad: number;

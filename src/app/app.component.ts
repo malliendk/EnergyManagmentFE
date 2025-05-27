@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {GameDTOService} from "./services/game-dto.service";
 import {ExtendedGameDTO} from "./dtos/extendedGameDTO";
 import {map, Subscription, switchMap, tap} from "rxjs";
@@ -15,6 +15,8 @@ import {EventDTO} from "./eventDTO";
 import {DaytimeWeatherComponent} from "./daytime-weather/daytime-weather.component";
 import {EventComponent} from "./event/event.component";
 import {UpdateDTOService} from "./services/update-dto.service";
+import {UniversityComponent} from "./university/university.component";
+import {ModalComponent} from "./modal/modal.component";
 
 @Component({
   selector: 'app-root',
@@ -30,30 +32,35 @@ import {UpdateDTOService} from "./services/update-dto.service";
     // GridloadDashboardComponent,
     DaytimeWeatherComponent,
     EventComponent,
+    UniversityComponent,
+    ModalComponent
   ]
 })
 export class AppComponent implements OnInit {
-  @ViewChild(BuildingDashboardComponent) buildingDashboardComponent?: BuildingDashboardComponent;
+  @ViewChild(FactoryDashboardComponent) factoryDashboardComponent?: FactoryDashboardComponent;
 
   title = 'Energy Management';
 
-  gameDTO!: ExtendedGameDTO;
+  @Input() gameDTO!: ExtendedGameDTO;
   allBuildings?: Building[];
   event: EventDTO | null = null;
 
   connectionError: boolean = false;
-  private gameDTOSubscription: Subscription | null = null;
   private eventSubscription: Subscription | null = null;
   private incomeDTOSubscription: Subscription | null = null;
   private dayWeatherSubscription: Subscription | null = null;
 
   buildingViewComponentType: string = '';
-  buildingViewPurchase: string = 'purchase';
   dashboardType!: string;
   townHallDashboard: string = 'town hall';
   factoryDashboard: string = 'factory';
   buildingDashboard: string = 'buildings';
+  universityDashboard: string = 'university';
   showGridLoadDashboard: boolean = false;
+  victoryThreshold: number = 2500;
+
+  isVictory: boolean = false;
+  isLoss: boolean = false;
 
   constructor(private gameDTOService: GameDTOService,
               private gameEventsService: GameEventsService,
@@ -73,8 +80,8 @@ export class AppComponent implements OnInit {
     this.gameDTOService.startGame()
       .subscribe(() => {
         this.getGameDTO();
-        this.gameDTO.timeOfDay = 'night';
-        this.subscribeToGameDTO();
+        this.subscribeToIncomeDTO();
+        this.subscribeToDayWeatherDTO();
       });
   }
 
@@ -91,7 +98,9 @@ export class AppComponent implements OnInit {
     this.connectionError = false;
     this.incomeDTOSubscription = this.gameEventsService.subscribeToIncomeAddDTO()
       .subscribe(incomeDTO => {
+          console.log('subscribed to income')
           this.gameDTO = this.updateDTOService.processIncomeAddDTO(incomeDTO, this.gameDTO);
+          console.log('executed gameDTO');
         }
       )
   }
@@ -102,33 +111,6 @@ export class AppComponent implements OnInit {
       .subscribe(dayWeatherDTO => {
         this.gameDTO = this.updateDTOService.processDayWeatherUpdateDTO(dayWeatherDTO, this.gameDTO);
       })
-  }
-
-  subscribeToGameDTO(): void {
-    this.connectionError = false;
-    this.gameDTOSubscription = this.gameEventsService.subscribeToGameDTO().pipe(
-      tap(() => this.connectionError = false),
-      switchMap(minimizedDTO =>
-        this.buildingService.findAllById(minimizedDTO).pipe(
-          map(gameBuildings => {
-            gameBuildings.forEach(building => this.buildingService.generateInstanceId(building));
-            return {minimizedDTO, gameBuildings};
-          })
-        )
-      ),
-      map(({minimizedDTO, gameBuildings}) =>
-        this.gameDTOService.extendGameDTO(minimizedDTO, gameBuildings)
-      )
-    ).subscribe({
-      next: (extendedGameDTO) => {
-        this.gameDTO = extendedGameDTO;
-      },
-      error: (error) => {
-        console.error('SSE connection or building fetch error:', error);
-        this.connectionError = true;
-        setTimeout(() => this.subscribeToGameDTO(), 5000);
-      }
-    });
   }
 
   processCompletedEvent(eventResult: { building: Building | null, popularityLoss: number }) {
@@ -148,8 +130,9 @@ export class AppComponent implements OnInit {
         .subscribe((minimizedDTO: MinimizedGameDTO) => {
           this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, passedGameDTO.buildings);
           this.getAllBuildings();
-          // this.buildingViewComponentType = this.buildingViewOverview;
-        }));
+          this.decideVictory();
+        })
+      );
   }
 
   getViewType(viewTypeset: { viewType: string, showGridLoadDashboard: boolean }) {
@@ -168,5 +151,15 @@ export class AppComponent implements OnInit {
         this.allBuildings = buildings;
         this.allBuildings.forEach((building: Building) => building.instanceId = undefined);
       });
+  }
+
+  decideVictory() {
+    if (this.gameDTO.environmentalScore >= this.victoryThreshold) {
+      this.toggleVictory();
+    }
+  }
+
+  toggleVictory() {
+    this.isVictory = !this.isVictory;
   }
 }

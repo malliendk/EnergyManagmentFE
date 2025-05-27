@@ -10,7 +10,7 @@
 }
 
 .modal-content {
-  background-color: #f8efe3;
+  background-color: white;
   border-width: 2px;
   border-color: #aaaaaa;
 }
@@ -38,7 +38,7 @@
 }
 
 .width-90 {
-  max-width: 90vw !important;
+  max-width: 90vw;
   margin-left: auto !important;
   margin-right: auto !important;
 }

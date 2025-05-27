@@ -16,7 +16,7 @@
   }
 </div>
 
-@if (isPurchaseModalOpen) {
+@if (isPurchaseModalOpen && !event) {
   <app-modal
     [isModalOpen]="isPurchaseModalOpen"
     [showHeader]="false"
@@ -39,19 +39,25 @@
           }
         </div>
         <div class="grid">
-            <div class="district">
-              @for (tile of district!.tiles; track tile) {
-                <div class="tile"
-                     (mouseenter)="showTooltip(tile, $event)"
-                     (mouseleave)="hideTooltip()"
-                     (click)="initializePurchase(tile)"
-                     [ngClass]="toggleSelectedTile(tile.id)">
-                  @if (tile.building) {
-                    <img class="img-fluid" [src]="tile.building.imageUri">
-                  }
-                </div>
-              }
-            </div>
+          <div class="district">
+            @for (tile of district!.tiles; track tile) {
+              <div class="tile"
+                   (mouseenter)="showTooltip(tile, $event)"
+                   (mouseleave)="hideTooltip()"
+                   (click)="initializePurchase(tile)"
+                   [ngClass]="toggleSelectedTile(tile.id)">
+                @if (tile.building) {
+                  <img class="img-fluid" [src]="tile.building.imageUri">
+                }
+              </div>
+            }
+          </div>
+          @if (building) {
+              <app-building-info
+                [building]="building"
+                [customWidth]="buildingInfoWidth"
+              ></app-building-info>
+          }
         </div>
         @if (building) {
           <div class="d-flex justify-content-around" id="purchase-buttons">
@@ -105,3 +111,16 @@
   </app-modal>
 }
 
+<app-modal [isModalOpen]="isBuildingModalOpen">
+  <div modal-body class="d-flex flex-column align-items-center">
+    <p>e hebt niet genoeg geld om deze voorziening aan te kopen</p>
+    <button class="btn btn-outline-primary" (click)="toggleBuildingModalOpen()">Sluiten</button>
+  </div>
+</app-modal>
+
+<app-modal [isModalOpen]="isCapacityModalOpen">
+  <div modal-body class="d-flex flex-column align-items-center">
+    <p>Dit district heeft niet genoeg netcapaciteit voor deze voorziening</p>
+    <button class="btn btn-outline-primary" (click)="toggleCapacityModalOpen()">Sluiten</button>
+  </div>
+</app-modal>

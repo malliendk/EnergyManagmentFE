@@ -3,7 +3,7 @@ import {Building} from "../dtos/building";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {MinimizedGameDTO} from "../dtos/minimizedGameDTO";
-import {BuildingRequest} from "../buildingRequest";
+import {BuildingRequest} from "../dtos/buildingRequest";
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {Tile} from "../dtos/tile";
 import {District} from "../dtos/district";
@@ -32,13 +32,14 @@ export class BuildingService {
   }
 
   minimizeBuildingsToBuildingRequests(buildings: Building[]): BuildingRequest[] {
-    return buildings.map(
-      building => ({
-        buildingId: building.id,
-        solarPanelAmount: building.solarPanelAmount,
-        propertiesMap: this.createPropertyMap(buildings, building.id)
-      })
-    )
+    return buildings.map(building => ({
+      buildingId: building.id,
+      solarPanelAmount: building.solarPanelAmount,
+      energyProduction: building.energyProduction,
+      goldIncome: building.goldIncome,
+      researchIncome: building.researchIncome,
+      environmentalScore: building.environmentalScore
+    }));
   }
 
   duplicateBuildingsIfNecessary(ids: number[], retrievedBuildings: Building[]): Building[] {
@@ -58,8 +59,7 @@ export class BuildingService {
 
   updateBuildingValues(minimizedGameDTO: MinimizedGameDTO, buildings: Building[]): Building[] {
     const compressedBuildings: BuildingRequest[] = minimizedGameDTO.buildingRequests;
-    this.setSolarPanelAmounts(compressedBuildings, buildings);
-    this.updatePowerPlants(compressedBuildings, buildings)
+    this.mapBuildingRequests(compressedBuildings, buildings);
     buildings.forEach((building: Building) => this.generateInstanceId(building));
     return buildings;
   }
@@ -155,43 +155,14 @@ export class BuildingService {
     building.instanceId = window.crypto.getRandomValues(new Uint32Array(1))[0];
   }
 
-  private updatePowerPlants(requests: BuildingRequest[], buildings: Building[]) {
-    requests.forEach((request: BuildingRequest) => {
-      if (request.propertiesMap) {
-        const propertiesMap = request.propertiesMap;
-        const powerPlantName = propertiesMap['name'];
-        let powerPlant: Building | undefined = buildings.find(building => building.name === powerPlantName);
-        if (powerPlant) {
-          this.readPropertyMap(propertiesMap, powerPlant);
-        }
-      }
-    })
-  }
-
-  private readPropertyMap(propertiesMap: Record<string, any>, building: Building): Building {
-    building.energyProduction = propertiesMap['energyProduction'];
-    building.goldIncome = propertiesMap['goldIncome'];
-    building.researchIncome = propertiesMap['researchIncome'];
-    building.environmentalScore = propertiesMap['score'];
-    return building;
-  }
-
-  private createPropertyMap(buildings: Building[], buildingId: number): Record<string, any> {
-    let powerPlant: Building = buildings.find(building => building.id === buildingId)!
-    return {
-      name: powerPlant.name,
-      energyProduction: powerPlant.energyProduction,
-      goldIncome: powerPlant.goldIncome,
-      researchIncome: powerPlant.researchIncome,
-      score: powerPlant.environmentalScore,
-      id: powerPlant.id
-    };
-  }
-
-  private setSolarPanelAmounts(requests: BuildingRequest[], buildings: Building[]) {
+  private mapBuildingRequests(requests: BuildingRequest[], buildings: Building[]) {
     buildings.forEach((building: Building) => requests.forEach(map => {
       if (map.buildingId == building.id) {
         building.solarPanelAmount = map.solarPanelAmount;
+        building.energyProduction
+        building.goldIncome = map.goldIncome;
+        building.researchIncome = map.researchIncome;
+        building.environmentalScore = map.environmentalScore;
       }
     }))
   }

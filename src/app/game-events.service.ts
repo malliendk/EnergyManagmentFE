@@ -4,224 +4,124 @@ import {MinimizedGameDTO} from "./dtos/minimizedGameDTO";
 import {EventDTO} from "./eventDTO";
 import {IncomeAddDTO} from "./IncomeAddDTO";
 import {UpdateDTOService} from "./services/update-dto.service";
-import {DayWeatherUpdateDTO} from "./dayWeatherUpdateDTO";
+import {DayWeatherUpdateDTO} from "./dtos/dayWeatherUpdateDTO";
+import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameEventsService {
 
-  private GAME_DTO_EVENT_URL: string = 'http://localhost:8093/events';
-  private INCOME_ADD_DTO_URL: string = 'http://localhost:8093/something'
-  private DAY_WEATHER_DTO_URL: string = 'http://localhost:8093/somethingsomething'
+  private INCOME_ADD_DTO_URL: string = 'http://localhost:8093/stream/income';
+  private DAY_WEATHER_DTO_URL: string = 'http://localhost:8093/stream/weather';
   private BUILDING_EVENT_URL: string = 'http://localhost:8090/event/stream';
 
-  // Map to store multiple EventSource connections
   private eventSources: Map<string, EventSource> = new Map();
 
   private incomeDTO = new Subject<IncomeAddDTO>();
-  private dayWeatherDTO = new Subject<DayWeatherUpdateDTO>()
-  private gameDTO$ = new Subject<MinimizedGameDTO>();
+  private dayWeatherDTO = new Subject<DayWeatherUpdateDTO>();
   private event$ = new Subject<EventDTO>();
-  private connectionCountGameDTO: number = 0;
-  private connectionCountEvent: number = 0;
-  private connectionCountIncome: number = 0;
-  private connectionCountDayWeather: number = 0;
 
-  constructor(private zone: NgZone) {}
+  private connectionCountIncome = 0;
+  private connectionCountDayWeather = 0;
+  private connectionCountEvent = 0;
 
-  /**
-   * Subscribe to game events using Server-Sent Events
-   * @returns Observable of IncomeAddDTO objects
-   */
+  constructor(private zone: NgZone,
+              private http: HttpClient) {}
+
   subscribeToIncomeAddDTO(): Observable<IncomeAddDTO> {
     this.connectionCountIncome++;
-    console.log(`New game subscription. Total game subscribers: ${this.connectionCountIncome}`);
-
     if (!this.eventSources.has(this.INCOME_ADD_DTO_URL)) {
-      console.log('Creating new Income EventSource connection');
       this.createEventSource<IncomeAddDTO>(this.INCOME_ADD_DTO_URL, this.incomeDTO, 'income-update');
-    } else {
-      console.log('Reusing existing Income EventSource connection');
     }
-
-    return this.incomeDTO.asObservable().pipe(
-      share()
-    );
+    return this.incomeDTO.asObservable().pipe(share());
   }
 
-  /**
-   * Subscribe to game events using Server-Sent Events
-   * @returns Observable of IncomeAddDTO objects
-   */
   subscribeToDayWeatherUpdateDTO(): Observable<DayWeatherUpdateDTO> {
     this.connectionCountDayWeather++;
-    console.log(`New day-weather subscription. Total day-weather subscribers: ${this.connectionCountDayWeather}`);
-
     if (!this.eventSources.has(this.DAY_WEATHER_DTO_URL)) {
-      console.log('Creating new Day-Weather EventSource connection');
       this.createEventSource<DayWeatherUpdateDTO>(this.DAY_WEATHER_DTO_URL, this.dayWeatherDTO, 'day-weather-update');
-    } else {
-      console.log('Reusing existing Day-weather EventSource connection');
     }
-
-    return this.dayWeatherDTO.asObservable().pipe(
-      share()
-    );
+    return this.dayWeatherDTO.asObservable().pipe(share());
   }
 
-  /**
-   * Subscribe to game events using Server-Sent Events
-   * @returns Observable of MinimizedGameDTO objects
-   */
-  subscribeToGameDTO(): Observable<MinimizedGameDTO> {
-    this.connectionCountGameDTO++;
-    console.log(`New game subscription. Total game subscribers: ${this.connectionCountGameDTO}`);
-
-    if (!this.eventSources.has(this.GAME_DTO_EVENT_URL)) {
-      console.log('Creating new Game EventSource connection');
-      this.createEventSource<MinimizedGameDTO>(this.GAME_DTO_EVENT_URL, this.gameDTO$, 'game-update');
-    } else {
-      console.log('Reusing existing Game EventSource connection');
-    }
-
-    return this.gameDTO$.asObservable().pipe(
-      share()
-    );
-  }
-
-  /**
-   * Subscribe to building events using Server-Sent Events
-   * @returns Observable of EventDTO objects
-   */
   subscribeToBuildingEvents(): Observable<EventDTO> {
     this.connectionCountEvent++;
-    console.log(`New event subscription. Total event subscribers: ${this.connectionCountEvent}`);
-
     if (!this.eventSources.has(this.BUILDING_EVENT_URL)) {
-      console.log('Creating new Building EventSource connection');
       this.createEventSource<EventDTO>(this.BUILDING_EVENT_URL, this.event$, 'game-update');
-    } else {
-      console.log('Reusing existing Building EventSource connection');
     }
-
-    return this.event$.asObservable().pipe(
-      share()
-    );
+    return this.event$.asObservable().pipe(share());
   }
 
-  /**
-   * Generic method to create EventSource for different DTOs
-   * @param url The URL to connect to
-   * @param subject$ The Subject to publish events to
-   * @param eventName The name of the event to listen for
-   */
-  private createEventSource<T>(url: string, subject$: Subject<T>, eventName: string = 'game-update'): void {
-    try {
-      // Create a new EventSource for this URL
-      const newEventSource = new EventSource(url);
-      console.log(`EventSource created for ${url}:`, newEventSource);
+  pauseBuildingEventScheduler() {
+    return this.http.post<void>(this.BUILDING_EVENT_URL + '/pause', {});
+  }
 
-      // Store it in our map
-      this.eventSources.set(url, newEventSource);
+  resumeBuildingEventScheduler() {
+    return this.http.post<void>(this.BUILDING_EVENT_URL + '/resume', {})
+  }
 
-      newEventSource.addEventListener(eventName, (event: MessageEvent) => {
+  unsubscribeFromIncomeAddDTO(): void {
+    if (this.eventSources.has(this.INCOME_ADD_DTO_URL)) {
+      this.closeEventSource(this.INCOME_ADD_DTO_URL);
+      this.connectionCountIncome = 0;
+      console.log('Unsubscribed from IncomeAddDTO events');
+    }
+  }
+
+  unsubscribeFromDayWeatherUpdateDTO(): void {
+    if (this.eventSources.has(this.DAY_WEATHER_DTO_URL)) {
+      this.closeEventSource(this.DAY_WEATHER_DTO_URL);
+      this.connectionCountDayWeather = 0;
+      console.log('Unsubscribed from DayWeatherUpdateDTO events');
+    }
+  }
+
+  unsubscribeFromBuildingEvents(): void {
+    if (this.eventSources.has(this.BUILDING_EVENT_URL)) {
+      this.closeEventSource(this.BUILDING_EVENT_URL);
+      this.connectionCountEvent = 0;
+      console.log('Unsubscribed from Building EventDTO events');
+    }
+  }
+
+
+  private createEventSource<T>(url: string, subject$: Subject<T>, eventName: string): void {
+    const eventSource = new EventSource(url);
+    this.eventSources.set(url, eventSource);
+
+    eventSource.addEventListener(eventName, (event: MessageEvent) => {
+      this.zone.run(() => {
         try {
-          const data: T = JSON.parse(event.data);
-          console.log(`${url} update received:`, data);
-
-          this.zone.run(() => {
-            subject$.next(data);
-          });
-        } catch (parseError) {
-          console.error(`JSON Parsing Error for ${url}:`, parseError);
-          console.error('Raw event data:', event.data);
+          subject$.next(JSON.parse(event.data));
+        } catch (e) {
+          console.error(`Error parsing ${eventName} event:`, e);
         }
       });
+    });
 
-      newEventSource.onmessage = (event: MessageEvent) => {
-        try {
-          const data: T = JSON.parse(event.data);
-          console.log(`General message from ${url}:`, data);
-
-          this.zone.run(() => {
-            subject$.next(data);
-          });
-        } catch (parseError) {
-          console.error(`JSON Parsing Error in onmessage for ${url}:`, parseError);
-          console.error('Raw event data:', event.data);
+    eventSource.onerror = (error) => {
+      console.error(`EventSource error for ${url}:`, error);
+      this.closeEventSource(url);
+      setTimeout(() => {
+        if (url === this.INCOME_ADD_DTO_URL && this.connectionCountIncome > 0) {
+          this.createEventSource(url, subject$, eventName);
+        } else if (url === this.DAY_WEATHER_DTO_URL && this.connectionCountDayWeather > 0) {
+          this.createEventSource(url, subject$, eventName);
+        } else if (url === this.BUILDING_EVENT_URL && this.connectionCountEvent > 0) {
+          this.createEventSource(url, subject$, eventName);
         }
-      };
+      }, 5000);
+    };
+  }
 
-      // Error handling
-      newEventSource.onerror = (error) => {
-        console.error(`EventSource ERROR for ${url}:`, error);
-
-        this.closeEventSource(url);
-
-        setTimeout(() => {
-          // Check if we still need this connection
-          if ((url === this.GAME_DTO_EVENT_URL && this.connectionCountGameDTO > 0) ||
-            (url === this.BUILDING_EVENT_URL && this.connectionCountEvent > 0)) {
-            console.log(`Attempting to reconnect EventSource to ${url}`);
-            this.createEventSource(url, subject$, eventName);
-          }
-        }, 5000);
-      };
-    } catch (initError) {
-      console.error(`EventSource initialization ERROR for ${url}:`, initError);
+  private closeEventSource(url: string): void {
+    const source = this.eventSources.get(url);
+    if (source) {
+      source.close();
       this.eventSources.delete(url);
     }
   }
 
-  /**
-   * Unsubscribe from events
-   * @param type The type of subscription to unsubscribe from ('game' or 'event')
-   */
-  unsubscribe(type: 'game' | 'event'): void {
-    if (type === 'game') {
-      this.connectionCountGameDTO = Math.max(0, this.connectionCountGameDTO - 1);
-      console.log(`Unsubscribed from game. Remaining subscribers: ${this.connectionCountGameDTO}`);
 
-      if (this.connectionCountGameDTO <= 0) {
-        this.closeEventSource(this.GAME_DTO_EVENT_URL);
-      }
-    } else {
-      this.connectionCountEvent = Math.max(0, this.connectionCountEvent - 1);
-      console.log(`Unsubscribed from event. Remaining subscribers: ${this.connectionCountEvent}`);
-
-      if (this.connectionCountEvent <= 0) {
-        this.closeEventSource(this.BUILDING_EVENT_URL);
-      }
-    }
-  }
-
-  /**
-   * Close a specific EventSource connection or all connections
-   * @param url Optional URL to close a specific connection. If not provided, closes all connections.
-   */
-  private closeEventSource(url?: string): void {
-    if (url) {
-      const source = this.eventSources.get(url);
-      if (source) {
-        console.log(`Closing EventSource connection for ${url}`);
-        source.close();
-        this.eventSources.delete(url);
-      }
-    } else {
-      // Close all connections
-      this.eventSources.forEach((source, sourceUrl) => {
-        console.log(`Closing EventSource connection for ${sourceUrl}`);
-        source.close();
-      });
-      this.eventSources.clear();
-    }
-  }
-
-  /**
-   * Close all connections and clean up on service destroy
-   */
-  ngOnDestroy(): void {
-    this.closeEventSource();
-  }
 }

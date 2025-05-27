@@ -27,7 +27,7 @@
   box-shadow: 2px 2px 5px 3px #454545;
   border-radius: 25px;
   background-image: conic-gradient(#7c7c7c, ghostwhite, #8e8e8e, ghostwhite, #7c7c7c, ghostwhite, #7c7c7c);
-  z-index: 10;
+  z-index: 0.5;
 }
 
 .card {

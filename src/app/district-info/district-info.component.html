@@ -1,29 +1,88 @@
-<div class="info-container">
+<div class="districts-container">
   @for (district of districts; track district) {
-    <div class="info-pad">
-      <div class="header">
-        <p>District {{ district.id }}</p>
+    <div class="district-card"
+         [ngClass]="{
+       	'warning': district.stressLevel > 0.1 && district.stressLevel <= 0.3,
+       	'danger': district.stressLevel > 0.3 && district.stressLevel <= 0.5,
+       	'critical': district.stressLevel > 0.5
+     	}">
+      <div class="district-header">
+        <div class="district-title">District {{ district.id }}</div>
+        <span class="stress-indicator"
+              [ngClass]="{
+            	'stress-normal': district.stressLevel <= 0,
+            	'stress-minor': district.stressLevel > 0 && district.stressLevel <= 0.1,
+            	'stress-moderate': district.stressLevel > 0.1 && district.stressLevel <= 0.3,
+            	'stress-severe': district.stressLevel > 0.3 && district.stressLevel <= 0.5,
+            	'stress-critical': district.stressLevel > 0.5
+          	}">
+      	{{ getStressText(district.stressLevel) }}
+    	</span>
       </div>
-      <div class="main-info">
-        <p>Netbelasting: {{ district.gridLoad }}</p>
-      </div>
-      <div class="primary-body">
-        <p>{{ district.energyProduction }}</p>
-        <p>{{ district.energyConsumption }}</p>
-        <p>Netcapaciteit: {{ district.gridCapacity }}</p>
-      </div>
-      <div>
-        @if (district.excessBalance > 0) {
-          <p>Energie overschot: {{ district.excessBalance }}</p>
-        }
-        @if (district.excessBalance < 0) {
-          <p>Energie tekort: {{ district.excessBalance}}</p>
-        }
-        <p>Elektriciteit uit overige districten: </p>
-        @for (excess of district.incomingExcessBalances; track excess) {
-          <div>{{ excess }}</div>
-        }
+      <div class="district-body">
+        <div class="metrics-grid">
+          <div class="metric">
+            <div class="metric-label">Production</div>
+            <div class="metric-value positive">{{ district.energyProduction }} MW</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Consumption</div>
+            <div class="metric-value">{{ district.energyConsumption }} MW</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Net Production</div>
+            <div class="metric-value"
+                 [ngClass]="{'positive': district.netProduction > 0, 'negative': district.netProduction < 0}">
+              {{ district.netProduction }} MW
+            </div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Grid Capacity</div>
+            <div class="metric-value">{{ district.gridCapacity }} MW</div>
+          </div>
+        </div>
+
+        <div class="power-flow-section">
+          <div class="section-title">Power Flow</div>
+          <div class="power-flow">
+            <span class="flow-label">Injected Power</span>
+            <span class="flow-value">{{ district.injectedPower | number:'1.0-1' }} MW</span>
+          </div>
+          <div class="power-flow">
+            <span class="flow-label">Exported Power</span>
+            <span class="flow-value">{{ district.exportedPower | number:'1.0-1' }} MW</span>
+          </div>
+          <div class="power-flow">
+            <span class="flow-label">Stranded Energy</span>
+            <span class="flow-value">{{ district.strandedEnergy | number:'1.0-1' }} MW</span>
+          </div>
+          <div class="power-flow">
+            <span class="flow-label">Stress Level</span>
+            <span class="flow-value">{{ district.stressLevel | number:'1.2-2' }}</span>
+          </div>
+        </div>
+
+        <div class="status-indicators">
+          @if (district.blackout) {
+            <span class="status-badge blackout-badge">BLACKOUT</span>
+          } @else {
+            <span class="status-badge normal-badge">Operational</span>
+          }
+        </div>
+
+
+        <div class="cost-impact">
+          <div class="cost-row">
+            <span class="cost-label">Monetary Cost</span>
+            <span class="cost-value">${{ district.monetaryCost | number:'1.0-0' }}</span>
+          </div>
+          <div class="cost-row">
+            <span class="cost-label">Popularity Impact</span>
+            <span class="cost-value">{{ district.popularityImpact | number:'1.1-1' }}</span>
+          </div>
+        </div>
       </div>
     </div>
   }
 </div>
+

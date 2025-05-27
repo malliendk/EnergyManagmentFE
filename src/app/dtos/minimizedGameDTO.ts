@@ -1,7 +1,7 @@
 import {EventDTO} from "./eventDTO";
 import {TimeOfDay} from "../timeOfDay";
 import {WeatherType} from "../weatherType";
-import {BuildingRequest} from "../buildingRequest";
+import {BuildingRequest} from "./buildingRequest";
 import {Tile} from "./tile";
 import {District} from "./district";
 
@@ -12,7 +12,7 @@ export interface MinimizedGameDTO {
   funds: number;
   popularity: number;
   research: number;
-  score: number;
+  environmentalScore: number;
   energyProduction: number;
   energyConsumption: number;
   gridLoad: number;

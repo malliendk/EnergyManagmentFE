@@ -15,4 +15,5 @@ export class ModalComponent {
   @Input() isModalOpen: boolean = false;
   @Input() customWidthClass?: string;
   @Input() showHeader!: boolean;
+  @Input() headerClass: string = '';
 }

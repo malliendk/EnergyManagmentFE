@@ -1,6 +1,7 @@
 .grid {
   display: flex;
   justify-content: space-around;
+  align-items: center;
   flex-wrap: wrap;
   height: auto;
   width: 80vw;
@@ -25,17 +26,17 @@
   height: 67px;
   width: 115.5px;
   margin: 0.25em auto;
-  background-color: rgba(255, 0, 0, 0.4);
+  background-color: #ff9999;
   border: 1px solid silver;
   cursor: pointer;
 }
 
 .tile:hover {
-  background-color: rgba(0, 0, 255, 0.6);
+  background-color: #6666ff;
 }
 
 .tile-selected {
-  background-color: rgba(0, 0, 255, 0.6);
+  background-color: #6666ff;
 }
 
 .building-selected {
@@ -64,6 +65,10 @@
 .tooltip-content p {
   margin: 4px 0;
   font-size: 14px;
+}
+
+.status-blackout {
+  background-color: #610000;
 }
 
 .status-critical {
@@ -168,7 +173,7 @@ pre {
 }
 
 .width-90 {
-  width: 90vw;
+  width: 90vw !important;
 }
 
 

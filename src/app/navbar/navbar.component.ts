@@ -20,25 +20,32 @@ export class NavbarComponent implements OnInit, OnChanges {
   }>();
   @Output() passBuildingVieWType = new EventEmitter<string>();
 
-  showButtons: boolean = false;
   townHallDashboard: string = 'town hall';
   factoryDashboard: string = 'factory';
   buildingDashboard: string = 'buildings'
+  universityDashboard: string = 'university';
+
+  isUniversityPresent: boolean = false;
 
   constructor() {}
 
   ngOnInit() {
-    this.showButtons = true;
+    this.checkUniversityPresent();
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['gameDTO'] && changes['gameDTO'].currentValue) {
       this.gameDTO = changes['gameDTO'].currentValue;
-      console.log('Updated gameDTO in NavbarComponent:', this.gameDTO);
     }
   }
 
   emitViewType(viewType: string, showGridLoadDashboard: boolean) {
     this.passViewType.emit({viewType, showGridLoadDashboard});
+  }
+
+  checkUniversityPresent() {
+    if (this.gameDTO.buildings.some(building => building.name === "universiteit")) {
+      this.isUniversityPresent = true;
+    }
   }
 }

@@ -1,16 +1,15 @@
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {Building} from "../dtos/building";
-import {NgClass, NgForOf, NgStyle} from "@angular/common";
+import {NgClass, NgStyle} from "@angular/common";
 import {District} from "../dtos/district";
 import {DistrictService} from "../services/district.service";
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {Tile} from "../dtos/tile";
 import {BuildingService} from "../services/building.service";
 import {ModalComponent} from "../modal/modal.component";
-import {
-  PurchaseSolarpanelsHousingComponent
-} from "../purchase-solarpanels-housing/purchase-solarpanels-housing.component";
 import {BuildingViewComponent} from "../building-view/building-view.component";
+import {BuildingInfoComponent} from "../building-info/building-info.component";
+import {EventDTO} from "../eventDTO";
 
 @Component({
   selector: 'app-grid',
@@ -18,7 +17,8 @@ import {BuildingViewComponent} from "../building-view/building-view.component";
     NgStyle,
     NgClass,
     BuildingViewComponent,
-    ModalComponent
+    ModalComponent,
+    BuildingInfoComponent
   ],
   templateUrl: './grid.component.html',
   standalone: true,
@@ -27,7 +27,9 @@ import {BuildingViewComponent} from "../building-view/building-view.component";
 export class GridComponent implements OnInit, OnChanges {
   @Input() gameDTO!: ExtendedGameDTO;
   @Input() building?: Building | null;
+  @Input() event?: EventDTO;
   @Output() passUpdatedGameDTO = new EventEmitter<ExtendedGameDTO>();
+  @Output() passTile = new EventEmitter<Tile>();
   districts!: District[];
   district?: District;
   tiles!: Tile[];
@@ -40,6 +42,9 @@ export class GridComponent implements OnInit, OnChanges {
   isBuildingSelected: boolean = false;
   isDetailView: boolean = false;
   modalCustomWidth = 'width-90';
+  buildingInfoWidth = '400px';
+  isBuildingModalOpen: boolean = false;
+  isCapacityModalOpen: boolean = false;
 
   constructor(private districtService: DistrictService,
               private buildingService: BuildingService) {
@@ -88,11 +93,14 @@ export class GridComponent implements OnInit, OnChanges {
   }
 
   applyStatusColor(district: District) {
-    if (district.gridLoad > 1) {
-      return 'status-critical';
-    } else if (district.gridLoad > 0.85) {
-      return 'status-danger';
-    } else if (district.gridLoad > 0.7) {
+    const stressLevel = district.stressLevel;
+    if (stressLevel > 0.5) {
+      return 'status-blackout'; // Blackout condition (deep red)
+    } else if (stressLevel > 0.3 && stressLevel <= 0.5) {
+      return 'status-critical'; // Severe stress (dark orange/red)
+    } else if (stressLevel > 0.1 && stressLevel <= 0.3) {
+      return 'status-danger'; // Minor to Moderate stress (yellow to orange)
+    } else if (stressLevel > 0 && stressLevel <= 0.1) {
       return 'status-warning';
     } else {
       return '';
@@ -105,21 +113,50 @@ export class GridComponent implements OnInit, OnChanges {
       this.togglePurchaseModal();
       this.tile = tile;
       this.district = this.districts.find(district => district.id === tile.districtId);
+      console.log(this.tile);
+      console.log(this.building);
+      if (this.event) {
+        this.passTile.emit(tile);
+      }
     }
   }
 
   purchaseBuilding(tile: Tile) {
+    const remainingGridCapacity = this.getRemainingDistrictGridCapacity(this.district!);
+    console.log('production/consumption and capacity: {} {}', this.building?.energyProduction, remainingGridCapacity)
+    if (this.building!.price > this.gameDTO.funds) {
+      this.toggleBuildingModalOpen();
+    } else if (this.building!.energyProduction > remainingGridCapacity || this.building!.energyConsumption > remainingGridCapacity) {
+      this.toggleCapacityModalOpen();
+    } else {
       tile.building = this.building!;
       tile.buildingId = this.building!.id;
-      console.log('building: {} in district {}', this.building, this.district);
-      console.log('passing gameDTO: {}', this.gameDTO);
       this.gameDTO.buildings.push(this.building!)
       this.buildingService.processPurchasedBuilding(this.building!, this.gameDTO);
       this.passUpdatedGameDTO.emit(this.gameDTO);
       this.isPurchaseModalOpen = false;
       this.building = null;
       this.reinitializeTile();
+    }
   }
+
+  private getRemainingDistrictGridCapacity(district: District): number {
+    if (!district || !district.tiles) return 0;
+
+    const totalGridCapacity = district.tiles
+      .filter(tile => tile.building && tile.building.gridCapacity)
+      .reduce((sum, tile) => sum + (tile.building!.gridCapacity || 0), 0);
+    const totalEnergyProduction = district.tiles
+      .filter(tile => tile.building && tile.building.energyProduction)
+      .reduce((sum, tile) => sum + (tile.building!.energyProduction || 0), 0);
+    const totalEnergyConsumption = district.tiles
+      .filter(tile => tile.building && tile.building.energyConsumption)
+      .reduce((sum, tile) => sum + (tile.building!.energyConsumption || 0), 0);
+    const netBalance = Math.abs(totalEnergyProduction - totalEnergyConsumption);
+    //remaining grid capacity
+    return totalGridCapacity - netBalance;
+  }
+
 
   selectBuilding(building: Building) {
     this.isBuildingSelected = true;
@@ -146,5 +183,13 @@ export class GridComponent implements OnInit, OnChanges {
 
   togglePurchaseModal() {
     this.isPurchaseModalOpen = !this.isPurchaseModalOpen;
+  }
+
+  toggleCapacityModalOpen() {
+    this.isCapacityModalOpen = !this.isCapacityModalOpen;
+  }
+
+  toggleBuildingModalOpen() {
+    this.isBuildingModalOpen = !this.isBuildingModalOpen;
   }
 }

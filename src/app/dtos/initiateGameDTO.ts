@@ -1,4 +1,4 @@
-import {BuildingRequest} from "../buildingRequest";
+import {BuildingRequest} from "./buildingRequest";
 import {Tile} from "./tile";
 import {District} from "./district";
 

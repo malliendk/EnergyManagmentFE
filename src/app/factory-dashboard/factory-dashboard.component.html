@@ -4,7 +4,7 @@
       <div class="card" [ngClass]="applyGrayScale(powerPlant)">
         <div class="factory-image">
           <img class="img-fluid"
-                [src]="powerPlant.imageUri" alt="{{powerPlant.imageUri}}">
+               [src]="getImageForPlant(powerPlant)" alt="{{powerPlant.name}}">
           <div class="slider-container">
             <input type="range" id="range-slider" class="slider"
                    min="{{minimumProduction}}"
@@ -35,10 +35,14 @@
         <div>op/afschalen</div>
       </div>
       <div class="funds">{{ totalScalingCost | currency: 'EUR' }}</div>
-      <div class="red-button mt-3" (click)="update()"></div>
+      <div class="red-button mt-3" (click)="processPlantScaling()"></div>
     </div>
   </div>
 }
 
-
-
+<app-modal [isModalOpen]="isModalOpen">
+  <div modal-body class="d-flex flex-column align-items-center">
+    <p>Je hebt niet genoeg geld om je centrales te schalen!</p>
+    <button class="btn btn-outline-primary" (click)="toggleModalOpen()">Sluiten</button>
+  </div>
+</app-modal>

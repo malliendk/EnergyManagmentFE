@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {IncomeAddDTO} from "../IncomeAddDTO";
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
-import {DayWeatherUpdateDTO} from "../dayWeatherUpdateDTO";
+import {DayWeatherUpdateDTO} from "../dtos/dayWeatherUpdateDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,8 @@ export class UpdateDTOService {
   }
 
   processIncomeAddDTO(incomeDTO: IncomeAddDTO, gameDTO: ExtendedGameDTO): ExtendedGameDTO {
+    console.log('executing incomeDTO: {}', incomeDTO);
+    console.log('original gameDTO: {}', gameDTO);
     return {
       ...gameDTO,
       funds: incomeDTO.newFunds,

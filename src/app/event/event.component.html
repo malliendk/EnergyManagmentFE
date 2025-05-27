@@ -1,57 +1,33 @@
 @if (event) {
   <app-modal
     [isModalOpen]="isModalOpen"
-    [showHeader]="true">
+    [showHeader]="true"
+    [customWidthClass]="modalCustomWidth"
+  >
     <div modal-title>
       <div class="title">{{ event.name }}</div>
     </div>
     <div modal-body>
       <p class="text-center description-font">{{ event.description }}</p>
-      <div class="d-flex justify-content-between">
+      <div class="building-info">
         <img class="img-thumbnail img-50" [src]="event.buildingDTO!.imageUri">
-        <div class="stats-box img-thumbnail">
-          <div class="stats-inner-box">
-            <div class="d-flex justify-content-center">
-              @if (event.buildingDTO!.goldIncome > 0) {
-                <p class="funds inner-box-items border-10" [ngStyle]="">
-                  <span>inkomen schatkist</span>
-                  <span>+{{ event.buildingDTO!.goldIncome }}</span>
-                </p>
-              }
-              @if (event.buildingDTO!.popularityIncome > 0) {
-                <p class="popularity inner-box-items">
-                  <span>inkomen populariteit</span>
-                  <span>+{{ event.buildingDTO!.popularityIncome }}</span>
-                </p>
-              }
-              @if (event.buildingDTO!.researchIncome > 0) {
-                <div class="research inner-box-items">
-                  <span>inkomen research</span>
-                  <span>+{{ event.buildingDTO!.researchIncome }}</span>
-                </div>
-              }
-            </div>
-            <div class="d-flex justify-content-around">
-              @if (event.buildingDTO!.environmentalScore > 0) {
-                <p class="environmental-score inner-box-items">
-                  <span>score</span>
-                  <span>{{ event.buildingDTO!.environmentalScore }}</span>
-                </p>
-              }
-              <p class="grid-load inner-box-items">
-                <span>energieverbruik</span>
-                <span>{{ event.buildingDTO!.energyConsumption }}</span>
-              </p>
-            </div>
-          </div>
-        </div>
+        <app-building-info [building]="event.buildingDTO!"></app-building-info>
+      </div>
+      <p>Kies een perceel voor {{event.buildingDTO!.name}}</p>
+      <div class="grid-75">
+        <app-grid
+          [building]="event.buildingDTO"
+          [gameDTO]="gameDTO"
+          [event]="event!"
+          (passTile)="assignSelectedTile($event)"
+        ></app-grid>
       </div>
       <div class="d-flex justify-content-around mt-3">
         <button class="btn btn-warning" (click)="acceptBuilding(event.buildingDTO!)">
           <div>Accepteren</div>
           <div class="funds mt-2">Prijs: {{ event.buildingDTO!.price }}</div>
         </button>
-        <button class="btn btn-danger" (click)="rejectBuilding(event.buildingDTO!)">
+        <button class="btn btn-danger" (click)="rejectBuilding()">
           <div>Afwijzen</div>
           <div class="popularity mt-2">Verlies populariteit: {{ event.buildingDTO!.popularityCost }}</div>
         </button>
