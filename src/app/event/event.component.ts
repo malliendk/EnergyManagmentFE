@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Subscription} from "rxjs";
-import {GameEventsService} from "../game-events.service";
-import {EventDTO} from "../eventDTO";
+import {GameEventsService} from "../services/game-events.service";
+import {EventDTO} from "../services/eventDTO";
 import {ModalComponent} from "../modal/modal.component";
 import {Building} from "../dtos/building";
 import {NgStyle} from "@angular/common";
@@ -47,7 +47,7 @@ export class EventComponent implements OnInit {
 
   ngOnInit() {
     this.modalCustomWidth = 'width-80'
-    this.subscribeToEvents();
+    // this.subscribeToEvents();
   }
 
   acceptBuilding(building: Building) {
@@ -70,8 +70,6 @@ export class EventComponent implements OnInit {
     this.gameEventsService.resumeBuildingEventScheduler()
       .subscribe(() => console.log('building events scheduler resumed'));
   }
-
-
 
   rejectBuilding() {
     this.gameDTO.popularity -= this.event.buildingDTO!.popularityCost;

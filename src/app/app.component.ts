@@ -5,18 +5,18 @@ import {map, Subscription, switchMap, tap} from "rxjs";
 import {BuildingService} from "./services/building.service";
 import {MinimizedGameDTO} from "./dtos/minimizedGameDTO";
 import {Building} from "./dtos/building";
-import {GameEventsService} from "./game-events.service";
 import {BuildingDashboardComponent} from "./building-dashboard/building-dashboard.component";
 import {FactoryDashboardComponent} from "./factory-dashboard/factory-dashboard.component";
 import {TownhallDashboardComponent} from "./townhall-dashboard/townhall-dashboard.component";
 import {NavbarComponent} from "./navbar/navbar.component";
 import {CommonModule} from "@angular/common";
-import {EventDTO} from "./eventDTO";
+import {EventDTO} from "./services/eventDTO";
 import {DaytimeWeatherComponent} from "./daytime-weather/daytime-weather.component";
 import {EventComponent} from "./event/event.component";
 import {UpdateDTOService} from "./services/update-dto.service";
 import {UniversityComponent} from "./university/university.component";
 import {ModalComponent} from "./modal/modal.component";
+import {GameEventsService} from "./services/game-events.service";
 
 @Component({
   selector: 'app-root',
@@ -29,7 +29,6 @@ import {ModalComponent} from "./modal/modal.component";
     TownhallDashboardComponent,
     FactoryDashboardComponent,
     BuildingDashboardComponent,
-    // GridloadDashboardComponent,
     DaytimeWeatherComponent,
     EventComponent,
     UniversityComponent,
@@ -44,12 +43,6 @@ export class AppComponent implements OnInit {
   @Input() gameDTO!: ExtendedGameDTO;
   allBuildings?: Building[];
   event: EventDTO | null = null;
-
-  connectionError: boolean = false;
-  private eventSubscription: Subscription | null = null;
-  private incomeDTOSubscription: Subscription | null = null;
-  private dayWeatherSubscription: Subscription | null = null;
-
   buildingViewComponentType: string = '';
   dashboardType!: string;
   townHallDashboard: string = 'town hall';
@@ -62,6 +55,15 @@ export class AppComponent implements OnInit {
   isVictory: boolean = false;
   isLoss: boolean = false;
 
+  isIncomeConnected = false;
+  isIncomeConnecting = false;
+  incomeErrorMessage: string | null = null;
+  isWeatherConnected = false;
+  isWeatherConnecting = false;
+  weatherErrorMessage: string | null = null;
+
+  private subscriptions: Subscription[] = [];
+
   constructor(private gameDTOService: GameDTOService,
               private gameEventsService: GameEventsService,
               private buildingService: BuildingService,
@@ -69,20 +71,64 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dashboardType = this.factoryDashboard;
-    this.buildingViewComponentType = this.buildingDashboard;
+    this.dashboardType = this.buildingDashboard;
     this.initiateGame();
   }
-
 
   initiateGame() {
     console.log("initiating game")
     this.gameDTOService.startGame()
       .subscribe(() => {
         this.getGameDTO();
-        this.subscribeToIncomeDTO();
-        this.subscribeToDayWeatherDTO();
+        this.subscribeToServerEvents();
       });
+  }
+
+  subscribeToServerEvents(): void {
+    this.gameEventsService.connectToIncome();
+    this.gameEventsService.connectToWeather();
+
+    this.subscriptions.push(
+      this.gameEventsService.getIncomeConnectionStatus().subscribe(status => {
+        this.isIncomeConnected = status;
+        this.isIncomeConnecting = false;
+        console.log('subscribed to income update events')
+      })
+    );
+
+    this.subscriptions.push(
+      this.gameEventsService.getWeatherConnectionStatus().subscribe(status => {
+        this.isWeatherConnected = status;
+        this.isWeatherConnecting = false;
+        console.log('subscribed to weather update events')
+      })
+    );
+
+    this.subscriptions.push(
+      this.gameEventsService.getIncomeUpdates().subscribe(incomeDTO => {
+        this.gameDTO = this.updateDTOService.processIncomeAddDTO(incomeDTO, this.gameDTO);
+      })
+    );
+
+    this.subscriptions.push(
+      this.gameEventsService.getWeatherUpdates().subscribe(weatherDTO => {
+        this.gameDTO = this.updateDTOService.processDayWeatherUpdateDTO(weatherDTO, this.gameDTO);
+      })
+    );
+
+    this.subscriptions.push(
+      this.gameEventsService.getIncomeErrors().subscribe(error => {
+        this.incomeErrorMessage = error;
+        setTimeout(() => this.incomeErrorMessage = null, 5000); // Clear error after 5 seconds
+      })
+    );
+
+    this.subscriptions.push(
+      this.gameEventsService.getWeatherErrors().subscribe(error => {
+        this.weatherErrorMessage = error;
+        setTimeout(() => this.weatherErrorMessage = null, 5000); // Clear error after 5 seconds
+      })
+    );
   }
 
   getGameDTO() {
@@ -92,25 +138,6 @@ export class AppComponent implements OnInit {
           this.gameDTO = this.gameDTOService.extendGameDTO(minimizedGameDTO, buildings);
         })
     })
-  }
-
-  subscribeToIncomeDTO(): void {
-    this.connectionError = false;
-    this.incomeDTOSubscription = this.gameEventsService.subscribeToIncomeAddDTO()
-      .subscribe(incomeDTO => {
-          console.log('subscribed to income')
-          this.gameDTO = this.updateDTOService.processIncomeAddDTO(incomeDTO, this.gameDTO);
-          console.log('executed gameDTO');
-        }
-      )
-  }
-
-  subscribeToDayWeatherDTO(): void {
-    this.connectionError = false;
-    this.incomeDTOSubscription = this.gameEventsService.subscribeToDayWeatherUpdateDTO()
-      .subscribe(dayWeatherDTO => {
-        this.gameDTO = this.updateDTOService.processDayWeatherUpdateDTO(dayWeatherDTO, this.gameDTO);
-      })
   }
 
   processCompletedEvent(eventResult: { building: Building | null, popularityLoss: number }) {
@@ -161,5 +188,11 @@ export class AppComponent implements OnInit {
 
   toggleVictory() {
     this.isVictory = !this.isVictory;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.gameEventsService.disconnectFromIncome();
+    this.gameEventsService.disconnectFromWeather();
   }
 }

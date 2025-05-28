@@ -1,0 +1,77 @@
+.stats-box {
+  background: linear-gradient(135deg, #2c3e50, #4a5568);
+  border-radius: 10px;
+}
+
+.stats-inner-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 400px;
+  min-height: 125px;
+  padding: 0.25em 2em;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.05) 10px,
+    rgba(255, 255, 255, 0.1) 10px,
+    rgba(255, 255, 255, 0.1) 20px
+  );
+  border-radius: 8px;
+}
+
+.inner-box-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 0.5em;
+  padding: 0.25em
+}
+
+.funds-info {
+  background-color: gold;
+  font-family: sans-serif;
+  font-weight: bold;
+  border: ridge 3px gold;
+  border-radius: 5px;
+}
+
+.popularity-info {
+  background-color: #de00fd;
+  border: ridge 3px #b902d3;
+  border-radius: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.research-info {
+  font-weight: bold;
+  font-family: sans-serif;
+  border-radius: 5px;
+  background-color: #00cbfb;
+  border: ridge 3px #00cbfb;
+}
+
+.environmental-score-info {
+  color: #209f01;
+  border-radius: 5px;
+}
+
+.energy-info {
+  font-weight: bold;
+  font-family: sans-serif;
+  background-color: darkorange;
+  border: ridge 3px darkorange;
+  border-radius: 5px;
+}
+
+.grid-capacity-info {
+  color: white;
+  font-family: sans-serif;
+  background-color: #ae0000;
+  border: ridge 3px #ae0000;
+  border-radius: 5px;
+}

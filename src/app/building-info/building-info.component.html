@@ -1,0 +1,42 @@
+<div class="stats-box">
+  <div class="stats-inner-box" [ngClass]="getCustomWidth()">
+    <div class="funds-info inner-box-items border-10" [ngStyle]="">
+      Prijs: {{ building.price | currency: 'EUR'}}
+    </div>
+    @if (building.gridCapacity) {
+      <div class="inner-box-items grid-capacity-info border-10" [ngStyle]="">
+        Netcapaciteit: {{ building.gridCapacity }}
+      </div>
+    }
+    @if (building.energyProduction) {
+      <div class="energy-info inner-box-items border-10" [ngStyle]="">
+       Productie: {{ building.energyProduction }}
+      </div>
+    }
+    @if (building.energyConsumption) {
+      <div class="energy-info inner-box-items border-10" [ngStyle]="">
+        Verbruik: {{ building.energyConsumption }}
+      </div>
+    }
+    @if (building.goldIncome > 0) {
+      <div class="funds-info inner-box-items border-10" [ngStyle]="">
+        Schatkist: +{{ building.goldIncome | currency: 'EUR' }}
+      </div>
+    }
+    @if (building.popularityIncome > 0) {
+      <div class="popularity-info inner-box-items">
+        Populariteit +{{ building.popularityIncome }}
+      </div>
+    }
+    @if (building.researchIncome > 0) {
+      <div class="research-info inner-box-items">
+        Wetenschap: +{{ building.researchIncome }}
+      </div>
+    }
+    @if (building.environmentalScore > 0) {
+      <div class="environmental-score-info inner-box-items">
+        Klimaatscore: {{ building.environmentalScore }}
+      </div>
+    }
+  </div>
+</div>

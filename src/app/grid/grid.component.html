@@ -1,7 +1,7 @@
 <div class="grid">
-  @for (district of districts; track district) {
+  @for (district of districts; track district.id) {
     <div class="district" [ngClass]="applyStatusColor(district)">
-      @for (tile of district.tiles; track tile) {
+      @for (tile of district.tiles; track tile.id) {
         <div class="tile"
              (mouseenter)="showTooltip(tile, $event)"
              (mouseleave)="hideTooltip()"

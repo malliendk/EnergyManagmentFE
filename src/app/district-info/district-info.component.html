@@ -1,5 +1,5 @@
 <div class="districts-container">
-  @for (district of districts; track district) {
+  @for (district of districts; track district.id) {
     <div class="district-card"
          [ngClass]="{
        	'warning': district.stressLevel > 0.1 && district.stressLevel <= 0.3,

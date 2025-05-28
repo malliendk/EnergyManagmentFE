@@ -9,7 +9,7 @@ import {BuildingService} from "../services/building.service";
 import {ModalComponent} from "../modal/modal.component";
 import {BuildingViewComponent} from "../building-view/building-view.component";
 import {BuildingInfoComponent} from "../building-info/building-info.component";
-import {EventDTO} from "../eventDTO";
+import {EventDTO} from "../services/eventDTO";
 
 @Component({
   selector: 'app-grid',
@@ -123,15 +123,26 @@ export class GridComponent implements OnInit, OnChanges {
 
   purchaseBuilding(tile: Tile) {
     const remainingGridCapacity = this.getRemainingDistrictGridCapacity(this.district!);
-    console.log('production/consumption and capacity: {} {}', this.building?.energyProduction, remainingGridCapacity)
+    console.log('production/consumption and capacity: {} {}', this.building?.energyProduction, remainingGridCapacity);
     if (this.building!.price > this.gameDTO.funds) {
       this.toggleBuildingModalOpen();
-    } else if (this.building!.energyProduction > remainingGridCapacity || this.building!.energyConsumption > remainingGridCapacity) {
+    } else if (
+      this.building!.energyProduction > remainingGridCapacity ||
+      this.building!.energyConsumption > remainingGridCapacity
+    ) {
       this.toggleCapacityModalOpen();
     } else {
       tile.building = this.building!;
       tile.buildingId = this.building!.id;
-      this.gameDTO.buildings.push(this.building!)
+      const district = this.gameDTO.districts.find(d => d.id === tile.districtId);
+      if (district) {
+        const tileIndex = district.tiles.findIndex(t => t.id === tile.id);
+        if (tileIndex !== -1) {
+          district.tiles[tileIndex] = { ...tile }; //
+        }
+      }
+
+      this.gameDTO.buildings.push(this.building!);
       this.buildingService.processPurchasedBuilding(this.building!, this.gameDTO);
       this.passUpdatedGameDTO.emit(this.gameDTO);
       this.isPurchaseModalOpen = false;
@@ -140,21 +151,26 @@ export class GridComponent implements OnInit, OnChanges {
     }
   }
 
+
   private getRemainingDistrictGridCapacity(district: District): number {
     if (!district || !district.tiles) return 0;
 
     const totalGridCapacity = district.tiles
       .filter(tile => tile.building && tile.building.gridCapacity)
       .reduce((sum, tile) => sum + (tile.building!.gridCapacity || 0), 0);
+
     const totalEnergyProduction = district.tiles
       .filter(tile => tile.building && tile.building.energyProduction)
       .reduce((sum, tile) => sum + (tile.building!.energyProduction || 0), 0);
+
     const totalEnergyConsumption = district.tiles
       .filter(tile => tile.building && tile.building.energyConsumption)
       .reduce((sum, tile) => sum + (tile.building!.energyConsumption || 0), 0);
-    const netBalance = Math.abs(totalEnergyProduction - totalEnergyConsumption);
-    //remaining grid capacity
-    return totalGridCapacity - netBalance;
+
+    const netDeficit = totalEnergyConsumption - totalEnergyProduction;
+    const usedCapacity = netDeficit > 0 ? netDeficit : 0;
+
+    return totalGridCapacity - usedCapacity;
   }
 
 

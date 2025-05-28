@@ -5,7 +5,7 @@ import {importProvidersFrom} from '@angular/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {GameDTOService} from './app/services/game-dto.service';
 import {BuildingService} from './app/services/building.service';
-import {GameEventsService} from './app/game-events.service';
+import {GameEventsService} from './app/services/game-events.service';
 import {DayWeatherService} from './app/services/day-weather.service';
 
 bootstrapApplication(AppComponent, {

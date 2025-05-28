@@ -20,8 +20,6 @@ export class UpdateDTOService {
   }
 
   processIncomeAddDTO(incomeDTO: IncomeAddDTO, gameDTO: ExtendedGameDTO): ExtendedGameDTO {
-    console.log('executing incomeDTO: {}', incomeDTO);
-    console.log('original gameDTO: {}', gameDTO);
     return {
       ...gameDTO,
       funds: incomeDTO.newFunds,

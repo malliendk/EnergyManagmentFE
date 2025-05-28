@@ -15,6 +15,5 @@ export interface District {
   blackout: boolean; // True if stressLevel > 0.5
   monetaryCost: number; // Financial impact of stress
   popularityImpact: number; // Political impact of stress }
-
   tiles: Tile[];
 }

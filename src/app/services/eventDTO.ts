@@ -1,4 +1,4 @@
-import {Building} from "./dtos/building";
+import {Building} from "../dtos/building";
 
 export interface EventDTO {
   id: number;
