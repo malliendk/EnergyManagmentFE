@@ -4,9 +4,10 @@
   align-items: center;
   flex-wrap: wrap;
   height: auto;
-  width: 80vw;
+  width: 82vw;
   margin: 2em auto 2em auto;
-  background-color: ghostwhite;
+  padding: 1.5em;
+  background-color: whitesmoke;
   border: 3px ridge;
 }
 

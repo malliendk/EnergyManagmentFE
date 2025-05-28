@@ -173,7 +173,6 @@ export class GridComponent implements OnInit, OnChanges {
     return totalGridCapacity - usedCapacity;
   }
 
-
   selectBuilding(building: Building) {
     this.isBuildingSelected = true;
     this.building = building;

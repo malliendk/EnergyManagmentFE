@@ -31,15 +31,24 @@ export class BuildingService {
     return this.http.get<Building[]>(this.buildingAPIBaseURL + 'power-plants');
   }
 
-  minimizeBuildingsToBuildingRequests(buildings: Building[]): BuildingRequest[] {
-    return buildings.map(building => ({
-      buildingId: building.id,
-      solarPanelAmount: building.solarPanelAmount,
-      energyProduction: building.energyProduction,
-      goldIncome: building.goldIncome,
-      researchIncome: building.researchIncome,
-      environmentalScore: building.environmentalScore
+  minimizeBuildingsToBuildingRequests(extendedGameDTO: ExtendedGameDTO): BuildingRequest[] {
+    const buildings: Building[] = extendedGameDTO.districts.flatMap(district =>
+      district.tiles
+        .map(tile => tile.building)
+        .filter((building): building is Building => building !== null && building !== undefined)
+    );
+
+    const requestDTOs = buildings.map(building => ({
+      buildingId: building?.id,
+      solarPanelAmount: building?.solarPanelAmount,
+      energyProduction: building?.energyProduction,
+      popularityIncome: building?.popularityIncome,
+      goldIncome: building?.goldIncome,
+      researchIncome: building?.researchIncome,
+      environmentalScore: building?.environmentalScore
     }));
+    console.log("outgoing requests: {}", requestDTOs)
+    return requestDTOs
   }
 
   duplicateBuildingsIfNecessary(ids: number[], retrievedBuildings: Building[]): Building[] {

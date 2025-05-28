@@ -4,13 +4,14 @@ import {SupplyTypes} from "../supplyType";
 import {Account} from "../dtos/account";
 import {AccountService} from "../services/account.service";
 import {CommonModule} from "@angular/common";
+import {DistrictInfoComponent} from "../district-info/district-info.component";
 
 @Component({
     selector: 'app-townhall-dashboard',
     templateUrl: './townhall-dashboard.component.html',
     styleUrls: ['./townhall-dashboard.component.css'],
     standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, DistrictInfoComponent]
 })
 export class TownhallDashboardComponent implements OnInit {
 

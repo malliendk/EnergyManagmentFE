@@ -25,8 +25,9 @@ export class GameDTOService {
   }
 
   updateGameDTO(extendedGameDTO: ExtendedGameDTO): Observable<InitiateGameDTO> {
-    const initiateDTO: InitiateGameDTO = this.minimizeToInitiateDTO(extendedGameDTO);
-    return this.http.put<InitiateGameDTO>(`${this.initiateServiceUrl}/${extendedGameDTO.id}`, initiateDTO);
+    const minimizedGameDTO: InitiateGameDTO = this.minimizeToInitiateDTO(extendedGameDTO);
+    console.log('outgoing minimizedDTO: {}', minimizedGameDTO)
+    return this.http.put<InitiateGameDTO>(`${this.initiateServiceUrl}/${extendedGameDTO.id}`, minimizedGameDTO);
   }
 
   extendGameDTO(minimizedGameDTO: MinimizedGameDTO, fetchedBuildingsById: Building[]): ExtendedGameDTO {
@@ -40,7 +41,6 @@ export class GameDTOService {
       buildings: sortedBuildings
     };
     gameDTO = this.buildingService.updateTilesWithBuildings(gameDTO);
-
     console.log("successfully extended gameDTO: {}", gameDTO);
     return gameDTO;
   }
@@ -56,7 +56,7 @@ export class GameDTOService {
       funds: extendedGameDTO.funds,
       popularity: extendedGameDTO.popularity,
       research: extendedGameDTO.research,
-      buildingRequests: this.buildingService.minimizeBuildingsToBuildingRequests(extendedGameDTO.buildings),
+      buildingRequests: this.buildingService.minimizeBuildingsToBuildingRequests(extendedGameDTO),
       tiles: this.buildingService.removeBuildingsFromTiles(tiles),
       districts: extendedGameDTO.districts
     };

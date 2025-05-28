@@ -4,6 +4,7 @@ export interface BuildingRequest {
   solarPanelAmount: number;
   energyProduction: number;
   goldIncome: number;
+  popularityIncome: number;
   researchIncome: number;
   environmentalScore: number;
 }

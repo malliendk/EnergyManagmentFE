@@ -132,7 +132,9 @@ export class AppComponent implements OnInit {
   }
 
   getGameDTO() {
-    this.gameDTOService.getMinimizedGameDto().subscribe(minimizedGameDTO => {
+    this.gameDTOService.getMinimizedGameDto()
+      .subscribe(minimizedGameDTO => {
+        console.log('minimized gameDTO: {}', minimizedGameDTO)
       this.buildingService.findAllById(minimizedGameDTO)
         .subscribe((buildings: Building[]) => {
           this.gameDTO = this.gameDTOService.extendGameDTO(minimizedGameDTO, buildings);
@@ -155,6 +157,7 @@ export class AppComponent implements OnInit {
     this.gameDTOService.updateGameDTO(passedGameDTO)
       .subscribe(() => this.gameDTOService.getMinimizedGameDto()
         .subscribe((minimizedDTO: MinimizedGameDTO) => {
+          console.log('minimizedDTO: {}', minimizedDTO)
           this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, passedGameDTO.buildings);
           this.getAllBuildings();
           this.decideVictory();

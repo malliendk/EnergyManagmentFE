@@ -6,6 +6,13 @@ export interface District {
   energyProduction: number;
   energyConsumption: number;
   gridCapacity: number;
+  goldIncome: number;
+  popularityIncome: number;
+  researchIncome: number;
+  environmentalScore: string;
+  solarPanelCapacity: number;
+  solarPanelAmount: number;
+
   netProduction: number;
   injectedPower: number;
   exportedPower: number;

@@ -1,41 +1,111 @@
 <div class="stats-box">
-  <div class="stats-inner-box" [ngClass]="getCustomWidth()">
-    <div class="funds-info inner-box-items border-10" [ngStyle]="">
-      Prijs: {{ building.price | currency: 'EUR'}}
-    </div>
-    @if (building.gridCapacity) {
-      <div class="inner-box-items grid-capacity-info border-10" [ngStyle]="">
-        Netcapaciteit: {{ building.gridCapacity }}
-      </div>
-    }
-    @if (building.energyProduction) {
-      <div class="energy-info inner-box-items border-10" [ngStyle]="">
-       Productie: {{ building.energyProduction }}
-      </div>
-    }
-    @if (building.energyConsumption) {
-      <div class="energy-info inner-box-items border-10" [ngStyle]="">
-        Verbruik: {{ building.energyConsumption }}
-      </div>
-    }
-    @if (building.goldIncome > 0) {
+  <div class="stats-inner-box" [ngClass]="[getCustomWidth(), getCustomPadding()]">
+    @if (building && !district) {
       <div class="funds-info inner-box-items border-10" [ngStyle]="">
-        Schatkist: +{{ building.goldIncome | currency: 'EUR' }}
+        Prijs: {{ building.price | currency: 'EUR' }}
+      </div>
+      @if (building.gridCapacity) {
+        <div class="inner-box-items grid-capacity-info border-10" [ngStyle]="">
+          Netcapaciteit: {{ building.gridCapacity }}
+        </div>
+      }
+      @if (building.energyProduction) {
+        <div class="energy-info inner-box-items border-10" [ngStyle]="">
+          Productie: {{ building.energyProduction }}
+        </div>
+      }
+      @if (building.energyConsumption) {
+        <div class="energy-info inner-box-items border-10" [ngStyle]="">
+          Verbruik: {{ building.energyConsumption }}
+        </div>
+      }
+      @if (building.goldIncome > 0) {
+        <div class="funds-info inner-box-items border-10" [ngStyle]="">
+          Schatkist: +{{ building.goldIncome | currency: 'EUR' }}
+        </div>
+      }
+      @if (building.popularityIncome > 0) {
+        <div class="popularity-info inner-box-items">
+          Populariteit +{{ building.popularityIncome }}
+        </div>
+      }
+      @if (building.researchIncome > 0) {
+        <div class="research-info inner-box-items">
+          Wetenschap: +{{ building.researchIncome }}
+        </div>
+      }
+      @if (building.environmentalScore > 0) {
+        <div class="environmental-score-info inner-box-items">
+          Klimaatscore: {{ building.environmentalScore }}
+        </div>
+      }
+    }
+    @if (!building && district) {
+      <div class="stats-block">
+        <div class="energy-info inner-box-items border-10" [ngStyle]="">
+          Productie: {{ district.energyProduction }}
+        </div>
+        <div class="energy-info inner-box-items border-10" [ngStyle]="">
+          Verbruik: {{ district.energyConsumption }}
+        </div>
+        <div class="energy-info inner-box-items border-10" [ngStyle]="">
+          Energiebalans: {{ district.netProduction }}
+        </div>
+      </div>
+      <div class="stats-block">
+        <div class="inner-box-items grid-capacity-info border-10" [ngStyle]="">
+          Netcapaciteit: {{ district.gridCapacity }}
+        </div>
+        <div class="inner-box-items grid-capacity-info border-10" [ngStyle]="">
+          Overbelasting: {{ district.stressLevel | number:'1.2-2' }}
+        </div>
+      </div>
+      <div class="stats-block">
+        <div class="funds-info inner-box-items border-10" [ngStyle]="">
+          Schatkist: +{{ district.goldIncome | currency: 'EUR' }}
+        </div>
+        <div class="popularity-info inner-box-items">
+          Populariteit +{{ district.popularityIncome }}
+        </div>
+        <div class="research-info inner-box-items">
+          Wetenschap: +{{ district.researchIncome }}
+        </div>
+        <div class="environmental-score-info inner-box-items">
+          Klimaatscore: {{ district.environmentalScore }}
+        </div>
       </div>
     }
-    @if (building.popularityIncome > 0) {
-      <div class="popularity-info inner-box-items">
-        Populariteit +{{ building.popularityIncome }}
+    @if (district && showSolarPanel) {
+      <div class="stats-block">
+        <div class="inner-box-items">
+          Productie zonnepanelen
+        </div>
       </div>
-    }
-    @if (building.researchIncome > 0) {
-      <div class="research-info inner-box-items">
-        Wetenschap: +{{ building.researchIncome }}
+      <div class="stats-block">
+        <div class="inner-box-items">
+          Capaciteit zonnepanelen: {{ district.solarPanelCapacity }}
+        </div>
+        <div class="inner-box-items">
+          Aantal zonnepanelen: {{ district.solarPanelAmount }}
+        </div>
       </div>
-    }
-    @if (building.environmentalScore > 0) {
-      <div class="environmental-score-info inner-box-items">
-        Klimaatscore: {{ building.environmentalScore }}
+      <div class="stats-block">
+        <div class="funds-info inner-box-items border-10">
+          Schatkist: +{{ district.goldIncome | currency: 'EUR' }}
+        </div>
+        <div class="popularity-info inner-box-items">
+          Populariteit +{{ district.popularityIncome }}
+        </div>
+        <div class="research-info inner-box-items">
+          Wetenschap: +{{ district.researchIncome }}
+        </div>
+        <div class="environmental-score-info inner-box-items">
+          Klimaatscore: {{ district.environmentalScore }}
+        </div>
+      </div>
+      <div class="stats-block d-flex justify-content-center align-items-center">
+        <div>Zonnepanelen aankopen</div>
+        <input type="number" [(ngModel)]="solarPanelAmount" placeholder="0">
       </div>
     }
   </div>

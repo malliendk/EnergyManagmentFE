@@ -21,15 +21,25 @@
   border-radius: 8px;
 }
 
+.stats-block {
+  min-width: 200px;
+  margin: 0.25em 0;
+  background-color: transparent;
+  border-top: 6px ridge grey;
+  border-bottom: 6px ridge grey;
+}
+
 .inner-box-items {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 0.5em;
+  margin: 0.25em 0;
   padding: 0.25em
 }
+
+
 
 .funds-info {
   background-color: gold;
@@ -56,8 +66,11 @@
 }
 
 .environmental-score-info {
-  color: #209f01;
+  font-weight: bold;
+  font-family: sans-serif;
   border-radius: 5px;
+  background-color: #209f01;
+  border: ridge 3px #209f01;
 }
 
 .energy-info {
@@ -74,4 +87,16 @@
   background-color: #ae0000;
   border: ridge 3px #ae0000;
   border-radius: 5px;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.padding-0 {
+  padding: 0;
+}
+
+.margin-0 {
+  margin: 0;
 }
