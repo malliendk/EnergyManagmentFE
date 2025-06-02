@@ -54,6 +54,8 @@ export class AppComponent implements OnInit {
 
   isVictory: boolean = false;
   isLoss: boolean = false;
+  gamePreparation: boolean = true;
+
 
   isIncomeConnected = false;
   isIncomeConnecting = false;
@@ -72,7 +74,11 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.dashboardType = this.buildingDashboard;
-    this.initiateGame();
+  }
+
+  startGame() {
+    this.gamePreparation = false;
+    this.initiateGame()
   }
 
   initiateGame() {

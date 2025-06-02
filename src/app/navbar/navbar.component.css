@@ -55,17 +55,40 @@
   .w-35 {
     width: 35%;
   }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    height: 2em;
+    color: black;
+    border-radius: 15px;
+    border: 3px groove;
+    font-size: smaller;
+  }
 }
 
-.btn {
-  display: flex;
-  align-items: center;
-  height: 2em;
-  color: black;
-  border-radius: 15px;
-  border: 3px groove;
-  font-size: smaller;
+@media screen and (min-width: 1501px) {
+
+  .nav-demo-items {
+    padding: 1em 1.5em;
+    color: white;
+    text-align: center;
+    font-size: 105%;
+    text-decoration: none;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    height: 1em;
+    color: black;
+    border-radius: 15px;
+    border: 3px groove;
+    font-size: smaller;
+  }
 }
+
+
 
 .btn-secondary {
   background-color: ghostwhite;

@@ -176,21 +176,33 @@ pre {
 
 @media screen and (min-width: 1501px) {
   .funds {
-    padding: 2%;
-    font-size: 90%;
-    border: 4px ridge #dfc700;
+    padding: 3px;
+    font-size: 100%;
+    border: 3px ridge #dfc700;
   }
 
   .popularity {
-    padding: 2%;
-    font-size: 90%;
-    border: 4px ridge #b902d3;
+    padding: 2px;
+    font-size: 100%;
+    border: 2px ridge #b902d3;
   }
 
   .grid-load {
     padding: 2%;
-    font-size: 90%;
-    border: 4px ridge #ae0000;
+    font-size: 100%;
+    border: 3px ridge #ae0000;
+  }
+
+  .research {
+    padding: 2px;
+    font-size: 100%;
+    border: 3px ridge #00cbfb;
+  }
+
+  .environmental-score {
+    padding: 2px;
+    font-size: 100%;
+    border: 3px ridge #209f01;
   }
 }
 

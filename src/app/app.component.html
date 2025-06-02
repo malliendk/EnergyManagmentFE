@@ -1,60 +1,79 @@
-@if (gameDTO) {
-  <app-daytime-weather [gameDTO]="gameDTO"></app-daytime-weather>
-  <div class="sticky-top">
-    <app-navbar
-      [gameDTO]="gameDTO"
-      (passViewType)="getViewType($event)"
-      (passBuildingVieWType)="getBuildingViewType($event)"
-    ></app-navbar>
-  </div>
-  <div class="d-flex justify-content-between">
-    <div>
-      @if (dashboardType === townHallDashboard) {
-        <app-townhall-dashboard [gameDTO]="gameDTO"></app-townhall-dashboard>
-      }
-      @if (dashboardType === factoryDashboard) {
-        <app-factory-dashboard
-          [gameDTO]="gameDTO"
-          (passUpdatedDTO)="updateGameDTO($event)"
-        ></app-factory-dashboard>
-      }
-      @if (dashboardType === buildingDashboard) {
-        <app-building-dashboard
-          [gameDTO]="gameDTO"
-          (passGameDTOToTopLevel)="updateGameDTO($event)"
-        ></app-building-dashboard>
-      }
-      @if (dashboardType === universityDashboard) {
-        <app-university></app-university>
-      }
+@if (gamePreparation) {
+  <app-modal
+    [isModalOpen]="gamePreparation"
+    [showHeader]="true"
+    [headerClass]="'bg-success'">
+    <div modal-body class="d-flex flex-column align-items-center">
+      <p>Welkom bij het Sim Grid Man, het zoveelste simulatiespel, dit keer rondom de energietransitie en
+        het beheer van het elektriciteitsgrid.
+      </p>
+      <p>Breid je stad uit met woningen, publieke trekpleisters, industriële complexen en duurzame
+        energievoorzieningen.</p>
+      <p>Met het afschalen van je fossiele centrale en met de aanleg van zonnepanelen op daken verdien je klimaatpunten.
+        Je wint wanneer je 2500 punten hebt behaald.</p>
+      <p>Je verliest wanneer je populariteit op 0 komt te staan en de gemeenteraad een motie van wantrouwen aanneemt en je afzet.</p>
+
+      <button class="btn btn-outline-success mt-2" (click)="startGame()">Start het spel</button>
     </div>
-    <!--    @if (showGridLoadDashboard) {-->
-    <!--    <div class="d-flex flex-column">-->
-    <!--      <app-gridload-dashboard [gameDTO]="gameDTO"></app-gridload-dashboard>-->
-    <!--    </div>-->
-    <!--    }-->
-  </div>
-  <app-event
-    (passEventResult)="processCompletedEvent($event)"
-    [gameDTO]="gameDTO"
-    (passGameDTO)="updateGameDTO($event)"
-  ></app-event>
+  </app-modal>
+} @else {
+  @if (gameDTO) {
+    <app-daytime-weather [gameDTO]="gameDTO"></app-daytime-weather>
+    <div class="sticky-top">
+      <app-navbar
+        [gameDTO]="gameDTO"
+        (passViewType)="getViewType($event)"
+        (passBuildingVieWType)="getBuildingViewType($event)"
+      ></app-navbar>
+    </div>
+    <div class="d-flex justify-content-between">
+      <div>
+        @if (dashboardType === townHallDashboard) {
+          <app-townhall-dashboard [gameDTO]="gameDTO"></app-townhall-dashboard>
+        }
+        @if (dashboardType === factoryDashboard) {
+          <app-factory-dashboard
+            [gameDTO]="gameDTO"
+            (passUpdatedDTO)="updateGameDTO($event)"
+          ></app-factory-dashboard>
+        }
+        @if (dashboardType === buildingDashboard) {
+          <app-building-dashboard
+            [gameDTO]="gameDTO"
+            (passGameDTOToTopLevel)="updateGameDTO($event)"
+          ></app-building-dashboard>
+        }
+        @if (dashboardType === universityDashboard) {
+          <app-university></app-university>
+        }
+      </div>
+      <!--    @if (showGridLoadDashboard) {-->
+      <!--    <div class="d-flex flex-column">-->
+      <!--      <app-gridload-dashboard [gameDTO]="gameDTO"></app-gridload-dashboard>-->
+      <!--    </div>-->
+      <!--    }-->
+    </div>
+    <app-event
+      (passEventResult)="processCompletedEvent($event)"
+      [gameDTO]="gameDTO"
+      (passGameDTO)="updateGameDTO($event)"
+    ></app-event>
 
+  }
+
+  <app-modal
+    [isModalOpen]="isVictory"
+    [showHeader]="true"
+    [headerClass]="'bg-success'">
+    <div modal-title>
+      <h5 class="text-white">Gefeliciteerd!</h5>
+    </div>
+    <div modal-body class="d-flex flex-column align-items-center">
+      <p>Je hebt een klimaatscore van 2500 behaald en daarmee het spel gewonnen!</p>
+      <button class="btn btn-outline-success mt-2" (click)="toggleVictory()">Verder spelen</button>
+    </div>
+  </app-modal>
 }
-
-
-<app-modal
-  [isModalOpen]="isVictory"
-  [showHeader]="true"
-  [headerClass]="'bg-success'">
-  <div modal-title>
-    <h5 class="text-white">Gefeliciteerd!</h5>
-  </div>
-  <div modal-body class="d-flex flex-column align-items-center">
-    <p>Je hebt een klimaatscore van 2500 behaald en daarmee het spel gewonnen!</p>
-    <button class="btn btn-outline-success mt-2" (click)="toggleVictory()">Verder spelen</button>
-  </div>
-</app-modal>
 
 <!--@if (!gameDTO) {-->
 <!--  <button class="btn btn-primary" (click)="initiateGame()">Start game</button>-->

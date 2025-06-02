@@ -194,61 +194,38 @@ export class GridComponent implements OnInit, OnChanges {
 
     this.isBuildingSelected = true;
 
-
     // Set adjacency effects on tiles
     this.setAdjacencyEffects(building);
 
-
     // Apply the accumulated effect from the currently selected tile to the building
     if (this.tile && this.tile.adjacencySet) {
-      this.applyAccumulatedAdjacencyEffectToBuilding();
+      this.applyStackedAdjacencyEffectsToSelectedBuilding();
     }
   }
 
+  changeSelectedTile(tile: Tile, selectedBuilding: Building) {
+    if (!tile.building) {
+      console.log('changing tile selection, tile ID: {}', tile.id);
 
-  private applyAccumulatedAdjacencyEffectToBuilding() {
-    if (!this.tile || !this.building) {
-      return;
-    }
+      // Restore previous building stats before changing tiles
+      this.restorePreviousBuildingStats();
 
+      this.tile = tile;
 
-    const stackedEffect = this.stackedAdjacencyEffects.get(this.tile.id);
-    if (!stackedEffect) {
-      return;
-    }
+      // Clear and recalculate adjacency effects
+      this.clearAllAdjacencyEffects();
+      this.setAdjacencyEffects(selectedBuilding);
 
-
-    // Apply all accumulated effects by property type
-    stackedEffect.effectsByProperty.forEach((effect, property) => {
-      switch (property) {
-        case "popularityIncome":
-          this.building!.popularityIncome += effect;
-          break;
-        case "goldIncome":
-          this.building!.goldIncome += effect;
-          break;
-        case "researchIncome":
-          this.building!.researchIncome += effect;
-          break;
-        default:
-          console.warn(`Unknown affected property: ${property}`);
+      // Apply the accumulated effects from the new selected tile
+      if (this.tile && this.tile.adjacencySet) {
+        this.applyStackedAdjacencyEffectsToSelectedBuilding();
       }
-    });
 
-
-    console.log('Applied stacked effects to building:', {
-      buildingName: this.building.name,
-      effectsApplied: Object.fromEntries(stackedEffect.effectsByProperty),
-      newStats: {
-        popularity: this.building.popularityIncome,
-        gold: this.building.goldIncome,
-        research: this.building.researchIncome
+      if (this.event) {
+        this.passTile.emit(tile);
       }
-    });
+    }
   }
-
-
-
 
   private storeOriginalBuildingStats(building: Building) {
     this.originalBuildingStats = {
@@ -266,39 +243,9 @@ export class GridComponent implements OnInit, OnChanges {
     }
   }
 
-
-  changeSelectedTile(tile: Tile, selectedBuilding: Building) {
-    if (!tile.building) {
-      console.log('changing tile selection, tile ID: {}', tile.id);
-
-      // Restore previous building stats before changing tiles
-      this.restorePreviousBuildingStats();
-
-      this.tile = tile;
-
-      // Clear and recalculate adjacency effects
-      this.clearAllAdjacencyEffects();
-      this.setAdjacencyEffects(selectedBuilding);
-
-      // Apply the accumulated effects from the new selected tile
-      if (this.tile && this.tile.adjacencySet) {
-        this.applyAccumulatedAdjacencyEffectToBuilding();
-      }
-
-      if (this.event) {
-        this.passTile.emit(tile);
-      }
-    }
-  }
-
   private clearAllAdjacencyEffects() {
-    // Clear the stacked effects map
     this.stackedAdjacencyEffects.clear();
-
-    // Clear the tile adjacency effects map (you have this one too)
     this.tileAdjacencyEffects.clear();
-
-    // Clear adjacencySet from all tiles in the district
     if (this.district && this.district.tiles) {
       this.district.tiles.forEach(tile => {
         tile.adjacencySet = undefined;
@@ -306,19 +253,12 @@ export class GridComponent implements OnInit, OnChanges {
     }
   }
 
-
   private setAdjacencyEffects(buildingToPurchase: Building) {
     console.log('buildingToPurchase: {}', buildingToPurchase);
-
-
-    // COMPLETELY clear all existing effects first
     this.stackedAdjacencyEffects.clear();
     this.district!.tiles.forEach(tile => {
       tile.adjacencySet = undefined; // Clear the display effect
     });
-
-
-    // Now calculate all effects from scratch
     this.district!.tiles.forEach((tile, index) => {
       if (!tile.building) {
         return;
@@ -332,14 +272,11 @@ export class GridComponent implements OnInit, OnChanges {
       if (relevantAdjacentTiles.length === 0) {
         return;
       }
-
-      // Apply the adjacency effect only to tiles without buildings
       relevantAdjacentTiles.forEach(adjacentTile => {
         if (!adjacentTile.building) {
           this.addStackedEffect(adjacentTile, matchingAdjacencySet);
         }
       });
-
       if (matchingAdjacencySet.hasAreaEffect) {
         this.district!.tiles.forEach(areaEffectTile => {
           if (!areaEffectTile.building) {
@@ -352,7 +289,6 @@ export class GridComponent implements OnInit, OnChanges {
 
   private addStackedEffect(tile: Tile, adjacencySet: AdjacencySet) {
     let stackedEffect = this.stackedAdjacencyEffects.get(tile.id);
-
     if (!stackedEffect) {
       stackedEffect = {
         totalEffect: 0,
@@ -361,16 +297,10 @@ export class GridComponent implements OnInit, OnChanges {
       };
       this.stackedAdjacencyEffects.set(tile.id, stackedEffect);
     }
-
-
-    // Add to the specific property
     const currentEffect = stackedEffect.effectsByProperty.get(adjacencySet.affectedProperty) || 0;
     stackedEffect.effectsByProperty.set(adjacencySet.affectedProperty, currentEffect + adjacencySet.effect);
-
-    // Calculate total effect (sum of all properties)
     stackedEffect.totalEffect = Array.from(stackedEffect.effectsByProperty.values())
       .reduce((sum, effect) => sum + effect, 0);
-
 
     // Update the tile's adjacencySet for display - create a new object each time
     tile.adjacencySet = {
@@ -383,21 +313,23 @@ export class GridComponent implements OnInit, OnChanges {
     };
   }
 
-
   applyStackedAdjacencyEffectsToSelectedBuilding() {
     if (!this.building || !this.tile) return;
 
     // Restore original stats before applying effects
+    console.log('original building stats: {}', this.originalBuildingStats)
     this.restorePreviousBuildingStats();
 
     const stackedEffect = this.stackedAdjacencyEffects.get(this.tile.id);
     if (!stackedEffect) return;
+    console.log('stackedEffect: {}', stackedEffect)
 
     // Apply each individual property effect
     stackedEffect.effectsByProperty.forEach((effect, property) => {
       switch (property) {
         case "popularityIncome":
           this.building!.popularityIncome += effect;
+          console.log('affected income type: {}', stackedEffect.affectedProperty)
           break;
         case "goldIncome":
           this.building!.goldIncome += effect;

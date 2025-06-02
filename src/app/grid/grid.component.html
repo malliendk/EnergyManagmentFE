@@ -57,7 +57,7 @@
      	                     'funds-color': tile.adjacencySet.affectedProperty === 'goldIncome',
      	                     'research-color': tile.adjacencySet.affectedProperty === 'researchIncome'
    	                    }">
-                     {{ tile.adjacencySet.effect }}
+                    {{ tile.adjacencySet.effect > 0 ? '+' + tile.adjacencySet.effect : tile.adjacencySet.effect }}
                   </div>
                 }
               </div>

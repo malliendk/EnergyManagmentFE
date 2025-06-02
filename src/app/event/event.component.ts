@@ -47,7 +47,7 @@ export class EventComponent implements OnInit {
 
   ngOnInit() {
     this.modalCustomWidth = 'width-80'
-    // this.subscribeToEvents();
+    this.subscribeToEvents();
   }
 
   acceptBuilding(building: Building) {
