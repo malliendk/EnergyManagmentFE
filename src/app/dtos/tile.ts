@@ -1,4 +1,5 @@
 import {Building} from "./building";
+import {AdjacencySet} from "./adjacencySet";
 
 export interface Tile {
 
@@ -6,4 +7,5 @@ export interface Tile {
   buildingId: number;
   building: Building | null;
   districtId: number;
+  adjacencySet: AdjacencySet | undefined;
 }

@@ -8,6 +8,7 @@ import {InitiateGameDTO} from "../dtos/initiateGameDTO";
 import {BuildingService} from "./building.service";
 import {BuildingRequest} from "../dtos/buildingRequest";
 import {Tile} from "../dtos/tile";
+import {TileService} from "./tile.service";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class GameDTOService {
   private calculationServiceUrl: string = 'http://localhost:8093';
 
   constructor(private http: HttpClient,
-              private buildingService: BuildingService) {
+              private buildingService: BuildingService,
+              private tileService: TileService) {
   }
 
   startGame(): Observable<InitiateGameDTO> {
@@ -40,7 +42,7 @@ export class GameDTOService {
       ...propertyValues,
       buildings: sortedBuildings
     };
-    gameDTO = this.buildingService.updateTilesWithBuildings(gameDTO);
+    gameDTO = this.tileService.updateTilesWithBuildings(gameDTO);
     console.log("successfully extended gameDTO: {}", gameDTO);
     return gameDTO;
   }
@@ -50,14 +52,14 @@ export class GameDTOService {
   }
 
   minimizeToInitiateDTO(extendedGameDTO: ExtendedGameDTO): InitiateGameDTO {
-    const tiles: Tile[] = this.buildingService.collectAllTiles(extendedGameDTO);
+    const tiles: Tile[] = this.tileService.collectAllTiles(extendedGameDTO);
     return {
       id: extendedGameDTO.id,
       funds: extendedGameDTO.funds,
       popularity: extendedGameDTO.popularity,
       research: extendedGameDTO.research,
       buildingRequests: this.buildingService.minimizeBuildingsToBuildingRequests(extendedGameDTO),
-      tiles: this.buildingService.removeBuildingsFromTiles(tiles),
+      tiles: this.tileService.removeBuildingsFromTiles(tiles),
       districts: extendedGameDTO.districts
     };
   }

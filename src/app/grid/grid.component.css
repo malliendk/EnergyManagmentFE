@@ -1,10 +1,10 @@
 .grid {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
-  flex-wrap: wrap;
   height: auto;
-  width: 82vw;
+  width: 85vw;
   margin: 2em auto 2em auto;
   padding: 1.5em;
   background-color: whitesmoke;
@@ -18,8 +18,9 @@
 .district {
   display: flex;
   flex-wrap: wrap;
-  width: 50%;
+  width: 48%;
   height: auto;
+  margin: 0.5em 0;
   border: 2px solid black;
 }
 
@@ -27,9 +28,16 @@
   height: 67px;
   width: 115.5px;
   margin: 0.25em auto;
-  background-color: #ff9999;
   border: 1px solid silver;
   cursor: pointer;
+}
+
+.tile-pink {
+  background-color: #ff9999;
+}
+
+.tile-grey {
+  background-color: lightgrey;
 }
 
 .tile:hover {
@@ -42,6 +50,10 @@
 
 .building-selected {
   border: 3px solid red;
+}
+
+.adjacency-text {
+  font-size: 20px;
 }
 
 .tooltip-box {
@@ -101,7 +113,7 @@
 }
 
 .funds-color {
-  color: goldenrod;
+  color: gold;
 }
 
 .popularity-color {

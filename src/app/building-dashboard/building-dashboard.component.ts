@@ -7,6 +7,7 @@ import {CommonModule} from "@angular/common";
 import {Tile} from "../dtos/tile";
 import {DistrictInfoComponent} from "../district-info/district-info.component";
 import {GridComponent} from "../grid/grid.component";
+import {TileService} from "../services/tile.service";
 
 @Component({
   selector: 'app-building-dashboard',
@@ -29,7 +30,7 @@ export class BuildingDashboardComponent implements OnInit {
   tiles!: Tile[];
   isDetailView: boolean = false;
 
-  constructor(private buildingService: BuildingService) {
+  constructor(private tileService: TileService) {
   }
 
   ngOnInit() {
@@ -37,7 +38,7 @@ export class BuildingDashboardComponent implements OnInit {
     if (this.heldBuildings) {
       this.groupedBuildings = this.groupBuildingsById(this.heldBuildings);
     }
-    this.tiles = this.buildingService.collectAllTiles(this.gameDTO);
+    this.tiles = this.tileService.collectAllTiles(this.gameDTO);
   }
 
   toggleDetailView(building: Building | null) {

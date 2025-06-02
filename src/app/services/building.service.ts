@@ -100,65 +100,13 @@ export class BuildingService {
     return gameDTO
   }
 
-  /**
-   * Maps buildings to tiles based on the buildingId property of each tile
-   * @param tiles The list of tiles that need buildings assigned
-   * @param buildings The list of available buildings to map to tiles
-   * @returns An updated list of tiles with their building property populated
-   */
-  mapBuildingsToTiles(tiles: Tile[], buildings: Building[]): Tile[] {
-    // Create a map for quick lookup of buildings by their ID
-    const buildingMap = new Map<number, Building>();
-    buildings.forEach((building: Building) => {
-      buildingMap.set(building.id, building);
-    });
 
-    // Map each tile to a building if it has a buildingId
-    return tiles.map((tile: Tile) => {
-      if (tile.buildingId) {
-        const matchingBuilding = buildingMap.get(tile.buildingId);
-        if (matchingBuilding) {
-          // Create a new tile object with the building property populated
-          return {
-            ...tile,
-            building: {...matchingBuilding}
-          };
-        }
-      }
-      // Return the original tile if no building ID or no matching building found
-      return tile;
-    });
+  getDistrictBuildings(district: District): Building[] {
+    return district.tiles
+      .map(tile => tile.building)
+      .filter((building): building is Building => building !== null);
   }
 
-  /**
-   * Updates the tiles in the extended game DTO with the corresponding buildings
-   * @param gameDTO The ExtendedGameDTO to update
-   * @returns The updated ExtendedGameDTO with buildings mapped to tiles
-   */
-  updateTilesWithBuildings(gameDTO: ExtendedGameDTO): ExtendedGameDTO {
-    const tiles: Tile[] = this.collectAllTiles(gameDTO)
-    this.mapBuildingsToTiles(tiles, gameDTO.buildings);
-    return gameDTO
-  }
-
-  /**
-   * Removes the building property from each tile, keeping only the buildingId reference
-   * @param tiles The tiles to process
-   * @returns Tiles with only id and buildingId properties
-   */
-
-  removeBuildingsFromTiles(tiles: Tile[]): Tile[] {
-    return tiles.map(tile => ({
-      id: tile.id,
-      buildingId: tile.buildingId,
-      building: null,
-      districtId: tile.districtId
-    }));
-  }
-
-  collectAllTiles(gameDTO: ExtendedGameDTO): Tile[] {
-    return gameDTO.districts.flatMap(district => district.tiles);
-  }
 
   generateInstanceId(building: Building) {
     building.instanceId = window.crypto.getRandomValues(new Uint32Array(1))[0];
@@ -174,19 +122,5 @@ export class BuildingService {
         building.environmentalScore = map.environmentalScore;
       }
     }))
-  }
-
-  addBuildingsToTiles(buildings: Building[], districts: District[]) {
-    const buildingMap = new Map<number, Building>();
-    buildings.forEach(building => {
-      buildingMap.set(building.id, building);
-    });
-    districts.forEach(district => {
-      district.tiles.forEach(tile => {
-        if (tile.buildingId && buildingMap.has(tile.buildingId)) {
-          tile.building = buildingMap.get(tile.buildingId) || null;
-        }
-      });
-    })
   }
 }

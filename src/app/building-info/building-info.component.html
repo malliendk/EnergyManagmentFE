@@ -78,11 +78,6 @@
     @if (district && showSolarPanel) {
       <div class="stats-block">
         <div class="inner-box-items">
-          Productie zonnepanelen
-        </div>
-      </div>
-      <div class="stats-block">
-        <div class="inner-box-items">
           Capaciteit zonnepanelen: {{ district.solarPanelCapacity }}
         </div>
         <div class="inner-box-items">
@@ -90,23 +85,43 @@
         </div>
       </div>
       <div class="stats-block">
-        <div class="funds-info inner-box-items border-10">
-          Schatkist: +{{ district.goldIncome | currency: 'EUR' }}
+        <div class="inner-box-items d-flex justify-content-around align-items-center">
+          <div>Zonnepanelen aankopen</div>
+          <input type="number" [(ngModel)]="solarPanelAmount" placeholder="0">
         </div>
-        <div class="popularity-info inner-box-items">
-          Populariteit +{{ district.popularityIncome }}
-        </div>
-        <div class="research-info inner-box-items">
-          Wetenschap: +{{ district.researchIncome }}
-        </div>
-        <div class="environmental-score-info inner-box-items">
-          Klimaatscore: {{ district.environmentalScore }}
+        <div class="inner-box-items">
+          <button class="btn btn-outline-primary" (click)="purchaseSolarPanels(district)">
+            Aankopen
+          </button>
         </div>
       </div>
-      <div class="stats-block d-flex justify-content-center align-items-center">
-        <div>Zonnepanelen aankopen</div>
-        <input type="number" [(ngModel)]="solarPanelAmount" placeholder="0">
+      <div class="stats-block">
+        <div class="inner-box-items">
+          Productie uit zonnepanelen
+        </div>
+      </div>
+      <div class="stats-block">
+        <div class="funds-info inner-box-items border-10">
+          {{ production }}
+        </div>
+        <div class="funds-info inner-box-items border-10">
+          {{ goldIncome | currency: 'EUR' }}
+        </div>
+        <div class="research-info inner-box-items">
+          {{ researchIncome }}
+        </div>
+        <div class="environmental-score-info inner-box-items">
+          {{ environmentalScore }}
+        </div>
       </div>
     }
   </div>
 </div>
+
+<!--<app-modal [isModalOpen]="isCapacityModalOpen">-->
+<!--  <div modal-body class="d-flex flex-column align-items-center">-->
+<!--    <p>Dit district heeft niet genoeg capaciteit om deze hoeveelheid zonnepanelen te plaatsen</p>-->
+<!--    <p>Resterende capaciteit: {{remainingSolarCapacity}}</p>-->
+<!--    <button class="btn btn-outline-primary" (click)="toggleCapacityModalOpen()">Sluiten</button>-->
+<!--  </div>-->
+<!--</app-modal>-->
