@@ -57,23 +57,25 @@
           Netcapaciteit: {{ district.gridCapacity }}
         </div>
         <div class="inner-box-items grid-capacity-info border-10" [ngStyle]="">
-          Overbelasting: {{ district.stressLevel | number:'1.2-2' }}
+          Netbelasting: {{ district.stressLevel | number:'1.2-2' }}
         </div>
       </div>
-      <div class="stats-block">
-        <div class="funds-info inner-box-items border-10" [ngStyle]="">
-          Schatkist: +{{ district.goldIncome | currency: 'EUR' }}
+      @if (!isSingleDistrict) {
+        <div class="stats-block">
+          <div class="funds-info inner-box-items border-10" [ngStyle]="">
+            Schatkist: +{{ district.goldIncome | currency: 'EUR' }}
+          </div>
+          <div class="popularity-info inner-box-items">
+            Populariteit +{{ district.popularityIncome }}
+          </div>
+          <div class="research-info inner-box-items">
+            Wetenschap: +{{ district.researchIncome }}
+          </div>
+          <div class="environmental-score-info inner-box-items">
+            Klimaatscore: {{ district.environmentalScore }}
+          </div>
         </div>
-        <div class="popularity-info inner-box-items">
-          Populariteit +{{ district.popularityIncome }}
-        </div>
-        <div class="research-info inner-box-items">
-          Wetenschap: +{{ district.researchIncome }}
-        </div>
-        <div class="environmental-score-info inner-box-items">
-          Klimaatscore: {{ district.environmentalScore }}
-        </div>
-      </div>
+      }
     }
     @if (district && showSolarPanel) {
       <div class="stats-block">

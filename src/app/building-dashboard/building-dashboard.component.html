@@ -18,7 +18,9 @@
       [gameDTO]="gameDTO"
       (passUpdatedGameDTO)="updateGameDTO($event)"
     ></app-grid>
-    <app-district-info [gameDTO]="gameDTO"></app-district-info>
+    <app-district-info
+      [gameDTO]="gameDTO"
+    ></app-district-info>
   }
   @if (isDetailView) {
     <app-building-view

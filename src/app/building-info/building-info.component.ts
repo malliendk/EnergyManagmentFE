@@ -29,6 +29,7 @@ export class BuildingInfoComponent implements OnInit{
   @Input() customPadding?: string;
   @Input() customMargin?: string;
   @Input() showSolarPanel: boolean = false;
+  @Input() isSingleDistrict: boolean = false;
 
   buildingsInDistrict!: Building[];
 

@@ -3,11 +3,36 @@
   background-color: #cc0303;
 }
 
-.side-bar {
-  width: 1.0444%;
-  background-color: gold;
-  min-height: 100vh;
-  float: left;
+.supervisor-picture {
+  bottom: 0;
+  right: 0;
+  width: 10%;
+  height: auto;
+  position: fixed;
+  z-index: 1;
+}
+
+@media screen and (min-width: 2000px) {
+  .selected-button {
+    border: 5px solid red;
+  }
+}
+
+@media screen and (max-width: 1999px) {
+  .selected-button {
+    border: 2px solid red;
+  }
+}
+
+.start-timer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 10%;
+  height: 8%;
+  z-index: 1;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 

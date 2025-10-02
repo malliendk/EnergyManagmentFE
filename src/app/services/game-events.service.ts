@@ -1,9 +1,10 @@
 import {Injectable, NgZone, OnDestroy} from '@angular/core';
 import {BehaviorSubject, Observable, share, Subject} from 'rxjs';
 import {HttpClient} from "@angular/common/http";
-import {IncomeAddDTO} from "../IncomeAddDTO";
+import {IncomeAddDTO} from "../dtos/IncomeAddDTO";
 import {EventDTO} from "./eventDTO";
 import {DayWeatherUpdateDTO} from "../dtos/dayWeatherUpdateDTO";
+import {PopularitySchedulerRequest} from "../dtos/popularitySchedulerRequest";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,10 @@ export class GameEventsService implements OnDestroy{
 
   private INCOME_SSE_URL: string = 'http://localhost:8093/income-stream';
   private WEATHER_SSE_URL: string = 'http://localhost:8093/day-weather-stream';
+  private POPULARITY_SSE_URL: string = 'http://localhost:8093/scheduler/popularity';
   private BUILDING_EVENT_URL: string = 'http://localhost:8090/event/stream';
+  private BUILDING_EVENT_SHUTDOWN_URL: string = 'http://localhost:8090/event/stream';
+
 
   private eventSources: Map<string, EventSource> = new Map();
 
@@ -27,8 +31,15 @@ export class GameEventsService implements OnDestroy{
 
   private connectionCountEvent = 0;
 
-
   constructor(private zone: NgZone, private http: HttpClient) {}
+
+  shutdownEventScheduler() {
+    return this.http.get<string>(this.BUILDING_EVENT_SHUTDOWN_URL);
+  }
+
+  startGoldPopularityLossScheduler() {
+    return this.http.post<PopularitySchedulerRequest>(this.POPULARITY_SSE_URL, {})
+  }
 
   connectToIncome(): void {
     if (this.eventSources.has(this.INCOME_SSE_URL)) {
@@ -51,7 +62,6 @@ export class GameEventsService implements OnDestroy{
       console.warn('SSE weather connection already exists');
       return;
     }
-
 
     console.log('Connecting to SSE weather stream:', this.WEATHER_SSE_URL);
     this.createEventSource<DayWeatherUpdateDTO>(
@@ -215,7 +225,6 @@ export class GameEventsService implements OnDestroy{
     };
   }
 
-
   private closeEventSource(url: string): void {
     const source = this.eventSources.get(url);
     if (source) {
@@ -237,5 +246,3 @@ export class GameEventsService implements OnDestroy{
     this.weatherErrorSubject.complete();
   }
 }
-
-

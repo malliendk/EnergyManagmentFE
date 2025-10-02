@@ -9,6 +9,7 @@ import {BuildingService} from "./building.service";
 import {BuildingRequest} from "../dtos/buildingRequest";
 import {Tile} from "../dtos/tile";
 import {TileService} from "./tile.service";
+import {Supervisor} from "../dtos/supervisor";
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,9 @@ export class GameDTOService {
               private tileService: TileService) {
   }
 
-  startGame(): Observable<InitiateGameDTO> {
-    return this.http.post<InitiateGameDTO>(this.initiateServiceUrl, {});
+  startGame(supervisorDTO: Supervisor): Observable<InitiateGameDTO> {
+    console.log('passing supervisor' + supervisorDTO.name)
+    return this.http.post<InitiateGameDTO>(this.initiateServiceUrl, supervisorDTO);
   }
 
   updateGameDTO(extendedGameDTO: ExtendedGameDTO): Observable<InitiateGameDTO> {
@@ -58,6 +60,7 @@ export class GameDTOService {
       funds: extendedGameDTO.funds,
       popularity: extendedGameDTO.popularity,
       research: extendedGameDTO.research,
+      supervisor: extendedGameDTO.supervisor,
       buildingRequests: this.buildingService.minimizeBuildingsToBuildingRequests(extendedGameDTO),
       tiles: this.tileService.removeBuildingsFromTiles(tiles),
       districts: extendedGameDTO.districts

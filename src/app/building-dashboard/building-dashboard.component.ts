@@ -14,7 +14,7 @@ import {TileService} from "../services/tile.service";
   templateUrl: './building-dashboard.component.html',
   styleUrls: ['./building-dashboard.component.css'],
   standalone: true,
-  imports: [CommonModule, BuildingViewComponent, DistrictInfoComponent, GridComponent]
+  imports: [CommonModule, BuildingViewComponent, GridComponent, DistrictInfoComponent]
 })
 export class BuildingDashboardComponent implements OnInit {
 
@@ -47,7 +47,6 @@ export class BuildingDashboardComponent implements OnInit {
   }
 
   groupBuildingsById(buildings: Building[]): {building: Building, count: number, id: string}[] {
-    // Use number as key type since buildingId is a number
     const buildingMap = new Map<number, {building: Building, count: number}>();
 
     buildings.forEach(building => {
@@ -60,10 +59,9 @@ export class BuildingDashboardComponent implements OnInit {
       }
     });
 
-    // Convert map to array with unique IDs for tracking
     return Array.from(buildingMap.values()).map((entry, index) => ({
       ...entry,
-      id: `${entry.building.id}-${index}` // Create a unique ID for tracking
+      id: `${entry.building.id}-${index}`
     }));
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {IncomeAddDTO} from "../IncomeAddDTO";
+import {IncomeAddDTO} from "../dtos/IncomeAddDTO";
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {DayWeatherUpdateDTO} from "../dtos/dayWeatherUpdateDTO";
 

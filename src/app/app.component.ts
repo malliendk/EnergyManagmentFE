@@ -17,6 +17,9 @@ import {UpdateDTOService} from "./services/update-dto.service";
 import {UniversityComponent} from "./university/university.component";
 import {ModalComponent} from "./modal/modal.component";
 import {GameEventsService} from "./services/game-events.service";
+import {Supervisor} from "./dtos/supervisor";
+import {SupervisorComponent} from "./supervisor/supervisor.component";
+import {SupervisorService} from "./services/supervisor.service";
 
 @Component({
   selector: 'app-root',
@@ -32,30 +35,39 @@ import {GameEventsService} from "./services/game-events.service";
     DaytimeWeatherComponent,
     EventComponent,
     UniversityComponent,
-    ModalComponent
+    ModalComponent,
+    SupervisorComponent
   ]
 })
 export class AppComponent implements OnInit {
   @ViewChild(FactoryDashboardComponent) factoryDashboardComponent?: FactoryDashboardComponent;
 
+
   title = 'Energy Management';
 
-  @Input() gameDTO!: ExtendedGameDTO;
+  gameDTO!: ExtendedGameDTO;
+  supervisor!: Supervisor;
   allBuildings?: Building[];
   event: EventDTO | null = null;
   buildingViewComponentType: string = '';
   dashboardType!: string;
-  townHallDashboard: string = 'town hall';
-  factoryDashboard: string = 'factory';
-  buildingDashboard: string = 'buildings';
+  townHallDashboardText: string = 'town hall';
+  factoryDashboardText: string = 'factory';
+  buildingDashboardText: string = 'buildings';
   universityDashboard: string = 'university';
+  supervisorDashboardText: string = 'supervisor';
   showGridLoadDashboard: boolean = false;
   victoryThreshold: number = 2500;
+  isGameInfo = true;
+  isChoosePlayer = false;
+  selectedDelay: number | null = null;
 
   isVictory: boolean = false;
   isLoss: boolean = false;
-  gamePreparation: boolean = true;
-
+  isGamePreparation: boolean = true;
+  isSupervisorDashboard: boolean = false;
+  isStartGameWarning: boolean = false;
+  startGameWarningText: string = 'Kies een supervisor.'
 
   isIncomeConnected = false;
   isIncomeConnecting = false;
@@ -63,8 +75,16 @@ export class AppComponent implements OnInit {
   isWeatherConnected = false;
   isWeatherConnecting = false;
   weatherErrorMessage: string | null = null;
+  initialDelaySchedulers!: number;
+  initialDelayNone: number = 0;
+  initialDelayMedium: number = 120;
+  initialDelayLong: number = 300;
+  initialDelayVeryLong: number = 600;
+  isManualKickOffEvents: boolean = false;
+
 
   private subscriptions: Subscription[] = [];
+  infoPageNumber: number = 1;
 
   constructor(private gameDTOService: GameDTOService,
               private gameEventsService: GameEventsService,
@@ -73,21 +93,146 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dashboardType = this.buildingDashboard;
+    this.dashboardType = this.buildingDashboardText;
+  }
+
+  setInitialDelay(delayChoice: number) {
+    this.initialDelaySchedulers = delayChoice;
+    this.selectedDelay = delayChoice;
+  }
+
+  goToChoosePlayer() {
+    this.isGameInfo = false;
+    this.isChoosePlayer = true
+    this.infoPageNumber = 1;
   }
 
   startGame() {
-    this.gamePreparation = false;
-    this.initiateGame()
+    if (!this.supervisor) {
+      this.isStartGameWarning = true;
+      return;
+    } else {
+      this.isStartGameWarning = false;
+      this.isGamePreparation = false;
+      this.initiateGame(this.supervisor);
+    }
   }
 
-  initiateGame() {
+  initiateGame(supervisor: Supervisor) {
     console.log("initiating game")
-    this.gameDTOService.startGame()
+    console.log('passing supervisor' + supervisor)
+    this.gameDTOService.startGame(supervisor)
       .subscribe(() => {
+        console.log(supervisor);
         this.getGameDTO();
         this.subscribeToServerEvents();
+        // this.startPopularityScheduler();
       });
+  }
+
+  toggleSupervisorDashboard() {
+    this.isSupervisorDashboard = !this.isSupervisorDashboard;
+    this.dashboardType = this.supervisorDashboardText;
+  }
+
+  getGameDTO() {
+    this.gameDTOService.getMinimizedGameDto()
+      .subscribe(minimizedGameDTO => {
+        console.log('minimized gameDTO: {}', minimizedGameDTO);
+      this.buildingService.findAllById(minimizedGameDTO)
+        .subscribe((buildings: Building[]) => {
+          this.gameDTO = this.gameDTOService.extendGameDTO(minimizedGameDTO, buildings);
+        })
+    });
+    this.isGamePreparation = false;
+  }
+
+  processCompletedEvent(eventResult: { building: Building | null, popularityLoss: number }) {
+    const processedBuilding: Building | null = eventResult.building;
+    if (processedBuilding) {
+      this.gameDTO = this.buildingService.processPurchasedBuilding(eventResult.building!, this.gameDTO);
+      this.gameDTO = {...this.gameDTO}
+      this.updateGameDTO(this.gameDTO);
+    } else {
+      this.gameDTO.popularity -= eventResult.popularityLoss;
+    }
+  }
+
+  updateGameDTO(passedGameDTO: ExtendedGameDTO) {
+    this.gameDTOService.updateGameDTO(passedGameDTO)
+      .subscribe(() => this.gameDTOService.getMinimizedGameDto()
+        .subscribe((minimizedDTO: MinimizedGameDTO) => {
+          console.log('minimizedDTO: {}', minimizedDTO)
+          this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, passedGameDTO.buildings);
+          this.getAllBuildings();
+          this.decideVictory();
+          this.decideLoss();
+        })
+      );
+  }
+
+  turnPage() {
+    this.infoPageNumber++;
+  }
+
+  getViewType(viewTypeset: { viewType: string, showGridLoadDashboard: boolean }) {
+    this.dashboardType = viewTypeset.viewType;
+    this.showGridLoadDashboard = viewTypeset.showGridLoadDashboard;
+  }
+
+  getBuildingViewType(value: string) {
+    this.buildingViewComponentType = value;
+    this.getAllBuildings();
+  }
+
+  getAllBuildings() {
+    this.buildingService.findAll()
+      .subscribe((buildings: Building[]) => {
+        this.allBuildings = buildings;
+        this.allBuildings.forEach((building: Building) => building.instanceId = undefined);
+      });
+  }
+
+  getSupervisor(supervisorDTO: Supervisor) {
+    this.supervisor = supervisorDTO;
+  }
+
+  getCityView(value: string) {
+    this.dashboardType = value;
+  }
+
+  decideVictory() {
+    if (this.gameDTO.environmentalScore >= this.victoryThreshold) {
+      this.toggleVictory();
+    }
+  }
+
+  decideLoss() {
+    if (this.gameDTO.popularity <= 0) {
+      this.toggleLoss();
+    }
+  }
+
+  toggleVictory() {
+    this.isVictory = !this.isVictory;
+  }
+
+  toggleLoss() {
+    this.isLoss = !this.isLoss;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.gameEventsService.disconnectFromIncome();
+    this.gameEventsService.disconnectFromWeather();
+  }
+
+
+  startPopularityScheduler() {
+    setTimeout(() => {
+      this.gameEventsService.startGoldPopularityLossScheduler()
+        .subscribe(), this.initialDelaySchedulers * 1000}
+    );
   }
 
   subscribeToServerEvents(): void {
@@ -137,71 +282,8 @@ export class AppComponent implements OnInit {
     );
   }
 
-  getGameDTO() {
-    this.gameDTOService.getMinimizedGameDto()
-      .subscribe(minimizedGameDTO => {
-        console.log('minimized gameDTO: {}', minimizedGameDTO)
-      this.buildingService.findAllById(minimizedGameDTO)
-        .subscribe((buildings: Building[]) => {
-          this.gameDTO = this.gameDTOService.extendGameDTO(minimizedGameDTO, buildings);
-        })
-    })
-  }
-
-  processCompletedEvent(eventResult: { building: Building | null, popularityLoss: number }) {
-    const processedBuilding: Building | null = eventResult.building;
-    if (processedBuilding) {
-      this.gameDTO = this.buildingService.processPurchasedBuilding(eventResult.building!, this.gameDTO);
-      this.gameDTO = {...this.gameDTO}
-      this.updateGameDTO(this.gameDTO);
-    } else {
-      this.gameDTO.popularity -= eventResult.popularityLoss;
-    }
-  }
-
-  updateGameDTO(passedGameDTO: ExtendedGameDTO) {
-    this.gameDTOService.updateGameDTO(passedGameDTO)
-      .subscribe(() => this.gameDTOService.getMinimizedGameDto()
-        .subscribe((minimizedDTO: MinimizedGameDTO) => {
-          console.log('minimizedDTO: {}', minimizedDTO)
-          this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, passedGameDTO.buildings);
-          this.getAllBuildings();
-          this.decideVictory();
-        })
-      );
-  }
-
-  getViewType(viewTypeset: { viewType: string, showGridLoadDashboard: boolean }) {
-    this.dashboardType = viewTypeset.viewType;
-    this.showGridLoadDashboard = viewTypeset.showGridLoadDashboard;
-  }
-
-  getBuildingViewType(value: string) {
-    this.buildingViewComponentType = value;
-    this.getAllBuildings();
-  }
-
-  getAllBuildings() {
-    this.buildingService.findAll()
-      .subscribe((buildings: Building[]) => {
-        this.allBuildings = buildings;
-        this.allBuildings.forEach((building: Building) => building.instanceId = undefined);
-      });
-  }
-
-  decideVictory() {
-    if (this.gameDTO.environmentalScore >= this.victoryThreshold) {
-      this.toggleVictory();
-    }
-  }
-
-  toggleVictory() {
-    this.isVictory = !this.isVictory;
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-    this.gameEventsService.disconnectFromIncome();
-    this.gameEventsService.disconnectFromWeather();
+  startEventScheduler() {
+    this.isManualKickOffEvents = true;
+    this.selectedDelay = null;
   }
 }

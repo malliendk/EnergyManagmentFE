@@ -14,11 +14,12 @@ export interface Building {
   energyConsumption: number;
   solarPanelAmount: number
   solarPanelCapacity: number;
-  houseHolds: number;
+  housing: number;
   popularityIncome: number;
   goldIncome: number;
   researchIncome: number;
   environmentalScore: number;
   popularityCost: number;
   canBePurchased: boolean;
+  housingRequirement: number;
 }

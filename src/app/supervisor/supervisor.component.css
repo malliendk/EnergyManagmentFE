@@ -1,0 +1,37 @@
+.supervisor-dashboard {
+  display: flex;
+  flex-grow: 1;
+  height: 92vh;
+  width: 100vw;
+  padding: 1em;
+  background-image: linear-gradient(45deg, #170085 5%, black 95%);
+  z-index: 0;
+}
+
+.supervisor-left-column {
+  height: 100%;
+  width: 70%;
+}
+
+.supervisor-right-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.supervisor-text {
+  color: white;
+  text-align: center;
+  font-size: 22px;
+}
+
+.img-radius {
+  border-radius: 1.5em;
+}
+
+.supervisor-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 3em;
+}

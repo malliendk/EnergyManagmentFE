@@ -1,2 +1,89 @@
-<!--<h1>Supervisors</h1>-->
-<!--<app-supervisor-list></app-supervisor-list>-->
+@if (isInitiatingGame && supervisors) {
+  <h4 class="text-center">{{ chooseSupervisorText }}</h4>
+  <div class="d-flex justify-content-around">
+    @for (supervisor of supervisors; track supervisor.id) {
+      <div class="m-2 clickable"
+           (click)="selectSupervisor(supervisor)"
+           [ngClass]="getSelected(supervisor.id)">
+        <h5 class="d-flex justify-content-center">{{ supervisor.name }}</h5>
+        <img class="img-fluid" src="{{supervisor.imageUrl}}">
+      </div>
+    }
+  </div>
+}
+@if (!isInitiatingGame && isDashboardOpen) {
+  <div class="supervisor-dashboard">
+    <div class="supervisor-left-column">
+      <h3 class="supervisor-text">{{ supervisor.name }}</h3>
+      <img class="img-fluid img-radius mt-1 mb-1" [src]="supervisor.imageUrl">
+      <h5 class="supervisor-text mt-3 mb-3">Class: &nbsp; {{ supervisor.classType }}</h5>
+      <h5 class="supervisor-text mt-3 mb-3">Type: &nbsp; {{ supervisor.type }}</h5>
+      <h5 class="supervisor-text">Special ability: &nbsp;&nbsp;{{ supervisor.specialAbility }}</h5>
+    </div>
+    <div class="supervisor-right-column">
+      <div class="d-flex flex-wrap justify-content-center">
+        <app-perk-view
+          [bottomLevel]="supervisor.perkGoldIncome"
+          [topLevel]="supervisor.perkGoldCost"
+          [categoryText]="financeText"
+          [specialismTopText]="monetizingText"
+          [specialismBottomText]="budgetingText"
+          [researchTotal]="remainingResearchTotal"
+          (passUpgrade)="processUpgrade($event)">
+        </app-perk-view>
+        <app-perk-view
+          [topLevel]="supervisor.perkPopularityIncome"
+          [bottomLevel]="supervisor.perkPopularityCost"
+          [categoryText]="popularityText"
+          [specialismTopText]="engagementText"
+          [specialismBottomText]="politicsText"
+          [researchTotal]="remainingResearchTotal"
+          (passUpgrade)="processUpgrade($event)">
+          >
+        </app-perk-view>
+        <app-perk-view
+          [topLevel]="supervisor.perkResearchIncome"
+          [bottomLevel]="supervisor.perkResearchCost"
+          [categoryText]="researchText"
+          [specialismTopText]="innovationText"
+          [specialismBottomText]="researchEfficiencyText"
+          [researchTotal]="remainingResearchTotal"
+          (passUpgrade)="processUpgrade($event)">
+          >
+        </app-perk-view>
+        <app-perk-view
+          [topLevel]="supervisor.perkGridEfficiency"
+          [bottomLevel]="supervisor.perkGridResilience"
+          [categoryText]="electricityGridText"
+          [specialismTopText]="distributionEfficiencyText"
+          [specialismBottomText]="lineResilienceText"
+          [researchTotal]="remainingResearchTotal"
+          (passUpgrade)="processUpgrade($event)">
+          >
+        </app-perk-view>
+      </div>
+      <div class="d-flex justify-content-center align-items-center">
+        <div class="text-white">Upgrade cost:&nbsp;</div>
+        <div class="research d-flex align-items-center mt-2">
+          <div>{{ upgradeCostPerLevel }}</div>
+        </div>
+      </div>
+      <div class="d-flex align-items-center mt-2">
+        <div class="text-white">Remaining Research:&nbsp;</div>
+        <div class="research d-flex align-items-center">
+          <div class="science-icon">
+            <div class="flask"></div>
+            <div class="bubble"></div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div>{{ remainingResearchTotal }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="supervisor-buttons">
+        <button class="btn btn-primary mr-1" (click)="upgrade()">Upgrade</button>
+        <button class="btn btn-primary ml-1" (click)="cancel()">Cancel</button>
+      </div>
+    </div>
+  </div>
+}

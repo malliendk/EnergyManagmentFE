@@ -24,9 +24,8 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  width: 50%;
+  width: 60%;
 }
-
 
 .gradient-box {
   width: 200px;
@@ -35,7 +34,7 @@
   overflow: hidden;
 }
 
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 1999px) {
 
   .nav-demo-items {
     padding: 1.5vh 1.5em;
@@ -67,10 +66,10 @@
   }
 }
 
-@media screen and (min-width: 1501px) {
+@media screen and (min-width: 2000px) {
 
   .nav-demo-items {
-    padding: 1em 1.5em;
+    padding: 0.75em 1.5em;
     color: white;
     text-align: center;
     font-size: 105%;
@@ -87,8 +86,6 @@
     font-size: smaller;
   }
 }
-
-
 
 .btn-secondary {
   background-color: ghostwhite;
@@ -113,116 +110,77 @@
   margin-right: 20px;
 }
 
-.science-icon {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-}
-
-/*!* Erlenmeyer flask *!*/
-/*.flask {*/
-/*  position: absolute;*/
-/*  width: 18px;*/
-/*  height: 20px;*/
-/*  background-color: transparent;*/
-/*  border-bottom: 14px solid #64E1E8;*/
-/*  border-left: 4px solid transparent;*/
-/*  border-right: 4px solid transparent;*/
-/*  border-radius: 0 0 6px 6px;*/
-/*  top: 4px;*/
-/*  left: 3px;*/
-/*}*/
-
-/*!* Flask neck *!*/
-/*.flask::before {*/
-/*  content: '';*/
-/*  position: absolute;*/
-/*  width: 6px;*/
-/*  height: 4px;*/
-/*  background-color: #64E1E8;*/
-/*  top: -4px;*/
-/*  left: 2px;*/
-/*}*/
-
-/*!* Bubbles in flask *!*/
-/*.flask::after {*/
-/*  content: '';*/
-/*  position: absolute;*/
-/*  width: 4px;*/
-/*  height: 4px;*/
-/*  background-color: rgba(255, 255, 255, 0.7);*/
-/*  border-radius: 50%;*/
-/*  bottom: 3px;*/
-/*  right: 3px;*/
-/*}*/
-
-/*.bubble {*/
-/*  position: absolute;*/
-/*  width: 3px;*/
-/*  height: 3px;*/
-/*  background-color: rgba(255, 255, 255, 0.7);*/
-/*  border-radius: 50%;*/
-/*  bottom: 7px;*/
-/*  left: 3px;*/
-/*}*/
-
-.science-icon {
-  position: relative;
-  width: 20px;
-  height: 20px;
-  margin-right: 4px;
-  display: inline-block;
-}
-
-/* Erlenmeyer flask */
-.flask {
-  position: absolute;
-  width: 14px;
-  height: 16px;
-  background-color: transparent;
-  border-bottom: 11px solid #64E1E8;
-  border-left: 3px solid transparent;
-  border-right: 3px solid transparent;
-  border-radius: 0 0 5px 5px;
-  top: 3px;
-  left: 3px;
-}
-
-/* Flask neck */
-.flask::before {
-  content: '';
-  position: absolute;
-  width: 5px;
-  height: 3px;
-  background-color: #64E1E8;
-  top: -3px;
-  left: 1.5px;
-}
-
-/* Bubbles in flask - repositioned */
-.flask::after {
-  content: '';
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
-  bottom: 4px;
-  right: 2px;
-}
-
-.bubble {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background-color: rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
-  bottom: 7px;
-  left: 4px;
-}
-
 .score {
   font-weight: bold;
   font-size: 16px;
 }
+
+
+
+.housing-icon-2d {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  margin-right: 6px;
+}
+
+.housing-icon-2d::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  width: 12px;
+  height: 10px;
+  background-color: #555;
+  border: 2px solid #333;
+  box-sizing: border-box;
+}
+
+.housing-icon-2d::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 12px;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+  background-color: #777;
+  border: 2px solid #333;
+  box-sizing: border-box;
+}
+
+.housing-icon-3d {
+  width: 24px;
+  height: 20px;
+  position: relative;
+  margin-right: 6px;
+}
+
+.housing-icon-3d::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 6px;
+  width: 14px;
+  height: 10px;
+  background-color: #666;
+  border: 2px solid #333;
+  transform: skewX(-15deg);
+  box-sizing: border-box;
+}
+
+.housing-icon-3d::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 12px;
+  clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+  background-color: #888;
+  border: 2px solid #333;
+  transform: skewX(-15deg);
+  box-sizing: border-box;
+}
+
+

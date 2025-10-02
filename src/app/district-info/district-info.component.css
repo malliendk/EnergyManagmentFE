@@ -1,5 +1,6 @@
 .districts-container {
   display: flex;
+  justify-content: space-around;
   gap: 12px;
   width: 100%;
   flex-wrap: wrap; /* Allow wrapping for many districts */

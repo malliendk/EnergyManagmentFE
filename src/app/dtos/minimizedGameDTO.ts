@@ -4,11 +4,14 @@ import {WeatherType} from "../weatherType";
 import {BuildingRequest} from "./buildingRequest";
 import {Tile} from "./tile";
 import {District} from "./district";
+import {Supervisor} from "./supervisor";
 
 export interface MinimizedGameDTO {
 
   id: number;
   supervisorName: string;
+  supervisorId: number;
+  supervisor: Supervisor,
   funds: number;
   popularity: number;
   research: number;
@@ -17,7 +20,7 @@ export interface MinimizedGameDTO {
   energyConsumption: number;
   gridLoad: number;
   gridCapacity: number;
-  houseHolds: number;
+  housing: number;
   solarPanelAmount: number,
   solarPanelCapacity: number;
   goldIncome: number;

@@ -1,12 +1,11 @@
 import {Building} from "./building";
-import {TimeOfDay} from "../timeOfDay";
-import {WeatherType} from "../weatherType";
-import {Tile} from "./tile";
 import {District} from "./district";
+import {Supervisor} from "./supervisor";
 
 export interface ExtendedGameDTO {
   id: number;
   supervisorName: string;
+  supervisor: Supervisor,
   funds: number;
   popularity: number;
   research: number;
@@ -15,7 +14,7 @@ export interface ExtendedGameDTO {
   energyConsumption: number;
   gridLoad: number;
   gridCapacity: number;
-  houseHolds: number;
+  housing: number;
   solarPanelAmount: number,
   solarPanelCapacity: number;
   goldIncome: number;

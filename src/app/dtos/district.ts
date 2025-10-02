@@ -12,6 +12,8 @@ export interface District {
   environmentalScore: string;
   solarPanelCapacity: number;
   solarPanelAmount: number;
+  housing: number;
+
 
   netProduction: number;
   injectedPower: number;

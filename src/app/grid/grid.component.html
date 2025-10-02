@@ -14,8 +14,25 @@
       }
     </div>
   }
+<!--  <div class="district-add">-->
+<!--    <div class="decorated-add" (click)="createNewDistrict()">+</div>-->
+<!--  </div>-->
 </div>
 
+@if (!isPurchaseModalOpen && !event && isDetailView && building) {
+  <app-modal
+    [isModalOpen]="isDetailView"
+    [showHeader]="false">
+    <div modal-body>
+      <app-building-view
+        [building]="building"
+        [gameDTO]="gameDTO"
+        (cancelDetailView)="toggleBuildingDetailView()"
+      >
+      </app-building-view>
+    </div>
+  </app-modal>
+}
 
 @if (isPurchaseModalOpen && !event) {
   <app-modal
@@ -39,27 +56,29 @@
             </div>
           }
         </div>
-        <div class="grid">
-          <div class="district">
+        <div class="grid mb-3">
+          <div class="district" [ngStyle]="!event ? { width: '50' } : {}">
             @for (tile of district!.tiles; track tile.id) {
-              <div class="tile d-flex justify-content-center align-items-center"
-                   (mouseenter)="showTooltip(tile, $event)"
-                   (mouseleave)="hideTooltip()"
-                   (click)="changeSelectedTile(tile, building!)"
-                   [ngClass]="toggleSelectedTile(tile.id)">
-                @if (tile.building) {
-                  <img class="img-fluid" [src]="tile.building.imageUri">
-                }
-                @if (building && !tile.building && tile.adjacencySet) {
-                  <div class="adjacency-text"
-                       [ngClass]="{
+              <div class="d-flex justify-content-around">
+                <div class="tile d-flex justify-content-center align-items-center"
+                     (mouseenter)="showTooltip(tile, $event)"
+                     (mouseleave)="hideTooltip()"
+                     (click)="changeSelectedTile(tile, building!)"
+                     [ngClass]="toggleSelectedTile(tile.id)">
+                  @if (tile.building) {
+                    <img class="img-fluid" [src]="tile.building.imageUri">
+                  }
+                  @if (building && !tile.building && tile.adjacencySet) {
+                    <div class="adjacency-text"
+                         [ngClass]="{
      	                    'popularity-color': tile.adjacencySet.affectedProperty === 'popularityIncome',
      	                     'funds-color': tile.adjacencySet.affectedProperty === 'goldIncome',
      	                     'research-color': tile.adjacencySet.affectedProperty === 'researchIncome'
    	                    }">
-                    {{ tile.adjacencySet.effect > 0 ? '+' + tile.adjacencySet.effect : tile.adjacencySet.effect }}
-                  </div>
-                }
+                      {{ tile.adjacencySet.effect > 0 ? '+' + tile.adjacencySet.effect : tile.adjacencySet.effect }}
+                    </div>
+                  }
+                </div>
               </div>
             }
           </div>
@@ -69,6 +88,13 @@
               [customWidth]="buildingInfoWidth"
             ></app-building-info>
           }
+        </div>
+        <div class="mt-4 mb-5">
+          <app-district-info
+            [isSingleDistrict]="true"
+            [district]="district"
+          >
+          </app-district-info>
         </div>
         @if (building) {
           <div class="d-flex justify-content-around" id="purchase-buttons">
@@ -85,8 +111,6 @@
         >
         </app-building-view>
       }
-
-
       @if (activeTile) {
         <div class="tooltip-box"
              [style.top.px]="tooltipY"
@@ -130,20 +154,38 @@
   </app-modal>
 }
 
-
-<app-modal [isModalOpen]="isBuildingModalOpen">
-  <div modal-body class="d-flex flex-column align-items-center">
-    <p>Je hebt niet genoeg geld om deze voorziening aan te kopen</p>
-    <button class="btn btn-outline-primary" (click)="toggleBuildingModalOpen()">Sluiten</button>
-  </div>
-</app-modal>
-
-
-<app-modal [isModalOpen]="isCapacityModalOpen">
-  <div modal-body class="d-flex flex-column align-items-center">
-    <p>Dit district heeft niet genoeg netcapaciteit voor deze voorziening</p>
-    <button class="btn btn-outline-primary" (click)="toggleCapacityModalOpen()">Sluiten</button>
-  </div>
-</app-modal>
+@if (isFundsModalOpen) {
+  <app-modal
+    [isModalOpen]="isFundsModalOpen"
+    [showHeader]="true"
+    [headerClass]="'bg-danger'">
+    <div modal-body class="d-flex flex-column align-items-center">
+      <p>Je hebt niet genoeg geld om deze voorziening aan te kopen</p>
+      <button class="btn btn-outline-primary" (click)="toggleBuildingModal()">Sluiten</button>
+    </div>
+  </app-modal>
+}
+@if (isCapacityModalOpen) {
+  <app-modal
+    [isModalOpen]="isCapacityModalOpen"
+    [showHeader]="true"
+    [headerClass]="'bg-danger'">
+    <div modal-body class="d-flex flex-column align-items-center">
+      <p>Dit district heeft niet genoeg netcapaciteit voor deze voorziening</p>
+      <button class="btn btn-outline-primary" (click)="toggleCapacityModal()">Sluiten</button>
+    </div>
+  </app-modal>
+}
+@if (isHousingModalOpen) {
+  <app-modal
+    [isModalOpen]="isHousingModalOpen"
+    [showHeader]="true"
+    [headerClass]="'bg-danger'">
+    <div modal-body class="d-flex flex-column align-items-center">
+      <p>{{ housingErrorMessage }}</p>
+      <button class="btn btn-outline-primary" (click)="toggleHousingModal()">Sluiten</button>
+    </div>
+  </app-modal>
+}
 
 

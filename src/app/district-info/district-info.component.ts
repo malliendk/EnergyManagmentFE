@@ -19,14 +19,21 @@ export class DistrictInfoComponent implements OnInit, OnChanges {
 
   @Input() gameDTO!: ExtendedGameDTO;
   @Input() showIncomeStats?: boolean;
-  districts!: District[];
+  @Input() isSingleDistrict: boolean = false;
+  @Input() district?: District;
+  districts: District[] = [];
   customWidth: string = '100';
   customPadding: string = '0';
   customMargin: string = '0';
 
   ngOnInit() {
     console.log('Initial gameDTO in district info:', this.gameDTO);
-    this.districts = this.gameDTO.districts;
+    console.log('district:', this.district)
+    if (this.isSingleDistrict) {
+      this.districts.push(this.district!);
+    } else {
+      this.districts = this.gameDTO.districts;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {

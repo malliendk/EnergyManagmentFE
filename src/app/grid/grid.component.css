@@ -1,4 +1,4 @@
-@media screen and (max-width: 1500px) {
+@media screen and (max-width: 199900px) {
 
   .grid {
     display: flex;
@@ -6,7 +6,7 @@
     justify-content: space-around;
     align-items: center;
     height: auto;
-    width: 85vw;
+    width: 90vw;
     margin: 2em auto 2em auto;
     padding: 1.5em;
     background-color: whitesmoke;
@@ -16,16 +16,18 @@
   .district {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     width: 48%;
     height: auto;
-    margin: 0.5em 0;
+    margin: 0.5em;
+    padding: 1em;
     border: 2px solid black;
   }
 
   .tile {
     height: 67px;
     width: 115.5px;
-    margin: 0.25em auto;
+    margin: 0.25em;
     border: 1px solid silver;
     cursor: pointer;
   }
@@ -39,7 +41,7 @@
   }
 }
 
-@media screen and (min-width: 1501px) {
+@media screen and (min-width: 2000px) {
 
   .grid {
     display: flex;
@@ -47,7 +49,7 @@
     justify-content: space-around;
     align-items: center;
     height: auto;
-    width: 80vw;
+    width: 90vw;
     margin: 2em auto 2em auto;
     padding: 1em 0.5em;
     background-color: white;
@@ -239,4 +241,19 @@ pre {
   width: 90vw !important;
 }
 
+.decorated-add {
+  width: 462px;
+  height: 41px;
+  border: 1px solid grey;
+  background: white;
+}
 
+.decorated-add {
+  height: 10vh;
+  width: 10vw;
+  color: goldenrod;
+  border: 1px solid goldenrod;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+}
