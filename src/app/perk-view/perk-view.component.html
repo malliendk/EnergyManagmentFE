@@ -1,0 +1,65 @@
+<div class="rating-container">
+  <div class="rating-item align-items-center">
+    <div class="text-white">{{ categoryText }}</div>
+  </div>
+  <div class="connecting-line">
+    <hr style="width: 100%; height: 1px; background-color: white;"/>
+  </div>
+  <div class="rating-item connecting-lines"></div>
+  <div class="rating-item flex-column justify-content-between">
+    <div class="d-flex flex-column">
+      <div class="text-white">{{ specialismTopText }}</div>
+      <div class="stars-container">
+        @for (filledStar of getFilledStarsArray(topLevel); track filledStar) {
+          <div class="fa fa-star" style="color:#6bc8ff"></div>
+        }
+        @for (emptyStar of getEmptyStarsArray(topLevel); track emptyStar) {
+          <div class="fa fa-star-o" style="color:grey"></div>
+        }
+      </div>
+    </div>
+    <div>
+      <div class="text-white">{{ specialismBottomText }}</div>
+      <div class="stars-container">
+        @for (filledStar of getFilledStarsArray(bottomLevel); track filledStar) {
+          <div class="fa fa-star" style="color:#6bc8ff"></div>
+        }
+        @for (emptyStar of getEmptyStarsArray(bottomLevel); track emptyStar) {
+          <div class="fa fa-star-o" style="color:grey"></div>
+        }
+      </div>
+    </div>
+  </div>
+  <div class="control-btn-container d-flex flex-column justify-content-around pt-1">
+    <div class="d-flex">
+      <p class="control-btn mt-4" (click)="addTopLevel()">+</p>
+    </div>
+    <div class="d-flex">
+      <p class="control-btn mt-3" (click)="addBottomLevel()">+</p>
+    </div>
+  </div>
+</div>
+@if (displayMaxLevelReachedModal) {
+  <app-modal
+    [isModalOpen]="displayMaxLevelReachedModal"
+    [showHeader]="true"
+    [headerClass]="'bg-danger'"
+  >
+    <div modal-body class="d-flex flex-column align-items-center text-center">
+      <p class="mb-3">Dit level van je supervisor heeft zijn limiet bereikt</p>
+      <button class="btn btn-outline-primary" (click)="toggleMaxLevelReachedModal()">Sluiten</button>
+    </div>
+  </app-modal>
+}
+@if (isNotEnoughResearch) {
+  <app-modal
+    [isModalOpen]="isNotEnoughResearch"
+    [showHeader]="true"
+    [headerClass]="'bg-danger'"
+  >
+    <div modal-body class="d-flex flex-column align-items-center">
+      <p>Je hebt niet genoeg research om je supervisor te kunnen upgraden</p>
+      <button class="btn btn-outline-primary" (click)="toggleNotEnoughResearch()">Sluiten</button>
+    </div>
+  </app-modal>
+}
