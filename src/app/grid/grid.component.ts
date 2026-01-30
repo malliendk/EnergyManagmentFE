@@ -5,16 +5,15 @@ import {District} from "../dtos/district";
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {Tile} from "../dtos/tile";
 import {BuildingService} from "../services/building.service";
-import {ModalComponent} from "../modal/modal.component";
-import {BuildingViewComponent} from "../building-view/building-view.component";
-import {BuildingInfoComponent} from "../building-info/building-info.component";
 import {EventDTO} from "../services/eventDTO";
 import {TileService} from "../services/tile.service";
 import {AdjacencySet} from "../dtos/adjacencySet";
-import {DistrictInfoComponent} from "../district-info/district-info.component";
 import {ValidationService} from "../services/validation.service";
-import {GameDTOService} from "../services/game-dto.service";
 import {DistrictService} from "../services/district.service";
+import {BuildingViewComponent} from "../components/building-view/building-view.component";
+import {ModalComponent} from "../components/modal/modal.component";
+import {BuildingInfoComponent} from "../components/building-info/building-info.component";
+import {DistrictInfoComponent} from "../components/district-info/district-info.component";
 
 
 @Component({
@@ -45,9 +44,14 @@ export class GridComponent implements OnInit, OnChanges {
   activeTile: Tile | null = null;
   allBuildings!: Building[];
   adjacencySets!: AdjacencySet[];
+  showBuildingSelectedModal: boolean = false;
   viewBuildingDetail: boolean = false;
 
-  private stackedAdjacencyEffects: Map<number, {totalEffect: number, affectedProperty: string, effectsByProperty: Map<string, number>}> = new Map();
+  private stackedAdjacencyEffects: Map<number, {
+    totalEffect: number,
+    affectedProperty: string,
+    effectsByProperty: Map<string, number>
+  }> = new Map();
   tileAdjacencyEffects: Map<number, Array<{ effect: number, property: string }>> = new Map();
 
   private originalBuildingStats: {
@@ -66,16 +70,17 @@ export class GridComponent implements OnInit, OnChanges {
   isCapacityModalOpen: boolean = false;
   isHousingModalOpen: boolean = false;
 
-  publicBuildingCategory: string = 'Openbare voorziening';
   housingErrorMessage: string = '';
-  notEnoughProductionText: string = 'Dit district produceert niet genoeg energie om dit gebouw te kunnen bouwen';
   notEnoughHousingText: string = 'Je stad heeft niet genoeg inwoners om dit gebouw te kunnen bouwen';
   buildingAlreadyInDistrictText: string = 'Je mag maar één ' + this.building?.name + 'per district bouwen';
-  notEnoughHousingExtraText: string = 'Je stad heeft niet genoeg inwoners om nóg een ' +this.building?.name+ 'te kunnen bouwen';
-
+  notEnoughHousingExtraText: string = 'Je stad heeft niet genoeg inwoners om nóg een ' + this.building?.name + 'te kunnen bouwen';
+  noBuildingSelectedText: string = 'Selecteer een gebouw';
 
   modalCustomWidth = 'width-90';
   buildingInfoWidth = '400px';
+
+  isDataReady: boolean = false;
+
 
   constructor(private tileService: TileService,
               private buildingService: BuildingService,
@@ -145,11 +150,10 @@ export class GridComponent implements OnInit, OnChanges {
   initializePurchase(tile: Tile) {
     if (!tile.building) {
       console.log('initializing purchase');
-      this.togglePurchaseModal();
       this.tile = tile;
-      this.district = this.districts.find(district => district.id === tile.districtId);
+      this.district = this.gameDTO.districts.find(d => d.id === tile.districtId);
+      this.togglePurchaseModal();
       console.log('this.tile: {}', this.tile);
-      console.log('this.building: {}', this.building);
       if (this.event) {
         this.passTile.emit(tile);
       }
@@ -181,52 +185,50 @@ export class GridComponent implements OnInit, OnChanges {
       console.log('no money');
       return false;
     }
-    if (!this.validationService.validateGridCapacity(this.district!, this.building!)) {
+    if (!this.building?.gridCapacity && !this.validationService.validateGridCapacity(this.district!, this.building!)) {
       this.toggleCapacityModal();
       console.log('no grid capacity')
       return false;
     }
-    if (!this.verifyPublicBuilding(this.building!)) {
+    return this.verifyPublicBuilding(this.building!);
+  }
+
+  verifyPublicBuilding(building: Building): boolean {
+    if (!building || !this.gameDTO) return false;
+    if (building.category !== 'Openbare voorziening') {
+      return true;
+    }
+    const totalHousing = this.gameDTO.districts.reduce((sum, district) => sum + district.housing, 0);
+    let totalSameBuildings = 0;
+    let sameBuildingInCurrentDistrict = false;
+    for (const district of this.gameDTO.districts) {
+      const buildingsInDistrict = district.tiles
+        .map(tile => tile.building)
+        .filter(b => b !== null && b !== undefined);
+      const sameBuildings = buildingsInDistrict.filter(b => b.name === building.name);
+      totalSameBuildings += sameBuildings.length;
+      if (this.district && district.id === this.district.id && sameBuildings.length > 0) {
+        sameBuildingInCurrentDistrict = true;
+      }
+    }
+    if (totalHousing < building.housingRequirement) {
+      this.housingErrorMessage = this.notEnoughHousingText;
+      this.toggleHousingModal();
+      return false;
+    }
+    if (sameBuildingInCurrentDistrict) {
+      this.housingErrorMessage = this.buildingAlreadyInDistrictText;
+      this.toggleHousingModal();
+      return false;
+    }
+    const requiredHousing = (totalSameBuildings + 1) * building.housingRequirement;
+    if (totalHousing < requiredHousing) {
+      this.housingErrorMessage = this.notEnoughHousingExtraText;
+      this.toggleHousingModal();
       return false;
     }
     return true;
   }
-
-  verifyPublicBuilding(building: Building): boolean {
-      if (!building || !this.gameDTO) return false;
-      const totalHousing = this.gameDTO.districts.reduce((sum, district) => sum + district.housing, 0);
-      let totalSameBuildings = 0;
-      let sameBuildingInCurrentDistrict = false;
-      for (const district of this.gameDTO.districts) {
-        const buildingsInDistrict = district.tiles
-          .map(tile => tile.building)
-          .filter(b => b !== null && b !== undefined);
-        const sameBuildings = buildingsInDistrict.filter(b => b.name === building.name);
-        totalSameBuildings += sameBuildings.length;
-        if (this.district && district.id === this.district.id && sameBuildings.length > 0) {
-          sameBuildingInCurrentDistrict = true;
-        }
-      }
-
-      if (totalHousing < building.housingRequirement) {
-        this.housingErrorMessage = this.notEnoughHousingText;
-        this.toggleHousingModal();
-        return false;
-      }
-      if (sameBuildingInCurrentDistrict) {
-        this.housingErrorMessage = this.buildingAlreadyInDistrictText;
-        this.toggleHousingModal();
-        return false;
-      }
-      const requiredHousing = (totalSameBuildings + 1) * building.housingRequirement;
-      if (totalHousing < requiredHousing) {
-        this.housingErrorMessage = this.notEnoughHousingExtraText;
-        this.toggleHousingModal();
-        return false;
-      }
-      return true;
-    }
-
 
   selectBuilding(building: Building) {
     this.restorePreviousBuildingStats();
@@ -430,11 +432,10 @@ export class GridComponent implements OnInit, OnChanges {
   }
 
   closePurchaseModal() {
-    // this.restorePreviousBuildingStats(); // Restore stats when closing modal
     this.building = null;
     this.reinitializeTile();
     this.togglePurchaseModal();
-    this.tileAdjacencyEffects.clear(); // Clear effects when modal is closed
+    this.tileAdjacencyEffects.clear();
   }
 
   togglePurchaseModal() {
@@ -451,6 +452,10 @@ export class GridComponent implements OnInit, OnChanges {
 
   toggleHousingModal() {
     this.isHousingModalOpen = !this.isHousingModalOpen
+  }
+
+  toggleBuildingSelectedModal() {
+    this.showBuildingSelectedModal = !this.showBuildingSelectedModal;
   }
 
   applyTileColor(): string {

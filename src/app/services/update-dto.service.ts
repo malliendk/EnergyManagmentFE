@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {IncomeAddDTO} from "../dtos/IncomeAddDTO";
+import {Injectable} from '@angular/core';
+import {IncomeDTO} from "../dtos/incomeDTO";
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {DayWeatherUpdateDTO} from "../dtos/dayWeatherUpdateDTO";
 
@@ -11,20 +11,37 @@ export class UpdateDTOService {
   constructor() { }
 
   processDayWeatherUpdateDTO(dayWeatherUpdateDTO: DayWeatherUpdateDTO, extendedGameDTO: ExtendedGameDTO): ExtendedGameDTO {
-    return {
+    const updatedGameDTO: ExtendedGameDTO = {
       ...extendedGameDTO,
       timeOfDay: dayWeatherUpdateDTO.timeOfDay ?? extendedGameDTO.timeOfDay,
       weatherType: dayWeatherUpdateDTO.weatherType,
-      districts: dayWeatherUpdateDTO.districts
     };
+
+    Object.entries(dayWeatherUpdateDTO.newProductions).forEach(([keyStr, production]) => {
+      const districtId = parseInt(keyStr, 10);
+      const district = updatedGameDTO.districts.find(d => d.id === districtId);
+      if (district) {
+        district.energyProduction = production;
+      }
+    });
+
+    Object.entries(dayWeatherUpdateDTO.newConsumptions).forEach(([keyStr, consumption]) => {
+      const districtId = parseInt(keyStr, 10);
+      const district = updatedGameDTO.districts.find(d => d.id === districtId);
+      if (district) {
+        district.energyConsumption = consumption;
+      }
+    });
+    return updatedGameDTO;
   }
 
-  processIncomeAddDTO(incomeDTO: IncomeAddDTO, gameDTO: ExtendedGameDTO): ExtendedGameDTO {
+
+  processIncomeAddDTO(incomeDTO: IncomeDTO, gameDTO: ExtendedGameDTO): ExtendedGameDTO {
     return {
       ...gameDTO,
-      funds: incomeDTO.newFunds,
-      popularity: incomeDTO.newPopularity,
-      research: incomeDTO.newResearch
+      funds: gameDTO.funds + incomeDTO.newFunds,
+      popularity: gameDTO.popularity + incomeDTO.newPopularity,
+      research: gameDTO.research + incomeDTO.newResearch
     };
   }
 }

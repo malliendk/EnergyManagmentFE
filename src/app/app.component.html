@@ -1,3 +1,10 @@
+@if (isMenu) {
+  <app-main-menu
+  (passGameDTO)="receiveGameDTO($event)">
+
+  </app-main-menu>
+}
+
 @if (isGamePreparation) {
   <app-modal
     [isModalOpen]="isGamePreparation"
@@ -166,7 +173,6 @@
       [gameDTO]="gameDTO"
       [eventsInitialDelay]="initialDelaySchedulers"
       [isManualKickOff]="isManualKickOffEvents"
-      (passEventResult)="processCompletedEvent($event)"
       (passGameDTO)="updateGameDTO($event)"
     ></app-event>
   }

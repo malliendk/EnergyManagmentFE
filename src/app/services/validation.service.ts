@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {District} from "../dtos/district";
 import {Building} from "../dtos/building";
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";

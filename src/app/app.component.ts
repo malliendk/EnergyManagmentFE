@@ -1,25 +1,25 @@
-import {Component, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {GameDTOService} from "./services/game-dto.service";
 import {ExtendedGameDTO} from "./dtos/extendedGameDTO";
-import {map, Subscription, switchMap, tap} from "rxjs";
+import {Subscription} from "rxjs";
 import {BuildingService} from "./services/building.service";
 import {MinimizedGameDTO} from "./dtos/minimizedGameDTO";
 import {Building} from "./dtos/building";
-import {BuildingDashboardComponent} from "./building-dashboard/building-dashboard.component";
-import {FactoryDashboardComponent} from "./factory-dashboard/factory-dashboard.component";
-import {TownhallDashboardComponent} from "./townhall-dashboard/townhall-dashboard.component";
-import {NavbarComponent} from "./navbar/navbar.component";
+import {BuildingDashboardComponent} from "./components/building-dashboard/building-dashboard.component";
 import {CommonModule} from "@angular/common";
 import {EventDTO} from "./services/eventDTO";
-import {DaytimeWeatherComponent} from "./daytime-weather/daytime-weather.component";
-import {EventComponent} from "./event/event.component";
 import {UpdateDTOService} from "./services/update-dto.service";
-import {UniversityComponent} from "./university/university.component";
-import {ModalComponent} from "./modal/modal.component";
 import {GameEventsService} from "./services/game-events.service";
 import {Supervisor} from "./dtos/supervisor";
-import {SupervisorComponent} from "./supervisor/supervisor.component";
-import {SupervisorService} from "./services/supervisor.service";
+import {NavbarComponent} from "./components/navbar/navbar.component";
+import {DaytimeWeatherComponent} from "./components/daytime-weather/daytime-weather.component";
+import {ModalComponent} from "./components/modal/modal.component";
+import {EventComponent} from "./components/event/event.component";
+import {TownhallDashboardComponent} from "./components/townhall-dashboard/townhall-dashboard.component";
+import {FactoryDashboardComponent} from "./components/factory-dashboard/factory-dashboard.component";
+import {UniversityComponent} from "./components/university/university.component";
+import {SupervisorComponent} from "./components/supervisor/supervisor.component";
+import {MainMenuComponent} from "./main-menu/main-menu.component";
 
 @Component({
   selector: 'app-root',
@@ -36,12 +36,16 @@ import {SupervisorService} from "./services/supervisor.service";
     EventComponent,
     UniversityComponent,
     ModalComponent,
-    SupervisorComponent
+    SupervisorComponent,
+    NavbarComponent,
+    DaytimeWeatherComponent,
+    ModalComponent,
+    EventComponent,
+    MainMenuComponent
   ]
 })
 export class AppComponent implements OnInit {
   @ViewChild(FactoryDashboardComponent) factoryDashboardComponent?: FactoryDashboardComponent;
-
 
   title = 'Energy Management';
 
@@ -85,6 +89,7 @@ export class AppComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
   infoPageNumber: number = 1;
+  isMenu: boolean = false;
 
   constructor(private gameDTOService: GameDTOService,
               private gameEventsService: GameEventsService,
@@ -130,9 +135,17 @@ export class AppComponent implements OnInit {
       });
   }
 
+  receiveGameDTO(value: ExtendedGameDTO) {
+    this.gameDTO = value;
+  }
+
   toggleSupervisorDashboard() {
     this.isSupervisorDashboard = !this.isSupervisorDashboard;
     this.dashboardType = this.supervisorDashboardText;
+  }
+
+  toggleMainMenu() {
+    this.isMenu = !this.isMenu;
   }
 
   getGameDTO() {
@@ -145,17 +158,6 @@ export class AppComponent implements OnInit {
         })
     });
     this.isGamePreparation = false;
-  }
-
-  processCompletedEvent(eventResult: { building: Building | null, popularityLoss: number }) {
-    const processedBuilding: Building | null = eventResult.building;
-    if (processedBuilding) {
-      this.gameDTO = this.buildingService.processPurchasedBuilding(eventResult.building!, this.gameDTO);
-      this.gameDTO = {...this.gameDTO}
-      this.updateGameDTO(this.gameDTO);
-    } else {
-      this.gameDTO.popularity -= eventResult.popularityLoss;
-    }
   }
 
   updateGameDTO(passedGameDTO: ExtendedGameDTO) {
@@ -174,6 +176,8 @@ export class AppComponent implements OnInit {
   turnPage() {
     this.infoPageNumber++;
   }
+
+
 
   getViewType(viewTypeset: { viewType: string, showGridLoadDashboard: boolean }) {
     this.dashboardType = viewTypeset.viewType;

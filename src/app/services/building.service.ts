@@ -5,8 +5,8 @@ import {Observable} from "rxjs";
 import {MinimizedGameDTO} from "../dtos/minimizedGameDTO";
 import {BuildingRequest} from "../dtos/buildingRequest";
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
-import {Tile} from "../dtos/tile";
 import {District} from "../dtos/district";
+import {DayWeatherUpdateDTO} from "../dtos/dayWeatherUpdateDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +31,7 @@ export class BuildingService {
     return this.http.get<Building[]>(this.buildingAPIBaseURL + 'power-plants');
   }
 
-  minimizeBuildingsToBuildingRequests(extendedGameDTO: ExtendedGameDTO): BuildingRequest[] {
+  minimizeToBuildingRequests(extendedGameDTO: ExtendedGameDTO): BuildingRequest[] {
     const buildings: Building[] = extendedGameDTO.districts.flatMap(district =>
       district.tiles
         .map(tile => tile.building)
@@ -98,6 +98,36 @@ export class BuildingService {
   processPurchasedBuilding(building: Building, gameDTO: ExtendedGameDTO): ExtendedGameDTO {
     gameDTO.funds -= building.price;
     return gameDTO
+  }
+
+  mapEnergyProductions(dayWeatherUpdateDTO: DayWeatherUpdateDTO, gameDTO: ExtendedGameDTO): ExtendedGameDTO {
+    const { newProductions, newConsumptions } = dayWeatherUpdateDTO;
+    gameDTO.districts.forEach(district => {
+      const districtId = district.id;
+      const production = newProductions[districtId];
+      if (production !== undefined) {
+        district.energyProduction = production;
+      }
+      const consumption = newConsumptions[districtId];
+      if (consumption !== undefined) {
+        district.energyConsumption = consumption;
+      }
+    });
+    return gameDTO;
+  }
+
+  mapConsumptions(
+    newConsumptions: Record<number, number>,
+    gameDTO: ExtendedGameDTO
+  ): ExtendedGameDTO {
+    gameDTO.districts.forEach(district => {
+      const consumption = newConsumptions[district.id];
+      if (consumption !== undefined) {
+        district.energyConsumption = consumption;
+      }
+    });
+
+    return gameDTO;
   }
 
 

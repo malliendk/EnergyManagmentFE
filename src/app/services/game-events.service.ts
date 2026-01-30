@@ -1,7 +1,7 @@
 import {Injectable, NgZone, OnDestroy} from '@angular/core';
 import {BehaviorSubject, Observable, share, Subject} from 'rxjs';
 import {HttpClient} from "@angular/common/http";
-import {IncomeAddDTO} from "../dtos/IncomeAddDTO";
+import {IncomeDTO} from "../dtos/incomeDTO";
 import {EventDTO} from "./eventDTO";
 import {DayWeatherUpdateDTO} from "../dtos/dayWeatherUpdateDTO";
 import {PopularitySchedulerRequest} from "../dtos/popularitySchedulerRequest";
@@ -21,7 +21,7 @@ export class GameEventsService implements OnDestroy{
 
   private eventSources: Map<string, EventSource> = new Map();
 
-  private incomeDTO = new Subject<IncomeAddDTO>();
+  private incomeDTO = new Subject<IncomeDTO>();
   private weatherDTO = new Subject<DayWeatherUpdateDTO>();
   private event$ = new Subject<EventDTO>();
   private incomeConnectionStatusSubject = new BehaviorSubject<boolean>(false);
@@ -48,7 +48,7 @@ export class GameEventsService implements OnDestroy{
     }
 
     console.log('Connecting to SSE income stream:', this.INCOME_SSE_URL);
-    this.createEventSource<IncomeAddDTO>(
+    this.createEventSource<IncomeDTO>(
       this.INCOME_SSE_URL,
       this.incomeDTO,
       'income-update',
@@ -89,7 +89,7 @@ export class GameEventsService implements OnDestroy{
     }
   }
 
-  getIncomeUpdates(): Observable<IncomeAddDTO> {
+  getIncomeUpdates(): Observable<IncomeDTO> {
     return this.incomeDTO.asObservable();
   }
 

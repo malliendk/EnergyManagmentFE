@@ -14,9 +14,9 @@
       }
     </div>
   }
-<!--  <div class="district-add">-->
-<!--    <div class="decorated-add" (click)="createNewDistrict()">+</div>-->
-<!--  </div>-->
+  <!--  <div class="district-add">-->
+  <!--    <div class="decorated-add" (click)="createNewDistrict()">+</div>-->
+  <!--  </div>-->
 </div>
 
 @if (!isPurchaseModalOpen && !event && isDetailView && building) {
@@ -187,5 +187,15 @@
     </div>
   </app-modal>
 }
-
+@if (showBuildingSelectedModal) {
+  <app-modal
+    [isModalOpen]="showBuildingSelectedModal"
+    [showHeader]="true"
+    [headerClass]="'bg-danger'">
+    <div modal-body class="d-flex flex-column align-items-center">
+      <p>{{ noBuildingSelectedText }}</p>
+      <button class="btn btn-outline-primary" (click)="toggleBuildingSelectedModal()">Sluiten</button>
+    </div>
+  </app-modal>
+}
 

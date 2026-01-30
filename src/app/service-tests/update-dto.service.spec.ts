@@ -1,6 +1,6 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { UpdateDTOService } from '../services/update-dto.service';
+import {UpdateDTOService} from '../services/update-dto.service';
 
 describe('UpdateDTOService', () => {
   let service: UpdateDTOService;

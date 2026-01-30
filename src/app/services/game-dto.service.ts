@@ -1,15 +1,15 @@
-import {Injectable, OnInit} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
 import {HttpClient} from "@angular/common/http";
 import {Building} from "../dtos/building";
 import {MinimizedGameDTO} from "../dtos/minimizedGameDTO";
 import {InitiateGameDTO} from "../dtos/initiateGameDTO";
-import {BuildingService} from "./building.service";
 import {BuildingRequest} from "../dtos/buildingRequest";
 import {Tile} from "../dtos/tile";
-import {TileService} from "./tile.service";
 import {Supervisor} from "../dtos/supervisor";
+import {BuildingService} from "./building.service";
+import {TileService} from "./tile.service";
 
 @Injectable({
   providedIn: 'root'
@@ -61,7 +61,7 @@ export class GameDTOService {
       popularity: extendedGameDTO.popularity,
       research: extendedGameDTO.research,
       supervisor: extendedGameDTO.supervisor,
-      buildingRequests: this.buildingService.minimizeBuildingsToBuildingRequests(extendedGameDTO),
+      buildingRequests: this.buildingService.minimizeToBuildingRequests(extendedGameDTO),
       tiles: this.tileService.removeBuildingsFromTiles(tiles),
       districts: extendedGameDTO.districts
     };

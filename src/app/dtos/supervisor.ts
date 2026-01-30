@@ -1,6 +1,7 @@
 export interface Supervisor {
 
    id: number;
+   instanceId: number;
    name: string;
    imageUrl: string;
    biography: string;

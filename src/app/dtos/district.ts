@@ -14,7 +14,6 @@ export interface District {
   solarPanelAmount: number;
   housing: number;
 
-
   netProduction: number;
   injectedPower: number;
   exportedPower: number;

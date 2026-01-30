@@ -2,7 +2,6 @@ import {EventDTO} from "./eventDTO";
 import {TimeOfDay} from "../timeOfDay";
 import {WeatherType} from "../weatherType";
 import {BuildingRequest} from "./buildingRequest";
-import {Tile} from "./tile";
 import {District} from "./district";
 import {Supervisor} from "./supervisor";
 
