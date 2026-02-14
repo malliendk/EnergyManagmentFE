@@ -1,9 +1,9 @@
-import {Building} from "./building";
+import {BuildingDTO} from "./buildingDTO";
 
 export interface EventDTO {
 
   id: number;
   name: string;
   description: string;
-  loadSource: Building;
+  building: BuildingDTO;
 }

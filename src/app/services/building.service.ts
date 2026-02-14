@@ -1,156 +1,85 @@
 import {Injectable} from '@angular/core';
-import {Building} from "../dtos/building";
+import {BuildingDTO} from "../dtos/buildingDTO";
 import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {MinimizedGameDTO} from "../dtos/minimizedGameDTO";
 import {BuildingRequest} from "../dtos/buildingRequest";
-import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
-import {District} from "../dtos/district";
-import {DayWeatherUpdateDTO} from "../dtos/dayWeatherUpdateDTO";
+import {FullGameDTO} from "../dtos/fullGameDTO";
+
+import {Tile} from "../dtos/tile";
+import {POWER_LINE_ID} from "../power-line-values";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BuildingService {
 
+  private buildingSubject = new BehaviorSubject<BuildingDTO | undefined>(undefined)
+  public building$ = this.buildingSubject.asObservable();
+
   buildingAPIBaseURL: string = 'http://localhost:8090/';
 
   constructor(private http: HttpClient) {
   }
 
-  findAll(): Observable<Building[]> {
-    return this.http.get<Building[]>(this.buildingAPIBaseURL);
+  setBuilding(building: BuildingDTO | undefined) {
+    this.buildingSubject.next(building)
+  }
+
+  getBuilding() {
+    return this.buildingSubject.getValue()
+  }
+
+  findAll(): Observable<BuildingDTO[]> {
+    return this.http.get<BuildingDTO[]>(this.buildingAPIBaseURL);
   }
 
   findAllById(minimizedGameDTO: MinimizedGameDTO) {
     const ids: number[] = minimizedGameDTO.buildingRequests.map(request => request.buildingId);
-    return this.http.post<Building[]>(this.buildingAPIBaseURL + 'ids', ids);
+    return this.http.post<BuildingDTO[]>(this.buildingAPIBaseURL + 'ids', ids);
   }
 
   getPowerPlants() {
-    return this.http.get<Building[]>(this.buildingAPIBaseURL + 'power-plants');
+    return this.http.get<BuildingDTO[]>(this.buildingAPIBaseURL + 'power-plant');
   }
 
-  minimizeToBuildingRequests(extendedGameDTO: ExtendedGameDTO): BuildingRequest[] {
-    const buildings: Building[] = extendedGameDTO.districts.flatMap(district =>
-      district.tiles
-        .map(tile => tile.building)
-        .filter((building): building is Building => building !== null && building !== undefined)
-    );
-
-    const requestDTOs = buildings.map(building => ({
+  minimizeToBuildingRequests(gameDTO: FullGameDTO): BuildingRequest[] {
+    const requestDTOs: BuildingRequest[] = gameDTO.buildings.map(building => ({
       buildingId: building?.id,
+      instanceId: building?.instanceId,
       solarPanelAmount: building?.solarPanelAmount,
       energyProduction: building?.energyProduction,
       popularityIncome: building?.popularityIncome,
       goldIncome: building?.goldIncome,
       researchIncome: building?.researchIncome,
-      environmentalScore: building?.environmentalScore
+      environmentalScore: building?.environmentalScore,
+      gridCapacity: building?.gridCapacity
     }));
     console.log("outgoing requests: {}", requestDTOs)
     return requestDTOs
   }
 
-  duplicateBuildingsIfNecessary(ids: number[], retrievedBuildings: Building[]): Building[] {
-    const buildingMap = new Map<number, Building>();
-    retrievedBuildings.forEach((building: Building) => {
-      buildingMap.set(building.id, building);
-    });
-    const finalBuildingList: Building[] = [];
-    ids.forEach((id: number) => {
-      const building = buildingMap.get(id);
-      if (building) {
-        finalBuildingList.push(building);
+  mapBuildingsToTiles(tiles: Tile[], buildings: BuildingDTO[]): Tile[] {
+    buildings = buildings.filter(building => building.id !== POWER_LINE_ID);
+    const buildingMap = new Map<number, BuildingDTO>()
+    buildings.forEach((building: BuildingDTO) => {
+      buildingMap.set(building.id, building)
+    })
+    return tiles.map((tile: Tile) => {
+      if (tile.buildingId) {
+        const matchingBuilding = buildingMap.get(tile.buildingId)
+        if (matchingBuilding) {
+          return {
+            ...tile,
+            building: {...matchingBuilding}
+          };
+        }
       }
-    });
-    return finalBuildingList;
+      return tile
+    })
   }
 
-  updateBuildingValues(minimizedGameDTO: MinimizedGameDTO, buildings: Building[]): Building[] {
-    const compressedBuildings: BuildingRequest[] = minimizedGameDTO.buildingRequests;
-    this.mapBuildingRequests(compressedBuildings, buildings);
-    buildings.forEach((building: Building) => this.generateInstanceId(building));
-    return buildings;
-  }
-
-  sortBuildingsByCategoryAndPrice(buildings: Building[]): Building[] {
-    const CATEGORY_PRIORITY: { [key: string]: number } = {
-      'Woning': 0,
-      'Openbare voorziening': 1,
-      'Productie': 2,
-      'Industrieel': 3,
-      'Energiecentrale': 4,
-      'Bijzonder gebouw': 5,
-      'Transport': 6
-    };
-
-    return buildings.sort((a, b) => {
-      const categoryComparison =
-        (CATEGORY_PRIORITY[a.category] ?? Infinity) -
-        (CATEGORY_PRIORITY[b.category] ?? Infinity);
-      if (categoryComparison === 0) {
-        return a.price - b.price;
-      }
-      return categoryComparison;
-    });
-  }
-
-  processPurchasedBuilding(building: Building, gameDTO: ExtendedGameDTO): ExtendedGameDTO {
-    gameDTO.funds -= building.price;
-    return gameDTO
-  }
-
-  mapEnergyProductions(dayWeatherUpdateDTO: DayWeatherUpdateDTO, gameDTO: ExtendedGameDTO): ExtendedGameDTO {
-    const { newProductions, newConsumptions } = dayWeatherUpdateDTO;
-    gameDTO.districts.forEach(district => {
-      const districtId = district.id;
-      const production = newProductions[districtId];
-      if (production !== undefined) {
-        district.energyProduction = production;
-      }
-      const consumption = newConsumptions[districtId];
-      if (consumption !== undefined) {
-        district.energyConsumption = consumption;
-      }
-    });
-    return gameDTO;
-  }
-
-  mapConsumptions(
-    newConsumptions: Record<number, number>,
-    gameDTO: ExtendedGameDTO
-  ): ExtendedGameDTO {
-    gameDTO.districts.forEach(district => {
-      const consumption = newConsumptions[district.id];
-      if (consumption !== undefined) {
-        district.energyConsumption = consumption;
-      }
-    });
-
-    return gameDTO;
-  }
-
-
-  getDistrictBuildings(district: District): Building[] {
-    return district.tiles
-      .map(tile => tile.building)
-      .filter((building): building is Building => building !== null);
-  }
-
-
-  generateInstanceId(building: Building) {
-    building.instanceId = window.crypto.getRandomValues(new Uint32Array(1))[0];
-  }
-
-  private mapBuildingRequests(requests: BuildingRequest[], buildings: Building[]) {
-    buildings.forEach((building: Building) => requests.forEach(map => {
-      if (map.buildingId == building.id) {
-        building.solarPanelAmount = map.solarPanelAmount;
-        building.energyProduction
-        building.goldIncome = map.goldIncome;
-        building.researchIncome = map.researchIncome;
-        building.environmentalScore = map.environmentalScore;
-      }
-    }))
+  generateInstanceId(building: BuildingDTO) {
+    building.instanceId = Math.floor(Math.random() * 999999) + 1
   }
 }

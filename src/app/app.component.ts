@@ -1,25 +1,18 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {GameDTOService} from "./services/game-dto.service";
-import {ExtendedGameDTO} from "./dtos/extendedGameDTO";
+import {FullGameDTO} from "./dtos/fullGameDTO";
 import {Subscription} from "rxjs";
-import {BuildingService} from "./services/building.service";
-import {MinimizedGameDTO} from "./dtos/minimizedGameDTO";
-import {Building} from "./dtos/building";
-import {BuildingDashboardComponent} from "./components/building-dashboard/building-dashboard.component";
+import {BuildingDashboardComponent} from "./building-dashboard/building-dashboard.component";
 import {CommonModule} from "@angular/common";
-import {EventDTO} from "./services/eventDTO";
-import {UpdateDTOService} from "./services/update-dto.service";
-import {GameEventsService} from "./services/game-events.service";
 import {Supervisor} from "./dtos/supervisor";
-import {NavbarComponent} from "./components/navbar/navbar.component";
-import {DaytimeWeatherComponent} from "./components/daytime-weather/daytime-weather.component";
-import {ModalComponent} from "./components/modal/modal.component";
-import {EventComponent} from "./components/event/event.component";
-import {TownhallDashboardComponent} from "./components/townhall-dashboard/townhall-dashboard.component";
-import {FactoryDashboardComponent} from "./components/factory-dashboard/factory-dashboard.component";
+import {NavbarComponent} from "./game-dto/navbar/navbar.component";
+import {DaytimeWeatherComponent} from "./daytime-weather/daytime-weather.component";
+import {EventComponent} from "./game-dto/event/event.component";
+import {TownHallDashboardComponent} from "./components/townhall-dashboard/town-hall-dashboard.component";
+import {FactoryDashboardComponent} from "./factory-dashboard/factory-dashboard.component";
 import {UniversityComponent} from "./components/university/university.component";
-import {SupervisorComponent} from "./components/supervisor/supervisor.component";
-import {MainMenuComponent} from "./main-menu/main-menu.component";
+import {SupervisorComponent} from "./game-dto/supervisor/supervisor.component";
+import {MainMenuComponent} from "./game-dto/main-menu/main-menu.component";
 
 @Component({
   selector: 'app-root',
@@ -29,30 +22,28 @@ import {MainMenuComponent} from "./main-menu/main-menu.component";
   imports: [
     CommonModule,
     NavbarComponent,
-    TownhallDashboardComponent,
+    TownHallDashboardComponent,
     FactoryDashboardComponent,
     BuildingDashboardComponent,
     DaytimeWeatherComponent,
-    EventComponent,
     UniversityComponent,
-    ModalComponent,
     SupervisorComponent,
     NavbarComponent,
     DaytimeWeatherComponent,
-    ModalComponent,
     EventComponent,
-    MainMenuComponent
+    MainMenuComponent,
   ]
 })
 export class AppComponent implements OnInit {
   @ViewChild(FactoryDashboardComponent) factoryDashboardComponent?: FactoryDashboardComponent;
 
+  private gameDTOSubscription = new Subscription()
+  gameDTO!: FullGameDTO;
+
+
   title = 'Energy Management';
 
-  gameDTO!: ExtendedGameDTO;
   supervisor!: Supervisor;
-  allBuildings?: Building[];
-  event: EventDTO | null = null;
   buildingViewComponentType: string = '';
   dashboardType!: string;
   townHallDashboardText: string = 'town hall';
@@ -60,10 +51,9 @@ export class AppComponent implements OnInit {
   buildingDashboardText: string = 'buildings';
   universityDashboard: string = 'university';
   supervisorDashboardText: string = 'supervisor';
-  showGridLoadDashboard: boolean = false;
   victoryThreshold: number = 2500;
   isGameInfo = true;
-  isChoosePlayer = false;
+  isChoosePlayer = true;
   selectedDelay: number | null = null;
 
   isVictory: boolean = false;
@@ -71,14 +61,8 @@ export class AppComponent implements OnInit {
   isGamePreparation: boolean = true;
   isSupervisorDashboard: boolean = false;
   isStartGameWarning: boolean = false;
-  startGameWarningText: string = 'Kies een supervisor.'
+  startGameWarningText: string = 'Choose your supervisor.'
 
-  isIncomeConnected = false;
-  isIncomeConnecting = false;
-  incomeErrorMessage: string | null = null;
-  isWeatherConnected = false;
-  isWeatherConnecting = false;
-  weatherErrorMessage: string | null = null;
   initialDelaySchedulers!: number;
   initialDelayNone: number = 0;
   initialDelayMedium: number = 120;
@@ -86,57 +70,59 @@ export class AppComponent implements OnInit {
   initialDelayVeryLong: number = 600;
   isManualKickOffEvents: boolean = false;
 
+  isLoading = false;
+  isLoadingText = ''
 
-  private subscriptions: Subscription[] = [];
   infoPageNumber: number = 1;
   isMenu: boolean = false;
 
-  constructor(private gameDTOService: GameDTOService,
-              private gameEventsService: GameEventsService,
-              private buildingService: BuildingService,
-              private updateDTOService: UpdateDTOService) {
+  constructor(private gameDTOService: GameDTOService) {
   }
 
   ngOnInit() {
     this.dashboardType = this.buildingDashboardText;
-  }
-
-  setInitialDelay(delayChoice: number) {
-    this.initialDelaySchedulers = delayChoice;
-    this.selectedDelay = delayChoice;
-  }
-
-  goToChoosePlayer() {
-    this.isGameInfo = false;
-    this.isChoosePlayer = true
-    this.infoPageNumber = 1;
+    this.gameDTOSubscription.add(
+      this.gameDTOService.gameDTO$
+        .subscribe(updatedGameDTO => this.gameDTO = updatedGameDTO!)
+    )
   }
 
   startGame() {
     if (!this.supervisor) {
-      this.isStartGameWarning = true;
+      this.isStartGameWarning = true
       return;
     } else {
-      this.isStartGameWarning = false;
-      this.isGamePreparation = false;
-      this.initiateGame(this.supervisor);
+      this.toggleIsLoading();
+      this.initiateGame(this.supervisor)
+      this.addGameDTOSubscription()
     }
   }
 
   initiateGame(supervisor: Supervisor) {
     console.log("initiating game")
-    console.log('passing supervisor' + supervisor)
+    this.isLoadingText = 'Game is loading...'
+    this.isStartGameWarning = false;
+    this.isGamePreparation = false;
     this.gameDTOService.startGame(supervisor)
-      .subscribe(() => {
-        console.log(supervisor);
-        this.getGameDTO();
-        this.subscribeToServerEvents();
-        // this.startPopularityScheduler();
-      });
+      .subscribe({
+        next: (gameDTO: FullGameDTO) => {
+          this.gameDTO = gameDTO
+          this.isChoosePlayer = false
+          this.gameDTOService.startStream()
+          this.toggleIsLoading()
+        },
+        error: err => {
+          this.isLoadingText = "An unexpected error occurred during startup"
+          throw new Error("Error during startup: {}", err)
+        }
+      })
   }
 
-  receiveGameDTO(value: ExtendedGameDTO) {
-    this.gameDTO = value;
+  addGameDTOSubscription() {
+    this.gameDTOSubscription.add(
+      this.gameDTOService.gameDTO$
+        .subscribe(gameDTO => this.gameDTO = gameDTO!)
+    )
   }
 
   toggleSupervisorDashboard() {
@@ -148,53 +134,26 @@ export class AppComponent implements OnInit {
     this.isMenu = !this.isMenu;
   }
 
-  getGameDTO() {
-    this.gameDTOService.getMinimizedGameDto()
-      .subscribe(minimizedGameDTO => {
-        console.log('minimized gameDTO: {}', minimizedGameDTO);
-      this.buildingService.findAllById(minimizedGameDTO)
-        .subscribe((buildings: Building[]) => {
-          this.gameDTO = this.gameDTOService.extendGameDTO(minimizedGameDTO, buildings);
-        })
-    });
-    this.isGamePreparation = false;
-  }
-
-  updateGameDTO(passedGameDTO: ExtendedGameDTO) {
+  updateGameDTO(passedGameDTO: FullGameDTO) {
     this.gameDTOService.updateGameDTO(passedGameDTO)
-      .subscribe(() => this.gameDTOService.getMinimizedGameDto()
-        .subscribe((minimizedDTO: MinimizedGameDTO) => {
-          console.log('minimizedDTO: {}', minimizedDTO)
-          this.gameDTO = this.gameDTOService.extendGameDTO(minimizedDTO, passedGameDTO.buildings);
-          this.getAllBuildings();
+      .subscribe(gameDTO => {
+          console.log('updated DTO: {}', gameDTO)
           this.decideVictory();
           this.decideLoss();
-        })
-      );
+        }
+      )
   }
 
   turnPage() {
     this.infoPageNumber++;
   }
 
-
-
   getViewType(viewTypeset: { viewType: string, showGridLoadDashboard: boolean }) {
     this.dashboardType = viewTypeset.viewType;
-    this.showGridLoadDashboard = viewTypeset.showGridLoadDashboard;
   }
 
   getBuildingViewType(value: string) {
     this.buildingViewComponentType = value;
-    this.getAllBuildings();
-  }
-
-  getAllBuildings() {
-    this.buildingService.findAll()
-      .subscribe((buildings: Building[]) => {
-        this.allBuildings = buildings;
-        this.allBuildings.forEach((building: Building) => building.instanceId = undefined);
-      });
   }
 
   getSupervisor(supervisorDTO: Supervisor) {
@@ -225,69 +184,17 @@ export class AppComponent implements OnInit {
     this.isLoss = !this.isLoss;
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-    this.gameEventsService.disconnectFromIncome();
-    this.gameEventsService.disconnectFromWeather();
-  }
-
-
-  startPopularityScheduler() {
-    setTimeout(() => {
-      this.gameEventsService.startGoldPopularityLossScheduler()
-        .subscribe(), this.initialDelaySchedulers * 1000}
-    );
-  }
-
-  subscribeToServerEvents(): void {
-    this.gameEventsService.connectToIncome();
-    this.gameEventsService.connectToWeather();
-
-    this.subscriptions.push(
-      this.gameEventsService.getIncomeConnectionStatus().subscribe(status => {
-        this.isIncomeConnected = status;
-        this.isIncomeConnecting = false;
-        console.log('subscribed to income update events')
-      })
-    );
-
-    this.subscriptions.push(
-      this.gameEventsService.getWeatherConnectionStatus().subscribe(status => {
-        this.isWeatherConnected = status;
-        this.isWeatherConnecting = false;
-        console.log('subscribed to weather update events')
-      })
-    );
-
-    this.subscriptions.push(
-      this.gameEventsService.getIncomeUpdates().subscribe(incomeDTO => {
-        this.gameDTO = this.updateDTOService.processIncomeAddDTO(incomeDTO, this.gameDTO);
-      })
-    );
-
-    this.subscriptions.push(
-      this.gameEventsService.getWeatherUpdates().subscribe(weatherDTO => {
-        this.gameDTO = this.updateDTOService.processDayWeatherUpdateDTO(weatherDTO, this.gameDTO);
-      })
-    );
-
-    this.subscriptions.push(
-      this.gameEventsService.getIncomeErrors().subscribe(error => {
-        this.incomeErrorMessage = error;
-        setTimeout(() => this.incomeErrorMessage = null, 5000); // Clear error after 5 seconds
-      })
-    );
-
-    this.subscriptions.push(
-      this.gameEventsService.getWeatherErrors().subscribe(error => {
-        this.weatherErrorMessage = error;
-        setTimeout(() => this.weatherErrorMessage = null, 5000); // Clear error after 5 seconds
-      })
-    );
-  }
-
   startEventScheduler() {
     this.isManualKickOffEvents = true;
     this.selectedDelay = null;
+  }
+
+  private toggleIsLoading() {
+    this.isLoading = !this.isLoading;
+  }
+
+  private setInitialDelay(delayChoice: number) {
+    this.initialDelaySchedulers = delayChoice;
+    this.selectedDelay = delayChoice;
   }
 }

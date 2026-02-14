@@ -1,0 +1,97 @@
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
+
+.morning {
+  background-color: #FFB6C1;
+}
+
+.afternoon {
+  background-color: #87CEEB;
+}
+
+.evening {
+  background-color: #FF7F50;
+}
+
+.night {
+  background-color: #191970;
+}
+
+.daytime-overcast {
+  background-color: #F5F5F5;
+}
+
+.nighttime-overcast {
+  background-color: #454545;
+}
+
+.daytime-rainy {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  --rain-bg: #333;
+  background: #333;
+}
+
+/* Light grey sky */ .rain.light { --rain-bg: #aaa; }
+/* Dark stormy sky */ .rain.dark { --rain-bg: #1a1a1a; }
+
+.daytime-rainy::before,
+.daytime-rainy::after {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-image:
+    radial-gradient(1px 8px at 10% 20%, rgba(100, 180, 255, 0.6) 50%, transparent 50%),
+    radial-gradient(1px 8px at 25% 45%, rgba(100, 180, 255, 0.5) 50%, transparent 50%),
+    radial-gradient(1px 8px at 40% 70%, rgba(100, 180, 255, 0.7) 50%, transparent 50%),
+    radial-gradient(1px 8px at 55% 10%, rgba(100, 180, 255, 0.5) 50%, transparent 50%),
+    radial-gradient(1px 8px at 70% 55%, rgba(100, 180, 255, 0.6) 50%, transparent 50%),
+    radial-gradient(1px 8px at 85% 30%, rgba(100, 180, 255, 0.4) 50%, transparent 50%),
+    radial-gradient(1px 8px at 15% 80%, rgba(100, 180, 255, 0.6) 50%, transparent 50%),
+    radial-gradient(1px 8px at 60% 90%, rgba(100, 180, 255, 0.5) 50%, transparent 50%),
+    radial-gradient(1px 8px at 90% 65%, rgba(100, 180, 255, 0.7) 50%, transparent 50%),
+    radial-gradient(1px 8px at 35% 35%, rgba(100, 180, 255, 0.5) 50%, transparent 50%);
+  background-size: 100px 100px;
+  animation: rainfall 0.8s linear infinite;
+}
+
+.daytime-rainy::after {
+  background-image:
+    radial-gradient(1px 8px at 5% 15%, rgba(100, 180, 255, 0.5) 50%, transparent 50%),
+    radial-gradient(1px 8px at 20% 60%, rgba(100, 180, 255, 0.6) 50%, transparent 50%),
+    radial-gradient(1px 8px at 45% 25%, rgba(100, 180, 255, 0.4) 50%, transparent 50%),
+    radial-gradient(1px 8px at 65% 80%, rgba(100, 180, 255, 0.7) 50%, transparent 50%),
+    radial-gradient(1px 8px at 80% 40%, rgba(100, 180, 255, 0.5) 50%, transparent 50%),
+    radial-gradient(1px 8px at 95% 70%, rgba(100, 180, 255, 0.6) 50%, transparent 50%);
+  animation-duration: 1.1s;
+  animation-delay: 0.3s;
+}
+
+@keyframes rainfall {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  100% {
+    transform: translateY(50%) translateX(-3%);
+  }
+}
+
+
+.transition {
+  transition-duration: 3s;
+  transition-timing-function: ease-in-out;
+}
+
+
+

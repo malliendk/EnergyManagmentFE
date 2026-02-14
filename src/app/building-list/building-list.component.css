@@ -1,0 +1,133 @@
+.card-large {
+  display: flex;
+  flex-direction: row;
+  height: 52vh;
+  width: 95vw;
+  margin-top: 1.3em;
+  margin-left: 2.1em;
+  padding: 0.75em;
+  color: white;
+  background-color: antiquewhite;
+  border-top: 2px solid;
+  border-bottom: 8px solid;
+  border-right: 0;
+  border-left: 0;
+  cursor: default;
+}
+
+.card-column {
+  display: flex;
+
+  height: 100%;
+  margin: 0 0.5em;
+  background-color: #754226;
+  border-radius: 3em;
+}
+
+.card-column:nth-of-type(1) {
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 45%;
+  overflow: auto;
+}
+
+.card-column:nth-of-type(2) {
+  min-width: 55%;
+}
+
+.building-selected {
+  border: 2px red solid
+}
+
+@media screen and (max-width: 1999px) {
+  .card-small {
+    width: 130px;
+    height: 100px;
+    margin: 0.5rem;
+    color: white;
+    background-color: #61371f;
+    flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
+    overflow: hidden; /* Ensure content doesn't overflow */
+    position: relative; /* For positioning the property name overlay */
+  }
+}
+
+@media screen and (min-width: 2000px) {
+  .card-small {
+    width: 177px;
+    height: 100px;
+    margin: 0.5rem;
+    color: white;
+    background-color: #61371f;
+    flex: 0 0 auto; /* Prevent flex items from growing or shrinking */
+    overflow: hidden; /* Ensure content doesn't overflow */
+    position: relative; /* For positioning the property name overlay */
+  }
+}
+
+.card-img-top {
+  height: 75%; /* Take up most of the card height */
+  overflow: hidden; /* Crop images that are too large */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-img-top-small {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.property-block-theme-small {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.5rem;
+  background-color: rgba(97, 55, 31, 0.8); /* Semi-transparent background */
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Add ellipsis for long text */
+}
+
+.section-label {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.buildings-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.purchase-button-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.no-building-selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #999;
+  font-style: italic;
+}
+
+.btn-gold {
+  border: 2px solid gold;
+  color: white;
+  background-color: #e1ab81;
+}
+
+.purchase-button {
+  position: absolute;
+  right: -5px;
+  bottom: 30px;
+}

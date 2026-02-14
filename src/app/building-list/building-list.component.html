@@ -1,0 +1,40 @@
+@if (purchasableTileBuildings) {
+  <div class="card card-large">
+    <div class="card-column">
+      @for (building of purchasableTileBuildings; track building.id) {
+        <div class="card card-small"
+             [ngClass]="setBuildingSelected(building.id)"
+             (click)="selectBuilding(building)">
+          <img [src]="building.imageUri"
+               alt="{{building.imageUri}} + ' image'"
+               class="card-img-top-small img-fluid"
+               [ngStyle]="{'border-color': building.color}">
+        </div>
+      }
+    </div>
+    <div class="card-column">
+      <button class="cancel" (click)="resetTileAndBuilding()">X</button>
+      @if (building) {
+        <app-building-info [building]="building"></app-building-info>
+      } @else {
+        <div class="no-building-selected">
+          <p>{{ noBuildingSelected }}</p>
+        </div>
+      }
+    </div>
+    <button class="purchase-button btn btn-gold mb-2" (click)="purchaseBuilding(building!, tile!, gameDTO!)">Purchase
+      building
+    </button>
+  </div>
+}
+
+@if (validationError !== '') {
+  <app-modal
+    [showHeader]="true"
+    [headerClass]="'bg-danger'">
+    <div modal-body class="d-flex flex-column align-items-center">
+      <p>{{ validationError }}</p>
+      <button class="btn btn-outline-primary" (click)="resetValidationError()">Close</button>
+    </div>
+  </app-modal>
+}

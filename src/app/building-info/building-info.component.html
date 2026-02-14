@@ -1,0 +1,60 @@
+<div class="stats-box">
+  <div class="stats-column">
+    <h6 class="stats-header">Details</h6>
+    <div class="property-block-small">{{ building!.category }}</div>
+    @if (building!.solarPanelCapacity > 0) {
+    <div class="property-block-small"> Solar Panel Amount: {{ building!.solarPanelAmount }}</div>
+    }
+  </div>
+  <div class="stats-column">
+    <h6 class="stats-header">Benefits</h6>
+    @if (building.energyProduction) {
+      <div class="grid-load inner-box-items border-10">
+        Production: {{ building.energyProduction }}
+      </div>
+    }
+    @if (building.goldIncome > 0) {
+      <div class="funds inner-box-items border-10">
+        Gold Income: +{{ building.goldIncome | currency: 'EUR' }}
+      </div>
+    }
+    @if (building.researchIncome > 0) {
+      <div class="research inner-box-items">
+        Science Income: +{{ building.researchIncome }}
+      </div>
+    }
+    @if (building.popularityIncome > 0) {
+      <div class="popularity inner-box-items">
+        Popularity Income +{{ building.popularityIncome }}
+      </div>
+    }
+    @if (building.housing > 0) {
+      <div class="popularity inner-box-items">
+        Housing: {{ building.housing }}
+      </div>
+    }
+    @if (building.gridCapacity) {
+      <div class="inner-box-items grid-load border-10">
+        Grid Capacity: {{ building.gridCapacity }}
+      </div>
+    }
+    @if (building.environmentalScore > 0) {
+      <div class="environmental-score inner-box-items">
+        Climate Score: {{ building.environmentalScore }}
+      </div>
+    }
+  </div>
+  <div class="stats-column">
+    <h6 class="stats-header">Cost</h6>
+    @if (building.energyConsumption) {
+      <div class="grid-load inner-box-items border-10">
+        Consumption: {{ building.energyConsumption }}
+      </div>
+    }
+    @if (building.housingRequirement > 0) {
+      <div class="popularity inner-box-items">
+        Required HouseHolds: {{ building.housingRequirement }}
+      </div>
+    }
+  </div>
+</div>

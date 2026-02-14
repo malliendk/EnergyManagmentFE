@@ -1,0 +1,167 @@
+.stats-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  border: 2px solid gold;
+  color: white;
+  background-color: #e1ab81;
+  border-radius: 10px;
+}
+
+@media screen and (max-width: 1999px) {
+  .stats-box {
+    transform: scale(0.8);
+  }
+}
+
+.stats-column {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (min-width: 2000px) {
+  .stats-column {
+    padding: 1em;
+  }
+}
+
+@media screen and (max-width: 1999px) {
+  .stats-column {
+    padding: 0.5em;
+  }
+}
+
+.stats-header {
+  display: flex;
+  justify-content: space-around;
+  width: auto;
+  margin-bottom: 1em;
+  padding: 1em;
+}
+
+.stats-inner-box {
+  width: 400px;
+  min-height: 30vh;
+  padding: 0.25em 2em;
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.05) 10px,
+    rgba(255, 255, 255, 0.1) 10px,
+    rgba(255, 255, 255, 0.1) 20px
+  );
+  border-radius: 8px;
+}
+
+.stats-block {
+  min-width: 200px;
+  margin: 0.25em 0;
+  background-color: transparent;
+  border-top: 6px ridge grey;
+  border-bottom: 6px ridge grey;
+}
+
+.inner-box-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  margin: 1em;
+  padding: 0.5em;
+}
+
+.property-block-theme {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  width: auto;
+  margin-bottom: 1em;
+  padding: 0.5em 2em 0.5em 2em;
+  color: white;
+  background-color: #b88157;
+  border: 2px solid black;
+  border-radius: 0.5em;
+}
+
+.property-block-small {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  width: auto;
+  margin: 1em;
+  padding: 0.35em;
+  color: white;
+  background-color: #b88157;
+  border: 2px solid black;
+  border-radius: 10px;
+  font-size: 18px;
+}
+
+
+.funds-info {
+  background-color: gold;
+  font-family: sans-serif;
+  font-weight: bold;
+  border: ridge 3px gold;
+  border-radius: 5px;
+}
+
+.popularity-info {
+  background-color: #de00fd;
+  border: ridge 3px #b902d3;
+  border-radius: 5px;
+  font-weight: bold;
+  font-family: sans-serif;
+}
+
+.research-info {
+  font-weight: bold;
+  font-family: sans-serif;
+  border-radius: 5px;
+  background-color: #00cbfb;
+  border: ridge 3px #00cbfb;
+}
+
+.environmental-score-info {
+  font-weight: bold;
+  font-family: sans-serif;
+  border-radius: 5px;
+  background-color: #209f01;
+  border: ridge 3px #209f01;
+}
+
+.energy-info {
+  font-weight: bold;
+  font-family: sans-serif;
+  background-color: white;
+  border: ridge 3px darkorange;
+  border-radius: 5px;
+}
+
+.grid-capacity-info {
+  color: #ae0000;
+  font-weight: bold;
+  font-family: sans-serif;
+  background-color: white;
+  border: ridge 3px #ae0000;
+  border-radius: 5px;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.padding-0 {
+  padding: 0;
+}
+
+.margin-0 {
+  margin: 0;
+}
+
+.padding-left {
+  padding-left: 1em;
+}

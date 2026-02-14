@@ -1,14 +1,12 @@
-import {Supervisor} from "./supervisor";
-import {Tile} from "./tile";
-import {District} from "./district";
 import {BuildingRequest} from "./buildingRequest";
+import {Tile} from "./tile";
 
 export interface SaveGame {
   id: number
   name: string
   supervisorInstanceId: number
-  districts: District[]
   buildingRequests: BuildingRequest[]
+  tiles: Tile[]
   funds: number
   popularity: number
   research: number;

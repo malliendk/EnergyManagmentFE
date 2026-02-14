@@ -1,6 +1,5 @@
 import {BuildingRequest} from "./buildingRequest";
 import {Tile} from "./tile";
-import {District} from "./district";
 import {Supervisor} from "./supervisor";
 
 export interface InitiateGameDTO {
@@ -11,6 +10,5 @@ export interface InitiateGameDTO {
   research: number;
   buildingRequests: BuildingRequest[];
   tiles: Tile[];
-  districts: District[];
   supervisor: Supervisor;
 }

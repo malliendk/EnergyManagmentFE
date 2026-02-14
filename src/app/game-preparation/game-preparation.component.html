@@ -1,0 +1,136 @@
+<!--@if (isGamePreparation) {-->
+<!--  <app-modal-->
+<!--    [isModalOpen]="isGamePreparation"-->
+<!--    [showHeader]="true"-->
+<!--    [headerClass]="'bg-success'">-->
+<!--    <div modal-body class="d-flex flex-column align-items-center">-->
+<!--      @if (isGameInfo && infoPageNumber === 1) {-->
+<!--        <div>-->
+<!--          <p>-->
+<!--            Welkom bij het Sim Grid, een simulatiespel rondom de energietransitie en-->
+<!--            het beheer van het elektriciteitsnetwerk. In dit spel ben jij stadsarchitect met een zeer verantwoordelijke-->
+<!--            taak-->
+<!--          </p>-->
+<!--          <p>-->
+<!--            Je hebt de opdracht aangenomen een vervallen, oude stad op te bouwen tot een bruisende metropool. Hierbij-->
+<!--            is het jouw doel de stad door de energietransitie heen te helpen en de opwek van duurzame energie groot te-->
+<!--            maken.-->
+<!--            <br>Je helpt de stad haar eigen inkomsten te generen door moderne industrie aan leggen, aantrekklijk te-->
+<!--            maken voor bewoners met openbare voorzieingen,-->
+<!--            <br>en een onderzoeksklimaat te creëren door de bouw van wetenschappelijke instituten.-->
+<!--          </p>-->
+<!--          <p>-->
+<!--            Je bent echter niet alleen in je ontwikkelplannen. De stad kent mondige bewoners en investeerders, die-->
+<!--            verlangen dat-->
+<!--            je grote publieke trekpleisters bouwt.-->
+<!--            <br>-->
+<!--            Het is aan jou de eisen die op je afkomen in goede banen te leiden, zodat je de stad kunt blijven-->
+<!--            ontwikkelen-->
+<!--            zonder de bevolking tegen je in het harnas te jagen.-->
+<!--          </p>-->
+<!--          <p>-->
+<!--            Je hebt een professional in de arm genomen die toeziet op de ontwikkeling van je stad en de tussenpersoon-->
+<!--            is op het gebied van financiën en politiek.-->
+<!--            <br>-->
+<!--            Deze professional is een veelzijdig en leergierig individu met veel talenten, maar heeft de nodige scholing-->
+<!--            nodig.-->
+<!--            <br>-->
+<!--            Als architect is het aan jou te bepalen op welke gebieden hij jou het meest van dienst kan zijn.-->
+<!--          </p>-->
+<!--        </div>-->
+<!--        <button class="btn btn-outline-success mt-2" (click)="turnPage()">Volgende</button>-->
+<!--      }-->
+<!--      @if (isGameInfo && infoPageNumber === 2) {-->
+<!--        <div>-->
+<!--          <p>-->
+<!--            Het doel van het spel is 2500 punten te behalen. Je doet dit door één van je energiecentrales volledig af te-->
+<!--            schalen.-->
+<!--            <br>-->
+<!--            Hiermee win je het vertrouwen van het parlement en mag je door met de verdere ontwikkeling van de stad.-->
+<!--          </p>-->
+<!--          <p>-->
+<!--            Je verliest wanneer je populariteit op 0 komt te staan. Je verliest populariteit door verzoeken voor de bouw-->
+<!--            van grote publieke trekpleisters af te wijzen.-->
+<!--            <br>-->
+<!--            Als je de verschillende partijen in je stad niet tevreden kunt houden, verliest de gemeenteraad het-->
+<!--            vertrouwen in je kunnen.-->
+<!--            <br>Ze zal dan een motie van wantrouwen aannemen en je ontslaan.-->
+<!--          <p>-->
+<!--            De kleuren op de achtergrond geven aan of het ochtend, middag, avond of nacht is en of het goed weer,-->
+<!--            bewolkt of regenachtig is. Dit is allemaal van invloed op de opwek van energie door zonnepanelen en-->
+<!--            windmolens.-->
+<!--          </p>-->
+<!--        </div>-->
+<!--        <button class="btn btn-outline-success mt-2" (click)="turnPage()">Volgende</button>-->
+<!--      }-->
+<!--      @if (isGameInfo && infoPageNumber === 3) {-->
+<!--        <div>-->
+<!--          <p>-->
+<!--            Op regelmatige basis komen er verzoeken jouw kant op voor de bouw van voorzieningen.-->
+<!--          </p>-->
+<!--          <p>-->
+<!--            Kies hieronder hoeveel tijd je nodig hebt met de voorbereidingen voordat de verzoeken jouw kant op beginnen-->
+<!--            te komen.-->
+<!--            <br>-->
+<!--            Als je "Geen" kiest, kun je in-game de timer aanzetten.-->
+<!--          </p>-->
+<!--        </div>-->
+<!--        <div class="d-flex justify-content-around align-items-center mt-2">-->
+<!--          <button-->
+<!--            class="btn btn-outline-primary ml-1 mr-1"-->
+<!--            (click)="setInitialDelay(initialDelayNone)"-->
+<!--            [ngClass]="{ 'selected-button': selectedDelay === initialDelayNone }">-->
+<!--            Geen-->
+<!--          </button>-->
+<!--          <button-->
+<!--            class="btn btn-outline-primary ml-1 mr-1"-->
+<!--            (click)="setInitialDelay(initialDelayMedium)"-->
+<!--            [ngClass]="{ 'selected-button': selectedDelay === initialDelayMedium }">-->
+<!--            2 minuten-->
+<!--          </button>-->
+<!--          <button-->
+<!--            class="btn btn-outline-primary ml-1 mr-1"-->
+<!--            (click)="setInitialDelay(initialDelayLong)"-->
+<!--            [ngClass]="{ 'selected-button': selectedDelay === initialDelayLong }">-->
+<!--            5 minuten-->
+<!--          </button>-->
+<!--          <button-->
+<!--            class="btn btn-outline-primary ml-1 mr-1"-->
+<!--            (click)="setInitialDelay(initialDelayVeryLong)"-->
+<!--            [ngClass]="{ 'selected-button': selectedDelay === initialDelayVeryLong }">-->
+<!--            10 minuten-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <button class="btn btn-outline-success mt-4" (click)="goToChoosePlayer()">Bevestig</button>-->
+<!--      }-->
+
+
+<!--    <app-modal-->
+<!--      [showHeader]="true"-->
+<!--      [headerClass]="'bg-success'">-->
+<!--      <div modal-title>-->
+<!--        <h5 class="text-white">Gefeliciteerd!</h5>-->
+<!--      </div>-->
+<!--      <div modal-body class="d-flex flex-column align-items-center">-->
+<!--        <p>Je hebt een klimaatscore van 2500 behaald. Je hebt gewonnen!</p>-->
+<!--        <button class="btn btn-outline-success mt-2" (click)="toggleVictory()">Verder spelen</button>-->
+<!--      </div>-->
+<!--    </app-modal>-->
+
+<!--    <app-modal-->
+<!--      [showHeader]="true"-->
+<!--      [headerClass]="'bg-danger'">-->
+<!--      <div modal-title>-->
+<!--        <h5 class="text-white">Helaas!</h5>-->
+<!--      </div>-->
+<!--      <div modal-body class="d-flex flex-column align-items-center">-->
+<!--        <p>Het parlement heeft geen vertrouwen meer in jouw manier van besturen</p>-->
+<!--        <p>Je populariteit bij burgers, politici en wetenschappers is gedaald tot een minimum. Er is een motie van-->
+<!--          wantrouwen-->
+<!--          tegen je wanbeleid. Je hebt nog één kans om je te verdedigen, of je accepteert je nederlaag</p>-->
+<!--        <div class="d-flex justify-content-around mt-3">-->
+<!--          <button class="btn btn-outline-warning mr-1 ml-1">Verdedigen</button>-->
+<!--          <button class="btn btn-outline-danger mr-1 ml-1">Accepteren</button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </app-modal>-->

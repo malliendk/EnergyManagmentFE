@@ -41,7 +41,6 @@
 </div>
 @if (displayMaxLevelReachedModal) {
   <app-modal
-    [isModalOpen]="displayMaxLevelReachedModal"
     [showHeader]="true"
     [headerClass]="'bg-danger'"
   >
@@ -53,7 +52,6 @@
 }
 @if (isNotEnoughResearch) {
   <app-modal
-    [isModalOpen]="isNotEnoughResearch"
     [showHeader]="true"
     [headerClass]="'bg-danger'"
   >

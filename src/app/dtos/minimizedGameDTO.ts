@@ -1,9 +1,7 @@
 import {EventDTO} from "./eventDTO";
-import {TimeOfDay} from "../timeOfDay";
-import {WeatherType} from "../weatherType";
 import {BuildingRequest} from "./buildingRequest";
-import {District} from "./district";
 import {Supervisor} from "./supervisor";
+import {Tile} from "./tile";
 
 export interface MinimizedGameDTO {
 
@@ -20,8 +18,6 @@ export interface MinimizedGameDTO {
   gridLoad: number;
   gridCapacity: number;
   housing: number;
-  solarPanelAmount: number,
-  solarPanelCapacity: number;
   goldIncome: number;
   popularityIncome: number;
   researchIncome: number;
@@ -29,9 +25,9 @@ export interface MinimizedGameDTO {
   incomeRate: number;
   taxRate: number;
   popRate: number;
+  tiles: Tile[];
   buildingRequests: BuildingRequest[];
-  districts: District[];
   events: EventDTO[];
-  timeOfDay: TimeOfDay;
-  weatherType: WeatherType
+  timeOfDay: string;
+  weatherType: string
 }

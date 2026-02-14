@@ -1,0 +1,49 @@
+@if (event) {
+  <app-modal
+    [showHeader]="true"
+    [customWidthClass]="modalCustomWidth"
+  >
+    <div modal-title>
+      <button class="cancel" (click)="cancelEvent()">X</button>
+      <div class="title">{{ event.name }}</div>
+    </div>
+    <div modal-body>
+      <p class="text-center description-font">{{ event.description }}</p>
+      <div class="building-info">
+        <img class="img-thumbnail img-50" [src]="event.building!.imageUri">
+        <app-building-info [building]="event.building!"></app-building-info>
+      </div>
+      <h5>Kies een perceel voor {{ event.building!.name }}</h5>
+      <div class="grid-75 d-flex justify-content-around">
+        <app-grid></app-grid>
+      </div>
+      <div class="d-flex justify-content-around mt-3">
+        <button
+          class="btn"
+          [ngClass]="{
+            'btn-warning': event.building!.price <= gameDTO.funds,
+             'btn-secondary': event.building!.price > gameDTO.funds
+            }"
+          [disabled]="event.building!.price > gameDTO.funds"
+          (click)="acceptBuilding(event.building!)">
+          <div>Accept</div>
+          <div class="funds mt-2">Prijs: {{ event.building.price }}</div>
+        </button>
+        <button class="btn btn-danger" (click)="rejectBuilding(event, gameDTO)">
+          <div>Reject</div>
+          <div class="popularity mt-2">Popularity Loss: {{ event.building!.popularityCost }}</div>
+        </button>
+      </div>
+    </div>
+    @if (showNoGridCapacityModal) {
+      <app-modal
+        [showHeader]="true"
+        [headerClass]="'bg-danger'">
+        <div modal-body class="d-flex flex-column align-items-center">
+          <p>{{ errorMessage }}</p>
+          <button class="btn btn-outline-primary" (click)="toggleGridCapacityModal()">Close</button>
+        </div>
+      </app-modal>
+    }
+  </app-modal>
+}

@@ -1,0 +1,25 @@
+<div class="grid">
+  @for (tile of gameDTO.tiles; track tile.id) {
+    <div class="tile"
+         (click)="onTileSelect(tile)"
+         [ngClass]="[setTileColor(tile), setPowerLinesColor(tile), setTileSelected(tile)]">
+      @if (tile.building) {
+        <img class="img-fluid" [src]="tile.building.imageUri">
+      }
+    </div>
+  }
+</div>
+
+@if (coalErrorMessage) {
+  <app-modal
+    [showHeader]="true"
+    [headerClass]="'bg-danger'">
+    <div modal-body class="d-flex flex-column align-items-center">
+      <p>{{ coalErrorMessage }}</p>
+      <button class="btn btn-outline-primary" (click)="resetCoalModal()">Close</button>
+    </div>
+  </app-modal>
+}
+
+
+

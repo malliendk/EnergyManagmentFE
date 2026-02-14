@@ -1,0 +1,41 @@
+<div class="main-menu">
+  <button class="btn btn-outline-primary">New Game</button>
+  <button class="btn btn-outline-primary" (click)="toggleSave()">Save Game</button>
+  @if (isSaveToggled) {
+    <app-modal>
+      <div modal-title>
+        <p>Enter a name for your save game</p>
+      </div>
+      <div modal-body>
+        <input class="form-control">
+        <button type="button" class="btn btn-primary" [(ngModel)]="gameNameInput"></button>
+      </div>
+    </app-modal>
+  }
+  <button class="btn btn-outline-primary" (click)="toggleLoadGame()">Load Game</button>
+  @if (isLoadGame) {
+
+  }
+  <button>Tutorial</button>
+  <div class="load-game-container">
+    @if (!isLoadGame) {
+      <div class="d-flex flex-column justify-content-center">
+
+        @if (isSaveToggled) {
+
+        }
+
+        <button type="button" class="btn btn-outline-primary"
+                (click)="toggleLoadGame()">
+          Load game
+        </button>
+      </div>
+    } @else if (isLoadGame && saveGames) {
+      <div class="d-flex flex-column justify-content-center">
+        @for (game of saveGames; track game) {
+          <button type="button" class="btn btn-outline-danger" (click)="loadGame(game.id)"></button>
+        }
+      </div>
+    }
+  </div>
+</div>

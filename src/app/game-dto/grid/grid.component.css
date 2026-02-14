@@ -1,0 +1,209 @@
+@media screen and (max-width: 1999px) {
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    height: auto;
+    width: 90vw;
+    margin: 2em auto 2em auto;
+    background-color: whitesmoke;
+    border: 3px ridge;
+  }
+
+  .tile {
+    width: 110px;
+    height: 64px;
+    padding: 1em;
+    cursor: pointer;
+  }
+
+  .card-small {
+    width: 200px;
+    height: 17vh;
+    margin: 0.5em;
+    color: white;
+    background-color: #61371f;
+  }
+
+  .card-medium {
+    width: 17vw;
+    height: 25vh;
+    color: white;
+    background-color: #61371f;
+  }
+}
+
+@media screen and (min-width: 2000px) {
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    height: auto;
+    width: 90vw;
+    margin: 0 auto 0 auto;
+    background-color: white;
+    border: 3px ridge;
+  }
+
+  .tile {
+    width: 180px;
+    height: 110px;
+    padding: 1em;
+    cursor: pointer;
+  }
+
+  .card-small {
+    width: 13vw;
+    height: 17vh;
+    margin: 0.5em;
+    color: white;
+    background-color: #61371f;
+  }
+
+  .card-medium {
+    width: 13vw;
+    height: 25vh;
+    color: white;
+    background-color: #61371f;
+  }
+}
+
+.grid:nth-of-type(2) {
+  background-color: antiquewhite;
+}
+
+.tile:hover {
+  background-color: #6666ff;
+}
+
+.tile-selected {
+  background-color: #6666ff !important;
+}
+
+.building-selected {
+  border: 3px solid red;
+}
+
+.adjacency-text {
+  font-size: 20px;
+}
+
+
+.btn {
+  padding-left: 2em;
+}
+
+
+.funds-color {
+  color: gold;
+}
+
+.popularity-color {
+  color: #b902d3;
+}
+
+.research-color {
+  color: #00cbfb;
+}
+
+.environmental-score-color {
+  color: #209f01;
+}
+
+.energy-production-color {
+  color: #FFA500;
+}
+
+.energy-consumption-color {
+  color: #c56c00;
+}
+
+.black {
+  background-color: #000000;
+}
+
+.blue {
+  background-color: royalblue;
+}
+
+.commercial-color {
+  background-color: gold;
+}
+
+.housing-color {
+  background-color: #712f00;
+}
+
+.has-power-line {
+  border: 4px darkred solid;
+}
+
+.has-building {
+  border: 4px #29138b solid;
+}
+
+pre {
+  margin: 0;
+  padding: 0;
+}
+
+.card {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0 10px 2px rgba(60, 60, 60, 0.8);
+}
+
+.card-img-top-small {
+  border-style: solid;
+  border-left: none;
+  border-right: none;
+  object-fit: cover;
+}
+
+.card-margins {
+  margin: 1vh 1vw 2% 1vw;
+}
+
+.card-top {
+  height: 2em;
+  width: 100%;
+  background-color: #cc0303;
+}
+
+.btn-gold {
+  border: 2px solid gold;
+  color: white;
+  background-color: #e1ab81;
+}
+
+.w-30 {
+  width: 30% !important;
+}
+
+.shrink-modal-container {
+  transform: scale(0.8);
+  transform-origin: center center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1050; /* Make sure it's above other content */
+  pointer-events: none; /* Let clicks pass through to the modal */
+}
+
+
+/*.building-held-amount {*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  width: 2em;*/
+/*  height: 2em;*/
+/*  color: red;*/
+/*  font-weight: bold;*/
+/*  background-color: #fde6d1;*/
+/*  border-radius: 50%;*/
+/*  border: 2px solid red;*/
+

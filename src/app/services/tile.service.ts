@@ -2,87 +2,60 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AdjacencySet} from "../dtos/adjacencySet";
 import {Tile} from "../dtos/tile";
-import {Building} from "../dtos/building";
-import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
-import {District} from "../dtos/district";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
+import {ColorService} from "./color.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TileService {
 
+  private tileSubject = new BehaviorSubject<Tile | undefined>(undefined)
+  public tile$ = this.tileSubject.asObservable()
+
+  private powerLineTileSubject = new BehaviorSubject<Tile | undefined>(undefined)
+  public powerLineTile$ = this.powerLineTileSubject.asObservable()
+
   adjacencyURL: string = "http://localhost:8090/adjacency-sets"
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private colorService: ColorService) { }
 
-
-  updateTilesWithBuildings(gameDTO: ExtendedGameDTO): ExtendedGameDTO {
-    const tiles: Tile[] = this.collectAllTiles(gameDTO)
-    this.mapBuildingsToTiles(tiles, gameDTO.buildings);
-    return gameDTO
+  setTile(tile: Tile | undefined): void {
+    this.tileSubject.next(tile);
   }
 
-  private mapBuildingsToTiles(tiles: Tile[], buildings: Building[]): Tile[] {
-    // Create a map for quick lookup of buildings by their ID
-    const buildingMap = new Map<number, Building>();
-    buildings.forEach((building: Building) => {
-      buildingMap.set(building.id, building);
-    });
-
-    // Map each tile to a building if it has a buildingId
-    return tiles.map((tile: Tile) => {
-      if (tile.buildingId) {
-        const matchingBuilding = buildingMap.get(tile.buildingId);
-        if (matchingBuilding) {
-          // Create a new tile object with the building property populated
-          return {
-            ...tile,
-            building: {...matchingBuilding}
-          };
-        }
-      }
-      // Return the original tile if no building ID or no matching building found
-      return tile;
-    });
+  setPowerLineTile(tile: Tile | undefined) {
+    this.powerLineTileSubject.next(tile)
   }
 
-
-  /**
-   * Removes the building property from each tile, keeping only the buildingId reference
-   * @param tiles The tiles to process
-   * @returns Tiles with only id and buildingId properties
-   */
-
-  removeBuildingsFromTiles(tiles: Tile[]): Tile[] {
-    return tiles.map(tile => ({
-      id: tile.id,
-      buildingId: tile.buildingId,
-      building: null,
-      districtId: tile.districtId,
-      adjacencySet: undefined
-    }));
-  }
-
-  addBuildingsToTiles(buildings: Building[], districts: District[]) {
-    const buildingMap = new Map<number, Building>();
-    buildings.forEach(building => {
-      buildingMap.set(building.id, building);
-    });
-    districts.forEach(district => {
-      district.tiles.forEach(tile => {
-        if (tile.buildingId && buildingMap.has(tile.buildingId)) {
-          tile.building = buildingMap.get(tile.buildingId) || null;
-        }
-      });
-    })
-  }
-
-  collectAllTiles(gameDTO: ExtendedGameDTO): Tile[] {
-    return gameDTO.districts.flatMap(district => district.tiles);
+  getTile() {
+    return this.tileSubject.getValue()
   }
 
   findAllAdjacencySets(): Observable<AdjacencySet[]> {
     return this.http.get<AdjacencySet[]>(this.adjacencyURL);
+  }
+
+  setTileColor(tile: Tile): string {
+    const baseColor: string = this.colorService.setTileColor(tile)
+    const hasBuildingColor: string = this.colorService.setColorHasBuilding(tile);
+    const hasPowerLineColor: string = this.colorService.setPowerLinesColor(tile)
+    return [baseColor, hasBuildingColor, hasPowerLineColor]
+      .filter(className => className.trim() !== '')
+      .join(' ');
+  }
+
+  calculateTileWidth(): void {
+    const gridElement = document.querySelector('.grid') as HTMLElement;
+    if (!gridElement) return;
+    const gridWidth = gridElement.clientWidth;
+    const tileWidth = gridWidth / 10;
+    const tileHeight = tileWidth * 0.58;
+    const tileElements = document.querySelectorAll('.tile') as NodeListOf<HTMLElement>;
+    tileElements.forEach(tile => {
+      tile.style.width = `${tileWidth}px`;
+      tile.style.height = `${tileHeight}px`;
+    });
   }
 }

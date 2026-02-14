@@ -1,69 +1,107 @@
-import {Injectable} from '@angular/core';
-import {Observable} from "rxjs";
-import {ExtendedGameDTO} from "../dtos/extendedGameDTO";
+import {Injectable, NgZone} from '@angular/core';
+import {BehaviorSubject, catchError, Observable, switchMap, tap} from "rxjs";
+import {FullGameDTO} from "../dtos/fullGameDTO";
 import {HttpClient} from "@angular/common/http";
-import {Building} from "../dtos/building";
 import {MinimizedGameDTO} from "../dtos/minimizedGameDTO";
 import {InitiateGameDTO} from "../dtos/initiateGameDTO";
-import {BuildingRequest} from "../dtos/buildingRequest";
-import {Tile} from "../dtos/tile";
 import {Supervisor} from "../dtos/supervisor";
+import {GameDtoMapperService} from "./game-dto-mapper.service";
 import {BuildingService} from "./building.service";
-import {TileService} from "./tile.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameDTOService {
-  private initiateServiceUrl = 'http://localhost:8080';
+
+  private gameDTOSubject = new BehaviorSubject<FullGameDTO | null>(null);
+  public gameDTO$ = this.gameDTOSubject.asObservable()
+
   private calculationServiceUrl: string = 'http://localhost:8093';
+  private sseUrlPostFix: string = 'stream/game-dto'
+  private eventSource: EventSource | null = null;
 
   constructor(private http: HttpClient,
+              private dtoMapperService: GameDtoMapperService,
               private buildingService: BuildingService,
-              private tileService: TileService) {
+              private ngZone: NgZone)
+  {}
+
+  startGame(supervisorDTO: Supervisor): Observable<FullGameDTO> {
+    return this.http.post<MinimizedGameDTO>(this.calculationServiceUrl, supervisorDTO).pipe(
+      switchMap((minimizedGameDTO: MinimizedGameDTO) => this.dtoMapperService.extendGameDTO(minimizedGameDTO)),
+      tap((fullGameDTO: FullGameDTO) => {
+        this.gameDTOSubject.next(fullGameDTO);
+      }),
+      catchError(err => {
+        console.log("Error occurred during game initialization: {}", err)
+        throw new Error("Unexpected error happened during game startup: {}", err)
+      })
+    );
   }
 
-  startGame(supervisorDTO: Supervisor): Observable<InitiateGameDTO> {
-    console.log('passing supervisor' + supervisorDTO.name)
-    return this.http.post<InitiateGameDTO>(this.initiateServiceUrl, supervisorDTO);
+  updateGameDTO(extendedGameDTO: FullGameDTO): Observable<FullGameDTO> {
+    const initiateDTO: InitiateGameDTO = this.dtoMapperService.minimizeToInitiateDTO(extendedGameDTO);
+    console.log('outgoing minimizedDTO:', initiateDTO);
+    return this.http.put<MinimizedGameDTO>(`${this.calculationServiceUrl}`, initiateDTO).pipe(
+      switchMap((minimizedGameDTO: MinimizedGameDTO) => this.dtoMapperService.extendGameDTO(minimizedGameDTO)),
+      tap((fullGameDTO: FullGameDTO) => {
+        this.gameDTOSubject.next(fullGameDTO);
+      }),
+      catchError(err => {
+        console.log("error occurred: {}", err)
+        throw new Error("Unexpected error happened while receiving updated gameDTO: {}", err)
+      })
+    );
   }
 
-  updateGameDTO(extendedGameDTO: ExtendedGameDTO): Observable<InitiateGameDTO> {
-    const minimizedGameDTO: InitiateGameDTO = this.minimizeToInitiateDTO(extendedGameDTO);
-    console.log('outgoing minimizedDTO: {}', minimizedGameDTO)
-    return this.http.put<InitiateGameDTO>(`${this.initiateServiceUrl}/${extendedGameDTO.id}`, minimizedGameDTO);
+  getGameDTO() {
+    return this.gameDTOSubject.getValue()
   }
 
-  extendGameDTO(minimizedGameDTO: MinimizedGameDTO, fetchedBuildingsById: Building[]): ExtendedGameDTO {
-    const ids: number[] = minimizedGameDTO.buildingRequests.map((request: BuildingRequest) => request.buildingId);
-    const completeBuildingList: Building[] = this.buildingService.duplicateBuildingsIfNecessary(ids, fetchedBuildingsById);
-    const fullyProcessedBuildings: Building[] = this.buildingService.updateBuildingValues(minimizedGameDTO, completeBuildingList);
-    const sortedBuildings: Building[] = this.buildingService.sortBuildingsByCategoryAndPrice(fullyProcessedBuildings);
-    const {buildingRequests, ...propertyValues} = minimizedGameDTO;
-    let gameDTO: ExtendedGameDTO = {
-      ...propertyValues,
-      buildings: sortedBuildings
+  setGameDTO(gameDTO: FullGameDTO) {
+    this.gameDTOSubject.next(gameDTO)
+  }
+
+  startStream(): void {
+    if (this.eventSource) {
+      console.warn('SSE stream already active');
+      return;
+    }
+    this.eventSource = new EventSource(`${this.calculationServiceUrl}/${this.sseUrlPostFix}` );
+    this.eventSource.addEventListener('connection', (event: MessageEvent) => {
+      console.log('Connected to gameDTO SSE stream:', event.data);
+    });
+    this.eventSource.addEventListener('gameDTO-update', (event: MessageEvent) => {
+      this.ngZone.run(() => {
+        try {
+          const minimizedDTO: MinimizedGameDTO = JSON.parse(event.data);
+          console.log('Received minimized gameDTO:', minimizedDTO);
+
+          this.dtoMapperService.extendGameDTO(minimizedDTO).subscribe({
+            next: (fullGameDTO: FullGameDTO) => {
+              this.gameDTOSubject.next(fullGameDTO);
+              console.log('GameDTO updated via SSE:', fullGameDTO);
+            },
+            error: (err) => {
+              console.error('Error extending gameDTO from SSE:', err);
+            }
+          });
+        } catch (error) {
+          console.error('Error parsing SSE gameDTO data:', error);
+        }
+      });
+    });
+    this.eventSource.onerror = (error) => {
+      console.error('SSE connection error:', error);
+      this.closeStream();
     };
-    gameDTO = this.tileService.updateTilesWithBuildings(gameDTO);
-    console.log("successfully extended gameDTO: {}", gameDTO);
-    return gameDTO;
   }
 
-  getMinimizedGameDto(): Observable<MinimizedGameDTO> {
-    return this.http.get<MinimizedGameDTO>(this.calculationServiceUrl);
-  }
-
-  minimizeToInitiateDTO(extendedGameDTO: ExtendedGameDTO): InitiateGameDTO {
-    const tiles: Tile[] = this.tileService.collectAllTiles(extendedGameDTO);
-    return {
-      id: extendedGameDTO.id,
-      funds: extendedGameDTO.funds,
-      popularity: extendedGameDTO.popularity,
-      research: extendedGameDTO.research,
-      supervisor: extendedGameDTO.supervisor,
-      buildingRequests: this.buildingService.minimizeToBuildingRequests(extendedGameDTO),
-      tiles: this.tileService.removeBuildingsFromTiles(tiles),
-      districts: extendedGameDTO.districts
-    };
+  closeStream(): void {
+    if (this.eventSource) {
+      this.eventSource.close();
+      this.eventSource = null;
+      console.log('SSE gameDTO stream closed');
+    }
   }
 }
