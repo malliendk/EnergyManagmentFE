@@ -1,16 +1,16 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {BuildingDTO} from "../dtos/buildingDTO";
 import {Subscription} from "rxjs";
 import {TileService} from "../services/tile.service";
 import {Tile} from "../dtos/tile";
 import {NgClass, NgStyle} from "@angular/common";
 import {BuildingInfoComponent} from "../building-info/building-info.component";
-import {FullGameDTO} from "../dtos/fullGameDTO";
+import {GameDTO} from "../dtos/gameDTO";
 import {GameDTOService} from "../services/game-dto.service";
 import {PurchaseService} from "../services/purchase.service";
 import {ModalComponent} from "../components/modal/modal.component";
 import {BuildingService} from "../services/building.service";
-import {TileBuildingService} from "../services/tile-building.service";
+import {POWER_LINE_ID} from "../constants/constants";
 
 @Component({
   selector: 'app-building-list',
@@ -26,55 +26,60 @@ import {TileBuildingService} from "../services/tile-building.service";
 })
 export class BuildingListComponent implements OnInit {
 
-  private tileSubscription = new Subscription()
-  private gameDTOSubscription = new Subscription()
+  @Input() buildings!: BuildingDTO[];
+
+  private subscription = new Subscription()
 
   tile!: Tile
-  gameDTO!: FullGameDTO
+  gameDTO!: GameDTO
   building?: BuildingDTO
-  buildings!: BuildingDTO[]
+
   purchasableTileBuildings: BuildingDTO[] = [];
   noBuildingSelected: string = "";
   validationError: string = "";
 
+
   constructor(private tileService: TileService,
               private buildingService: BuildingService,
-              private tileBuildingService: TileBuildingService,
               private gameDTOService: GameDTOService,
-              private purchaseService: PurchaseService) {
+              private purchaseService: PurchaseService,
+              private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit() {
     this.addTileSubscription()
     this.addGameDTOSubscription()
-    this.findAllBuildings()
-    console.log(this.tile)
+    this.addBuildingSubscription()
   }
 
   addTileSubscription() {
-    this.tileSubscription.add(
+    this.subscription.add(
       this.tileService.tile$
-        .subscribe(tile => {
-          this.tile = tile!
-          this.purchasableTileBuildings = this.tileBuildingService.filterBuildingsByZoneType(this.buildings, tile!)
-        })
-    )
+        .subscribe((tile: Tile | undefined) => {
+          if (tile) {
+            this.tile = tile
+            this.filterBuildings(this.buildings, this.tile)
+          }}))
   }
 
   addGameDTOSubscription() {
-    this.gameDTOSubscription.add(
+    this.subscription.add(
       this.gameDTOService.gameDTO$
-        .subscribe(gameDTO => this.gameDTO = gameDTO!)
-    )
+        .subscribe(gameDTO => {
+          this.gameDTO = gameDTO!
+        }))
   }
 
-  findAllBuildings() {
-    this.buildingService.findAll()
-      .subscribe(buildings => {
-        console.log('building: {}', buildings)
-        this.buildings = buildings
-        this.purchasableTileBuildings = this.tileBuildingService.filterBuildingsByZoneType(buildings, this.tile)
-      })
+  addBuildingSubscription() {
+    this.subscription.add(
+      this.buildingService.building$
+        .subscribe(building => {
+          this.building = building
+        }))
+  }
+
+  filterBuildings(buildings: BuildingDTO[], tile: Tile): void {
+    this.purchasableTileBuildings = this.buildingService.filterBuildingsByZoneType(buildings, tile)
   }
 
   selectBuilding(building: BuildingDTO) {
@@ -83,26 +88,41 @@ export class BuildingListComponent implements OnInit {
 
   setBuildingSelected(id: number): string {
     if (this.building) {
-      return id === this.building!.id ? '' : ''
+      return id === this.building!.id ? 'building-selected' : ''
     }
     return ''
   }
 
-  purchaseBuilding(buildingDTO: BuildingDTO, tile: Tile, gameDTO: FullGameDTO) {
-    const possibleError = this.purchaseService.validateBuilding(buildingDTO, gameDTO)
-    if (possibleError) {
-      this.validationError = possibleError
+  purchaseBuilding(building: BuildingDTO, tile: Tile, gameDTO: GameDTO) {
+    console.log(building, tile, gameDTO)
+    if (building.id == POWER_LINE_ID) {
+      this.purchaseService.purchasePowerline(tile, gameDTO)
+        .subscribe({
+          next: (updatedDTO: GameDTO) => {
+            this.gameDTOService.setGameDTO(updatedDTO)
+            console.log('successfully purchased powerline')
+          },
+          error: err => {
+            console.error('error purchasing powerline: {}', building, err)
+            this.validationError = err.error.message
+          }
+        })
+    } else {
+      this.purchaseService.purchaseBuilding(building, tile, gameDTO)
+        .subscribe({
+          next: (updatedDTO: GameDTO) => {
+            this.gameDTOService.setGameDTO(updatedDTO)
+            const newTile = updatedDTO.tiles.find(tileToFind => tile.id === tileToFind.id)!
+            this.tileService.setTile(newTile)
+            const newBuilding = newTile.building!
+            this.buildingService.setBuildingInGame(newBuilding)
+          },
+          error: (error) => {
+            console.error('error purchasing building: {}', building, error)
+            this.validationError = error.error.message
+          }
+        })
     }
-    this.purchaseService.purchaseBuilding(buildingDTO, tile, gameDTO)
-      .subscribe((updatedDTO: FullGameDTO) => {
-        this.gameDTOService.setGameDTO(updatedDTO)
-        this.resetTileAndBuilding()
-      })
-  }
-
-  resetTileAndBuilding() {
-    this.tileService.setTile(undefined)
-    this.buildingService.setBuilding(undefined)
   }
 
   resetValidationError() {

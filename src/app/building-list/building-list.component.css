@@ -17,7 +17,6 @@
 
 .card-column {
   display: flex;
-
   height: 100%;
   margin: 0 0.5em;
   background-color: #754226;
@@ -26,8 +25,7 @@
 
 .card-column:nth-of-type(1) {
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  padding-left: 1.5em;
   width: 45%;
   overflow: auto;
 }

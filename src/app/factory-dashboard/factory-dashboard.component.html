@@ -1,48 +1,49 @@
-@if (powerPlants) {
-  <div class="factory-display">
-    @for (powerPlant of powerPlants; track powerPlant) {
-      <div class="card" [ngClass]="applyGrayScale(powerPlant)">
-        <div class="factory-image">
-          <img class="img-fluid"
-               [src]="getImageForPlant(powerPlant)" alt="{{powerPlant.name}}">
+@if (coalPlant) {
+  <div class="factory-display" [ngStyle]="{'background-image': 'url(' + secondaryImagesURL + ')'}">
+    <div class="factory-panel">
+      <div class="factory-panel-left pb-3">
+        <div class="cells-grid" style="flex-direction: column-reverse">
+          @for (cell of cells; track $index) {
+            <div class="cell" [ngClass]="setColor(cell)"></div>
+          }
+        </div>
+        <div class="grid-load w-50">
+          <div class="text-center">Production</div>
+          <div class="text-center">{{ coalPlant.energyProduction }}</div>
+        </div>
+      </div>
+      <div class="factory-panel-center">
+        <div>
+          <div class="button-container">
+            <div class="red-button" (click)="scaleProduction(gameDTO)"></div>
+          </div>
+        </div>
+        <div>
+          <div class="funds p-1 m-3 text-center">
+            <div>Cost</div>
+            <div>{{ scalingCost | currency: 'EUR' }}</div>
+          </div>
           <div class="slider-container">
-            <input type="range" id="range-slider" class="slider"
+            <input type="range" id="range-slider" class="slider" name="slider"
                    min="{{minimumProduction}}"
                    max="{{maximumProduction}}"
                    step="{{sliderStepValue}}"
-                   [(ngModel)]="powerPlant.energyProduction"
-                   #newProduction
-                   (input)="recalculateValues(powerPlant, newProduction)"
-                   [disabled]="isDisabled"
-            >
-          </div>
-        </div>
-        <div class="factory-stats">
-          <div class="grid-load">
-            <div class="text-center">energy production</div>
-            <div class="text-center mt-1">{{ powerPlant.energyProduction }}</div>
-          </div>
-          <div class="environmental-score">
-            <div class="text-center">environmental score</div>
-            <div class="text-center mt-1">{{ powerPlant.environmentalScore.toFixed(0)}}</div>
+                   [(ngModel)]="coalPlant.energyProduction"
+                   (input)="recalculate()">
           </div>
         </div>
       </div>
-    }
-    <div class="button-container">
-      <div class="cost-label">
-        <div>kosten</div>
-        <div>op/afschalen</div>
+      <div class="factory-panel-right">
+        <div class="cells-grid" style="flex-direction: column; margin-bottom: -1.5em">
+        @for (cell of scoreCells; track $index) {
+          <div class="cell" [ngClass]="setColor(cell)"></div>
+        }
+        </div>
+        <div class="environmental-score d-flex flex-column align-items-center">
+          <div>Score</div>
+          <div>{{ coalPlant.environmentalScore }}</div>
+        </div>
       </div>
-      <div class="funds">{{ totalScalingCost | currency: 'EUR' }}</div>
-      <div class="red-button mt-3" (click)="processPlantScaling()"></div>
     </div>
   </div>
 }
-
-<app-modal>
-  <div modal-body class="d-flex flex-column align-items-center">
-    <p>Je hebt niet genoeg geld om je centrales te schalen!</p>
-    <button class="btn btn-outline-primary" (click)="toggleModalOpen()">Sluiten</button>
-  </div>
-</app-modal>

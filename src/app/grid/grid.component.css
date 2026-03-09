@@ -4,14 +4,17 @@
     flex-wrap: wrap;
     align-items: center;
     height: auto;
-    width: 90vw;
+    width: 90.3vw;
     margin: 2em auto 2em auto;
     background-color: whitesmoke;
     border: 3px ridge;
   }
 
   .tile {
-    width: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 115px;
     height: 64px;
     padding: 1em;
     cursor: pointer;
@@ -40,7 +43,7 @@
     align-items: center;
     height: auto;
     width: 90vw;
-    margin: 0 auto 0 auto;
+      margin: 0 auto 2em auto;
     background-color: white;
     border: 3px ridge;
   }
@@ -134,12 +137,12 @@
   background-color: #712f00;
 }
 
-.has-power-line {
-  border: 4px darkred solid;
-}
-
 .has-building {
   border: 4px #29138b solid;
+}
+
+.has-power-line {
+  border: 4px darkred solid !important;
 }
 
 pre {

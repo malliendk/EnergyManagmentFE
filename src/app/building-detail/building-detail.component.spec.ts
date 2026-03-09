@@ -1,18 +1,18 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {LocalityDetailComponent} from './locality-detail.component';
+import {BuildingDetailComponent} from './building-detail.component';
 
-describe('LocalityDetailComponent', () => {
-  let component: LocalityDetailComponent;
-  let fixture: ComponentFixture<LocalityDetailComponent>;
+describe('BuildingViewComponent', () => {
+  let component: BuildingDetailComponent;
+  let fixture: ComponentFixture<BuildingDetailComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LocalityDetailComponent ]
+      declarations: [ BuildingDetailComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LocalityDetailComponent);
+    fixture = TestBed.createComponent(BuildingDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

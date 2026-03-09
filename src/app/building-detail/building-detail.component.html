@@ -1,27 +1,24 @@
 @if ({building: building$ | async, tile: tile$ | async, gameDTO: gameDTO$ | async}; as data) {
   <div class="d-flex justify-content-center align-items-center">
-    <div class="card card-large"
-         [ngStyle]="{'border-color': data.building!.color}">
+    <div class="card card-large">
       <div class="card-column justify-content-end align-items-center">
-        <div class="card-img-top img-radius">
           <img [src]="data.building!.imageUri" alt="{{data.building!.imageUri}} + ' image'"
                class="img-fluid img-radius">
-        </div>
         <div class="property-block-title background-color-light-brown"
              [ngStyle]="{'border-color': data.building!.color}">
           <div class="justify-content-start">{{ data.building!.name }}</div>
         </div>
       </div>
       <div class="card-column">
-        <button class="cancel" (click)="cancelDetailView()">X</button>
         <app-building-info [building]="data.building!"></app-building-info>
         @if (data.building!.solarPanelCapacity > 0 && data.building!.solarPanelAmount < data.building!.solarPanelCapacity) {
-          <button class="purchase-button-up btn btn-gold mb-2" [(ngModel)]="solarPanelAmount"
+          <button class="purchase-button-up btn btn-gold mb-2"
                   (click)="purchaseSolarPanels(data.building!, data.gameDTO!)">
             <div>Purchase Solar Panels</div>
             <input type="number" placeholder="{{ data.building!.solarPanelAmount }}"
                    min="{{ data.building!.solarPanelAmount }}"
-                   max="{{ data.building!.solarPanelCapacity }}">
+                   max="{{ data.building!.solarPanelCapacity }}"
+                   name="solarPanelAmount" [(ngModel)]="solarPanelAmount">
           </button>
         } @else if (data.building!.solarPanelCapacity > 0 && data.building!.solarPanelAmount === data.building!.solarPanelCapacity) {
           <div class="purchase-button-up btn btn-gold mb-2">
@@ -29,7 +26,7 @@
           </div>
         }
         @if (!data.tile!.hasPowerLine) {
-          <button class="purchase-button btn btn-gold mb-2" (click)="purchasePowerLine(data.tile!, data.gameDTO!)">
+          <button class="purchase-button btn btn-gold mb-2" (click)="purchasePowerLine(data.building!, data.tile!, data.gameDTO!)">
             Purchase Powerline
           </button>
         } @else {

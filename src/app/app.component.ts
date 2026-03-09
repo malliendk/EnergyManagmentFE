@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {GameDTOService} from "./services/game-dto.service";
-import {FullGameDTO} from "./dtos/fullGameDTO";
+import {GameDTO} from "./dtos/gameDTO";
 import {Subscription} from "rxjs";
 import {BuildingDashboardComponent} from "./building-dashboard/building-dashboard.component";
 import {CommonModule} from "@angular/common";
@@ -13,6 +13,8 @@ import {FactoryDashboardComponent} from "./factory-dashboard/factory-dashboard.c
 import {UniversityComponent} from "./components/university/university.component";
 import {SupervisorComponent} from "./game-dto/supervisor/supervisor.component";
 import {MainMenuComponent} from "./game-dto/main-menu/main-menu.component";
+import {BuildingService} from "./services/building.service";
+import {ModalComponent} from "./components/modal/modal.component";
 
 @Component({
   selector: 'app-root',
@@ -32,14 +34,14 @@ import {MainMenuComponent} from "./game-dto/main-menu/main-menu.component";
     DaytimeWeatherComponent,
     EventComponent,
     MainMenuComponent,
+    ModalComponent,
   ]
 })
 export class AppComponent implements OnInit {
   @ViewChild(FactoryDashboardComponent) factoryDashboardComponent?: FactoryDashboardComponent;
 
   private gameDTOSubscription = new Subscription()
-  gameDTO!: FullGameDTO;
-
+  gameDTO!: GameDTO;
 
   title = 'Energy Management';
 
@@ -51,7 +53,7 @@ export class AppComponent implements OnInit {
   buildingDashboardText: string = 'buildings';
   universityDashboard: string = 'university';
   supervisorDashboardText: string = 'supervisor';
-  victoryThreshold: number = 2500;
+  victoryThreshold: number = 5000;
   isGameInfo = true;
   isChoosePlayer = true;
   selectedDelay: number | null = null;
@@ -76,14 +78,17 @@ export class AppComponent implements OnInit {
   infoPageNumber: number = 1;
   isMenu: boolean = false;
 
-  constructor(private gameDTOService: GameDTOService) {
+  constructor(private gameDTOService: GameDTOService,
+              private buildingService: BuildingService) {
   }
 
   ngOnInit() {
     this.dashboardType = this.buildingDashboardText;
     this.gameDTOSubscription.add(
       this.gameDTOService.gameDTO$
-        .subscribe(updatedGameDTO => this.gameDTO = updatedGameDTO!)
+        .subscribe(updatedGameDTO => {
+          this.gameDTO = updatedGameDTO!
+        })
     )
   }
 
@@ -105,11 +110,17 @@ export class AppComponent implements OnInit {
     this.isGamePreparation = false;
     this.gameDTOService.startGame(supervisor)
       .subscribe({
-        next: (gameDTO: FullGameDTO) => {
+        next: (gameDTO: GameDTO) => {
           this.gameDTO = gameDTO
           this.isChoosePlayer = false
           this.gameDTOService.startStream()
           this.toggleIsLoading()
+          this.buildingService.findAll().subscribe(
+            buildings => {
+              console.log(buildings)
+              this.buildingService.setBuildings(buildings)
+            }
+          )
         },
         error: err => {
           this.isLoadingText = "An unexpected error occurred during startup"
@@ -121,7 +132,11 @@ export class AppComponent implements OnInit {
   addGameDTOSubscription() {
     this.gameDTOSubscription.add(
       this.gameDTOService.gameDTO$
-        .subscribe(gameDTO => this.gameDTO = gameDTO!)
+        .subscribe(gameDTO => {
+          this.gameDTO = gameDTO!
+          this.decideVictory();
+          this.decideLoss();
+        })
     )
   }
 
@@ -134,12 +149,10 @@ export class AppComponent implements OnInit {
     this.isMenu = !this.isMenu;
   }
 
-  updateGameDTO(passedGameDTO: FullGameDTO) {
+  updateGameDTO(passedGameDTO: GameDTO) {
     this.gameDTOService.updateGameDTO(passedGameDTO)
       .subscribe(gameDTO => {
           console.log('updated DTO: {}', gameDTO)
-          this.decideVictory();
-          this.decideLoss();
         }
       )
   }
@@ -165,13 +178,14 @@ export class AppComponent implements OnInit {
   }
 
   decideVictory() {
-    if (this.gameDTO.environmentalScore >= this.victoryThreshold) {
+    if (this.gameDTO && this.gameDTO.environmentalScore >= this.victoryThreshold) {
       this.toggleVictory();
+      console.log('victory!')
     }
   }
 
   decideLoss() {
-    if (this.gameDTO.popularity <= 0) {
+    if (this.gameDTO && this.gameDTO.popularity <= 0) {
       this.toggleLoss();
     }
   }

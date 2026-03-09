@@ -1,11 +1,11 @@
-import {BuildingRequest} from "./buildingRequest";
 import {Tile} from "./tile";
+import {BuildingInGame} from "./buildingInGame";
 
 export interface SaveGame {
   id: number
   name: string
   supervisorInstanceId: number
-  buildingRequests: BuildingRequest[]
+  buildings: BuildingInGame[]
   tiles: Tile[]
   funds: number
   popularity: number

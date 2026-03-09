@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {NgClass} from "@angular/common";
 import {PerkViewComponent} from "../../components/perk-view/perk-view.component";
-import {FullGameDTO} from "../../dtos/fullGameDTO";
+import {GameDTO} from "../../dtos/gameDTO";
 import {Supervisor} from "../../dtos/supervisor";
 import {SupervisorService} from "../../services/supervisor.service";
 import {GameDTOService} from "../../services/game-dto.service";
@@ -18,12 +18,12 @@ import {GameDTOService} from "../../services/game-dto.service";
 })
 export class SupervisorComponent implements OnInit {
 
-  @Input() gameDTO!: FullGameDTO;
+  @Input() gameDTO!: GameDTO;
   @Input() isInitiatingGame!: boolean;
   @Input() isDashboardOpen: boolean = false;
   @Output() passSupervisor = new EventEmitter<Supervisor>();
   @Output() passCityView = new EventEmitter<string>();
-  @Output() passDTOtoTopLevel = new EventEmitter<FullGameDTO>();
+  @Output() passDTOtoTopLevel = new EventEmitter<GameDTO>();
 
   supervisors: Supervisor[] = [];
   supervisor!: Supervisor;

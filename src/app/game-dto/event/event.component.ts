@@ -3,13 +3,14 @@ import {Subscription} from "rxjs";
 import {ModalComponent} from "../../components/modal/modal.component";
 import {NgClass} from "@angular/common";
 import {BuildingInfoComponent} from "../../building-info/building-info.component";
-import {GridComponent} from "../grid/grid.component";
-import {FullGameDTO} from "../../dtos/fullGameDTO";
+import {GridComponent} from "../../grid/grid.component";
+import {GameDTO} from "../../dtos/gameDTO";
 import {Tile} from "../../dtos/tile";
 import {BuildingDTO} from "../../dtos/buildingDTO";
 import {PurchaseService} from "../../services/purchase.service";
 import {GameDTOService} from "../../services/game-dto.service";
 import {EventDTO} from "../../dtos/eventDTO";
+import {BuildingService} from "../../services/building.service";
 
 @Component({
   selector: 'app-event',
@@ -26,13 +27,13 @@ import {EventDTO} from "../../dtos/eventDTO";
 export class EventComponent implements OnInit, OnChanges {
 
   private gameDTOSubscription = new Subscription()
-  private eventSubscription: Subscription | null = null;
+  private subscription: Subscription | null = null;
   connectionError: boolean = false;
 
   isModalOpen: boolean = false;
 
   @Input() event: EventDTO | null = null;
-  gameDTO!: FullGameDTO;
+  gameDTO!: GameDTO;
   @Input() eventsInitialDelay!: number;
   @Input() isManualKickOff: boolean = false;
 
@@ -45,7 +46,8 @@ export class EventComponent implements OnInit, OnChanges {
   private showNoFundsModal: boolean = false;
 
   constructor(private purchaseService: PurchaseService,
-              private gameDTOService: GameDTOService) {
+              private gameDTOService: GameDTOService,
+              private buildingService: BuildingService) {
   }
 
   ngOnInit() {
@@ -77,17 +79,26 @@ export class EventComponent implements OnInit, OnChanges {
   }
 
   acceptBuilding(building: BuildingDTO) {
-    const error = this.purchaseService.validateBuilding(building, this.gameDTO)
-    if (error) {
-      this.errorMessage = error
-      return
-    }
     this.purchaseService.purchaseBuilding(building, this.tile!, this.gameDTO)
-      .subscribe(updatedDTO => this.gameDTOService.setGameDTO(updatedDTO))
+      .subscribe({
+        next: (updatedDTO: GameDTO) => {
+           this.gameDTOService.setGameDTO(updatedDTO)
+        },
+        error: (error) => {
+        this.errorMessage = error.error.message
+        }
+      })
+    this.toggleEventModal();
   }
 
-  rejectBuilding(event: EventDTO, gameDTO: FullGameDTO) {
-    this.purchaseService.rejectBuilding(event, gameDTO)
+  rejectBuilding(event: EventDTO, gameDTO: GameDTO) {
+    this.purchaseService.rejectBuilding(gameDTO)
+      .subscribe({
+        next: value => this.gameDTOService.setGameDTO(value),
+        error: (error) => {
+          this.errorMessage = "Error rejecting building: " + error.error.message
+        }
+      })
     this.toggleEventModal();
   }
 

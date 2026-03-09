@@ -29,4 +29,9 @@ export const WEATHER_TYPE_MODERATE = 'moderate'
 export const WEATHER_TYPE_OVERCAST = 'overcast'
 export const WEATHER_TYPE_RAINY = 'rainy'
 
+export const COAL_PLANT_ID = 40
+
+export const POWER_LINE_IMG_URL: string = "assets/photos/power-lines.jpg"
+export const POWER_LINE_ID: number = 14
+
 

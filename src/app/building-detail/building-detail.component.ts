@@ -1,17 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {BuildingDTO} from "../dtos/buildingDTO";
 import {BuildingService} from "../services/building.service";
 import {BuildingInfoComponent} from "../building-info/building-info.component";
 import {PurchaseService} from "../services/purchase.service";
-import {TileBuildingService} from "../services/tile-building.service";
 import {TileService} from "../services/tile.service";
 import {GameDTOService} from "../services/game-dto.service";
 import {FormsModule} from "@angular/forms";
 import {ModalComponent} from "../components/modal/modal.component";
-import {POWER_LINE_ID, POWER_LINE_IMG_URL} from "../power-line-values";
 import {Tile} from "../dtos/tile";
-import {FullGameDTO} from "../dtos/fullGameDTO";
+import {GameDTO} from "../dtos/gameDTO";
+import {BuildingInGame} from "../dtos/buildingInGame";
+import {POWER_LINE_ID, POWER_LINE_IMG_URL} from "../constants/constants";
 
 @Component({
   selector: 'app-building-detail',
@@ -22,6 +22,8 @@ import {FullGameDTO} from "../dtos/fullGameDTO";
 })
 export class BuildingDetailComponent implements OnInit {
 
+  @Input() buildings: BuildingDTO[] = []
+
   building$ = this.buildingService.building$
   powerLine?: BuildingDTO
   tile$ = this.tileService.tile$
@@ -30,50 +32,50 @@ export class BuildingDetailComponent implements OnInit {
   solarPanelAmount: number = 0
   purchaseError: string = ''
 
-  powerLineImageURL = POWER_LINE_IMG_URL;
+  powerLineImageURL: string = POWER_LINE_IMG_URL;
 
   constructor(private buildingService: BuildingService,
               private tileService: TileService,
               private gameDTOService: GameDTOService,
-              private purchaseService: PurchaseService,
-              private tileBuildingService: TileBuildingService
-              ) {
+              private purchaseService: PurchaseService
+  ) {
   }
 
   ngOnInit() {
     this.findPowerLine()
   }
 
-  purchaseSolarPanels(building: BuildingDTO, gameDTO: FullGameDTO): void {
-    const possibleError: string | undefined = this.purchaseService.validateSolarPanels(
-      this.solarPanelAmount, building, gameDTO)
-    if (possibleError) {
-      this.purchaseError = possibleError
-      return
-    }
+  purchaseSolarPanels(building: BuildingInGame, gameDTO: GameDTO): void {
     this.purchaseService.purchaseSolarPanels(this.solarPanelAmount, building, gameDTO)
-      .subscribe(updatedDTO => {
-        this.gameDTOService.setGameDTO(updatedDTO)
+      .subscribe({
+        next: (updatedDTO: GameDTO) => {
+          this.gameDTOService.setGameDTO(updatedDTO)
+          console.log('solar panels purchased for building: {}', building, gameDTO)
+        },
+        error: (error) => {
+          this.purchaseError = error.error.message
+        }
       })
   }
 
-  purchasePowerLine(tile: Tile, gameDTO: FullGameDTO): void {
+  purchasePowerLine(building: BuildingInGame, tile: Tile, gameDTO: GameDTO): void {
     this.purchaseService.purchasePowerline(tile, gameDTO)
-      .subscribe(updatedDTO => {
-        this.gameDTOService.setGameDTO(updatedDTO)
-        console.log('powerline purchased for tile: {}', tile, gameDTO)
+      .subscribe({
+        next: (updatedDTO: GameDTO) => {
+          this.gameDTOService.setGameDTO(updatedDTO)
+          const updatedTile = updatedDTO.tiles.find(tileToFind => tile.id === tileToFind.id)!
+          this.tileService.setTile(updatedTile)
+          this.buildingService.setBuildingInGame(updatedTile.building)
+          console.log('powerline purchased for tile: {}', tile, gameDTO)
+        },
+        error: (error) => {
+          this.purchaseError = error.error.message
+        }
       })
   }
 
   private findPowerLine() {
-    this.buildingService.findAll()
-      .subscribe(buildings => {
-        this.powerLine = buildings.find(building => building.id === POWER_LINE_ID)
-      })
-  }
-
-  cancelDetailView() {
-    this.tileBuildingService.resetTileAndBuilding()
+    this.powerLine = this.buildings.find(building => building.id === POWER_LINE_ID)
   }
 
   resetPurchaseError() {

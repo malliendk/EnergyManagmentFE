@@ -1,19 +1,15 @@
 import {Injectable, NgZone} from '@angular/core';
-import {BehaviorSubject, catchError, Observable, switchMap, tap} from "rxjs";
-import {FullGameDTO} from "../dtos/fullGameDTO";
+import {BehaviorSubject, catchError, Observable, tap} from "rxjs";
+import {GameDTO} from "../dtos/gameDTO";
 import {HttpClient} from "@angular/common/http";
-import {MinimizedGameDTO} from "../dtos/minimizedGameDTO";
-import {InitiateGameDTO} from "../dtos/initiateGameDTO";
 import {Supervisor} from "../dtos/supervisor";
-import {GameDtoMapperService} from "./game-dto-mapper.service";
-import {BuildingService} from "./building.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameDTOService {
 
-  private gameDTOSubject = new BehaviorSubject<FullGameDTO | null>(null);
+  private gameDTOSubject = new BehaviorSubject<GameDTO | null>(null);
   public gameDTO$ = this.gameDTOSubject.asObservable()
 
   private calculationServiceUrl: string = 'http://localhost:8093';
@@ -21,15 +17,12 @@ export class GameDTOService {
   private eventSource: EventSource | null = null;
 
   constructor(private http: HttpClient,
-              private dtoMapperService: GameDtoMapperService,
-              private buildingService: BuildingService,
               private ngZone: NgZone)
   {}
 
-  startGame(supervisorDTO: Supervisor): Observable<FullGameDTO> {
-    return this.http.post<MinimizedGameDTO>(this.calculationServiceUrl, supervisorDTO).pipe(
-      switchMap((minimizedGameDTO: MinimizedGameDTO) => this.dtoMapperService.extendGameDTO(minimizedGameDTO)),
-      tap((fullGameDTO: FullGameDTO) => {
+  startGame(supervisorDTO: Supervisor): Observable<GameDTO> {
+    return this.http.post<GameDTO>(this.calculationServiceUrl, supervisorDTO).pipe(
+      tap((fullGameDTO: GameDTO) => {
         this.gameDTOSubject.next(fullGameDTO);
       }),
       catchError(err => {
@@ -39,12 +32,10 @@ export class GameDTOService {
     );
   }
 
-  updateGameDTO(extendedGameDTO: FullGameDTO): Observable<FullGameDTO> {
-    const initiateDTO: InitiateGameDTO = this.dtoMapperService.minimizeToInitiateDTO(extendedGameDTO);
-    console.log('outgoing minimizedDTO:', initiateDTO);
-    return this.http.put<MinimizedGameDTO>(`${this.calculationServiceUrl}`, initiateDTO).pipe(
-      switchMap((minimizedGameDTO: MinimizedGameDTO) => this.dtoMapperService.extendGameDTO(minimizedGameDTO)),
-      tap((fullGameDTO: FullGameDTO) => {
+  updateGameDTO(gameDTO: GameDTO): Observable<GameDTO> {
+    return this.http.put<GameDTO>(`${this.calculationServiceUrl}`, gameDTO).pipe(
+      tap((fullGameDTO: GameDTO) => {
+        console.log('updated gameDTO: {}', fullGameDTO)
         this.gameDTOSubject.next(fullGameDTO);
       }),
       catchError(err => {
@@ -54,12 +45,12 @@ export class GameDTOService {
     );
   }
 
-  getGameDTO() {
-    return this.gameDTOSubject.getValue()
+  setGameDTO(gameDTO: GameDTO) {
+    this.gameDTOSubject.next(gameDTO)
   }
 
-  setGameDTO(gameDTO: FullGameDTO) {
-    this.gameDTOSubject.next(gameDTO)
+  getGameDTO(): GameDTO {
+    return this.gameDTOSubject.getValue()!
   }
 
   startStream(): void {
@@ -74,18 +65,8 @@ export class GameDTOService {
     this.eventSource.addEventListener('gameDTO-update', (event: MessageEvent) => {
       this.ngZone.run(() => {
         try {
-          const minimizedDTO: MinimizedGameDTO = JSON.parse(event.data);
-          console.log('Received minimized gameDTO:', minimizedDTO);
-
-          this.dtoMapperService.extendGameDTO(minimizedDTO).subscribe({
-            next: (fullGameDTO: FullGameDTO) => {
-              this.gameDTOSubject.next(fullGameDTO);
-              console.log('GameDTO updated via SSE:', fullGameDTO);
-            },
-            error: (err) => {
-              console.error('Error extending gameDTO from SSE:', err);
-            }
-          });
+          const gameDTO: GameDTO = JSON.parse(event.data);
+          this.gameDTOSubject.next(gameDTO);
         } catch (error) {
           console.error('Error parsing SSE gameDTO data:', error);
         }

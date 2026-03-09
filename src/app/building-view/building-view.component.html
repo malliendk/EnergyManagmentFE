@@ -1,4 +1,8 @@
-@if (building$ | async; as building) {
-<app-building-detail></app-building-detail>
+@if (allBuildings$ | async; as buildings) {
+  @if (building$ | async; as building) {
+    <app-building-detail [buildings]="buildings"></app-building-detail>
+  } @else {
+    <app-building-list [buildings]="buildings"></app-building-list>
+  }
 }
-<app-grid></app-grid>
+

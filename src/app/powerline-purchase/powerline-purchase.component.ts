@@ -17,21 +17,4 @@ export class PowerlinePurchaseComponent {
   isPowerLineModalOpen: any;
   showPurchasePowerLine: any;
   building: any;
-
-  togglePowerLineBiModal() {
-
-  }
-
-  purchasePowerLine() {
-
-  }
-
-  setBuilding(param: any) {
-
-  }
-
-  togglePurchasePowerLine() {
-
-
-  }
 }

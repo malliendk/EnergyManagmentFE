@@ -7,7 +7,7 @@ import {
   TILE_TYPE_HOUSING,
   TILE_TYPE_POWER_PLANT,
   TILE_TYPE_SEA
-} from "../constants";
+} from "../constants/constants";
 import {BuildingDTO} from "../dtos/buildingDTO";
 
 @Injectable({

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CommonModule, CurrencyPipe} from "@angular/common";
-import {FullGameDTO} from "../../dtos/fullGameDTO";
+import {GameDTO} from "../../dtos/gameDTO";
 import {Subscription} from "rxjs";
 import {GameDTOService} from "../../services/game-dto.service";
 
@@ -14,7 +14,7 @@ import {GameDTOService} from "../../services/game-dto.service";
 export class NavbarComponent implements OnInit {
 
   private gameDTOSubscription = new Subscription()
-  gameDTO!: FullGameDTO;
+  gameDTO!: GameDTO;
 
   @Output() passViewType = new EventEmitter<{
     viewType: string,
@@ -36,16 +36,9 @@ export class NavbarComponent implements OnInit {
       this.gameDTOService.gameDTO$
         .subscribe(gameDTO => this.gameDTO = gameDTO!)
     )
-    this.checkUniversityPresent();
   }
 
   emitViewType(viewType: string, showGridLoadDashboard: boolean) {
     this.passViewType.emit({viewType, showGridLoadDashboard});
-  }
-
-  checkUniversityPresent() {
-    if (this.gameDTO.buildings.some(building => building.name === "universiteit")) {
-      this.isUniversityPresent = true;
-    }
   }
 }

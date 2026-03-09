@@ -3,8 +3,8 @@
     <div class="card-column">
       @for (building of purchasableTileBuildings; track building.id) {
         <div class="card card-small"
-             [ngClass]="setBuildingSelected(building.id)"
-             (click)="selectBuilding(building)">
+             (click)="selectBuilding(building)"
+             [ngClass]="setBuildingSelected(building.id)">
           <img [src]="building.imageUri"
                alt="{{building.imageUri}} + ' image'"
                class="card-img-top-small img-fluid"
@@ -13,7 +13,6 @@
       }
     </div>
     <div class="card-column">
-      <button class="cancel" (click)="resetTileAndBuilding()">X</button>
       @if (building) {
         <app-building-info [building]="building"></app-building-info>
       } @else {
@@ -22,9 +21,11 @@
         </div>
       }
     </div>
+    @if (building) {
     <button class="purchase-button btn btn-gold mb-2" (click)="purchaseBuilding(building!, tile!, gameDTO!)">Purchase
       building
     </button>
+    }
   </div>
 }
 

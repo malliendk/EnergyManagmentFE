@@ -1,12 +1,13 @@
-export interface BuildingDTO {
+export interface BuildingInGame {
 
   id: number;
-  canBePurchased: boolean;
+  tileId: number
   category: string;
   color: string;
+  canBePurchased: boolean;
   description: string;
-  energyConsumption: number;
   energyProduction: number;
+  energyConsumption: number;
   environmentalScore: number;
   goldIncome: number;
   gridCapacity: number;
@@ -14,10 +15,10 @@ export interface BuildingDTO {
   housingRequirement: number;
   imageUri: string;
   name: string;
+  researchIncome: number;
   popularityCost: number;
   popularityIncome: number;
   price: number;
-  researchIncome: number;
   solarPanelAmount: number
   solarPanelCapacity: number;
 }

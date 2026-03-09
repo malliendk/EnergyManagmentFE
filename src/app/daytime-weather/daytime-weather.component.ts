@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {CommonModule} from "@angular/common";
-import {FullGameDTO} from "../dtos/fullGameDTO";
+import {GameDTO} from "../dtos/gameDTO";
 import {GameDTOService} from "../services/game-dto.service";
 import {
   TIME_OF_DAY_AFTERNOON,
@@ -12,7 +12,7 @@ import {
   WEATHER_TYPE_OVERCAST,
   WEATHER_TYPE_RAINY,
   WEATHER_TYPE_SUNNY
-} from "../constants";
+} from "../constants/constants";
 
 @Component({
   selector: 'app-daytime-weather',
@@ -23,7 +23,7 @@ import {
 })
 export class DaytimeWeatherComponent implements OnInit {
 
-  gameDTO!: FullGameDTO;
+  gameDTO!: GameDTO;
   private subscription = new Subscription()
 
   constructor(private gameDTOService: GameDTOService) {}

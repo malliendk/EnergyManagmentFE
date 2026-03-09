@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {FullGameDTO} from "../../dtos/fullGameDTO";
-import {SupplyTypes} from "../../supplyType";
+import {GameDTO} from "../../dtos/gameDTO";
+import {SupplyTypes} from "../../constants/supplyType";
 
 @Component({
     selector: 'app-townhall-dashboard',
@@ -12,7 +12,7 @@ import {SupplyTypes} from "../../supplyType";
 })
 export class TownHallDashboardComponent implements OnInit {
 
-  @Input() gameDTO!: FullGameDTO;
+  @Input() gameDTO!: GameDTO;
 
   componentView: string = 'campaigns';
   selectedCampaignType: string = '';

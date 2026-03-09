@@ -13,24 +13,14 @@ export class TileService {
   private tileSubject = new BehaviorSubject<Tile | undefined>(undefined)
   public tile$ = this.tileSubject.asObservable()
 
-  private powerLineTileSubject = new BehaviorSubject<Tile | undefined>(undefined)
-  public powerLineTile$ = this.powerLineTileSubject.asObservable()
-
   adjacencyURL: string = "http://localhost:8090/adjacency-sets"
 
   constructor(private http: HttpClient,
-              private colorService: ColorService) { }
+              private colorService: ColorService) {
+  }
 
   setTile(tile: Tile | undefined): void {
     this.tileSubject.next(tile);
-  }
-
-  setPowerLineTile(tile: Tile | undefined) {
-    this.powerLineTileSubject.next(tile)
-  }
-
-  getTile() {
-    return this.tileSubject.getValue()
   }
 
   findAllAdjacencySets(): Observable<AdjacencySet[]> {
@@ -45,17 +35,5 @@ export class TileService {
       .filter(className => className.trim() !== '')
       .join(' ');
   }
-
-  calculateTileWidth(): void {
-    const gridElement = document.querySelector('.grid') as HTMLElement;
-    if (!gridElement) return;
-    const gridWidth = gridElement.clientWidth;
-    const tileWidth = gridWidth / 10;
-    const tileHeight = tileWidth * 0.58;
-    const tileElements = document.querySelectorAll('.tile') as NodeListOf<HTMLElement>;
-    tileElements.forEach(tile => {
-      tile.style.width = `${tileWidth}px`;
-      tile.style.height = `${tileHeight}px`;
-    });
-  }
 }
+

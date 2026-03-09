@@ -1,11 +1,10 @@
-import {BuildingDTO} from "./buildingDTO";
 import {AdjacencySet} from "./adjacencySet";
+import {BuildingInGame} from "./buildingInGame";
 
 export interface Tile {
 
   id: number
-  buildingId: number
-  building: BuildingDTO | undefined
+  building: BuildingInGame | undefined
   zoneType: string
   adjacencySet: AdjacencySet | undefined
   color: string

@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {SaveGame} from "../dtos/saveGame";
 import {Observable} from "rxjs";
 import {GameDTOService} from "./game-dto.service";
-import {MinimizedGameDTO} from "../dtos/minimizedGameDTO";
+import {GameDTO} from "../dtos/gameDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,8 @@ export class SaveGameService {
   constructor(private http: HttpClient,
               private gameDTOService: GameDTOService) { }
 
-  retrieveSaveGame(id: number): Observable<MinimizedGameDTO> {
-    return this.http.get<MinimizedGameDTO>(`${this.storageServiceUrl}/load/${id}`);
+  retrieveSaveGame(id: number): Observable<GameDTO> {
+    return this.http.get<GameDTO>(`${this.storageServiceUrl}/load/${id}`);
   }
 
   findAllSavedGames(): Observable<SaveGame[]> {

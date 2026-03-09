@@ -1,8 +1,7 @@
-import {BuildingDTO} from "./buildingDTO";
 import {Supervisor} from "./supervisor";
 import {Tile} from "./tile";
 
-export interface FullGameDTO {
+export interface GameDTO {
   id: number;
   supervisorName: string;
   supervisor: Supervisor,
@@ -18,7 +17,6 @@ export interface FullGameDTO {
   goldIncome: number;
   popularityIncome: number;
   researchIncome: number;
-  buildings: BuildingDTO[];
   tiles: Tile[];
   timeOfDay: string;
   weatherType: string

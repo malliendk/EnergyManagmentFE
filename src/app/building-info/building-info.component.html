@@ -1,9 +1,12 @@
+@if (building){
 <div class="stats-box">
   <div class="stats-column">
     <h6 class="stats-header">Details</h6>
-    <div class="property-block-small">{{ building!.category }}</div>
+    <div class="property-block-small">
+      {{ building!.category }}
+    </div>
     @if (building!.solarPanelCapacity > 0) {
-    <div class="property-block-small"> Solar Panel Amount: {{ building!.solarPanelAmount }}</div>
+      <div class="property-block-small"> Solar Panel Amount: {{ building!.solarPanelAmount }}</div>
     }
   </div>
   <div class="stats-column">
@@ -51,10 +54,21 @@
         Consumption: {{ building.energyConsumption }}
       </div>
     }
+    @if (building.popularityIncome < 0) {
+      <div class="popularity inner-box-items">
+        Popularity Income -{{ building.popularityIncome }}
+      </div>
+    }
     @if (building.housingRequirement > 0) {
       <div class="popularity inner-box-items">
         Required HouseHolds: {{ building.housingRequirement }}
       </div>
     }
+    @if (building.price > 0) {
+      <div class="funds inner-box-items border-10">
+        Cost: {{ building.price | currency: 'EUR' }}
+      </div>
+    }
   </div>
 </div>
+}

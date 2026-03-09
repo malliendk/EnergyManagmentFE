@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule, CurrencyPipe} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {ModalComponent} from "../components/modal/modal.component";
-import {BuildingDTO} from "../dtos/buildingDTO";
 import {BuildingService} from "../services/building.service";
-import {COAL_PLANT_NAME, GAS_PLANT_NAME, HYDROGEN_PLANT_NAME, NUCLEAR_PLANT_NAME} from "../constants";
 import {GameDTOService} from "../services/game-dto.service";
+import {GameDTO} from "../dtos/gameDTO";
+import {Subscription} from "rxjs";
+import {BuildingInGame} from "../dtos/buildingInGame";
+import {Tile} from "../dtos/tile";
 
 @Component({
   selector: 'app-factory-dashboard',
@@ -14,133 +15,129 @@ import {GameDTOService} from "../services/game-dto.service";
   standalone: true,
   imports: [CommonModule,
     FormsModule,
-    CurrencyPipe, ModalComponent]
+    CurrencyPipe]
 })
 export class FactoryDashboardComponent implements OnInit {
 
-  gameDTO = this.gameDTOService.getGameDTO()
+  private subscription = new Subscription()
 
-  powerPlants: BuildingDTO[] = [];
-  minimumProduction: number = 0.0;
+  gameDTO!: GameDTO
+  coalPlant!: BuildingInGame
+
+  cells: boolean[] = new Array(70)
+  scoreCells: boolean[] = new Array(70)
+
+  minimumProduction: number = 0;
   maximumProduction: number = 5000;
+  productionStartingValue = 0
   sliderStepValue: number = 1;
-  totalScalingCost: number = 0;
-  goldPerProductionUnit: number = 5;
-  scorePerProductionUnit: number = 0.5;
-
-  isDisabled: boolean = false;
-  isModalOpen: boolean = false;
-
-  // Map to store secondary images for display purposes only
-  secondaryImagesMap = new Map<number, string>();
-  initialProductionMap = new Map<string, number>();
-
-  //chart values start
-  showGridLines = false;
-  showYAxis: boolean = true;
-  fundsScaleMax: number = 15000;
-  gridLoadScaleMax = 15;
-  fundsChartResults: number[] = []
-  //chart values end
+  scalingCost: number = 0;
+  goldPerProductionUnit: number = 1;
+  secondaryImagesURL = 'assets/photos/coal-plant-inside-cut.jpg';
+  errorMessage = ''
 
   constructor(private buildingService: BuildingService,
               private gameDTOService: GameDTOService) {
   }
 
   ngOnInit(): void {
-    this.buildingService.getPowerPlants()
-      .subscribe(powerPlants => {
-        this.powerPlants = powerPlants;
+    this.addGameDTOSubscription()
+    console.log(this.gameDTO)
+  }
+
+  addGameDTOSubscription() {
+    this.subscription.add(
+      this.gameDTOService.gameDTO$.subscribe(
+        gameDTO => {
+          this.gameDTO = gameDTO!
+          this.findCoalPlant()
+        }
+      )
+    )
+  }
+
+  findCoalPlant() {
+      const coalPlant: BuildingInGame = this.filterCoalPlant()
+      console.log('coal plant: {}', coalPlant)
+      this.coalPlant = coalPlant
+      this.coalPlant.imageUri = this.secondaryImagesURL
+      this.productionStartingValue = this.coalPlant.energyProduction
+      this.toggleProductionCells()
+      this.toggleScoreCells()
+  }
+
+  private filterCoalPlant(): BuildingInGame {
+    const tilesWithBuilding = this.gameDTO.tiles.filter(tile => tile.building)
+    const coalPlantTile: Tile = tilesWithBuilding.find(
+      (tile: Tile) => tile.building && tile.building.id === 1)!
+    return coalPlantTile.building!
+  }
+
+  scaleProduction(gameDTO: GameDTO) {
+    this.validateFunds(this.scalingCost, gameDTO)
+    gameDTO.funds -= this.scalingCost
+    this.gameDTOService.updateGameDTO(gameDTO)
+      .subscribe(updatedDTO => {
+        this.gameDTOService.setGameDTO(updatedDTO)
+        this.updateBuildingsPopIncome();
+        this.scalingCost = 0
       })
   }
 
-  private initializeSecondaryImages() {
-    // Store the secondary images in a separate map, keyed by plant ID
-    const coalPlant = this.selectPowerPlant(COAL_PLANT_NAME);
-    const gasPlant = this.selectPowerPlant(GAS_PLANT_NAME);
-    const hydrogenPlant = this.selectPowerPlant(HYDROGEN_PLANT_NAME);
-    const nuclearPlant = this.selectPowerPlant(NUCLEAR_PLANT_NAME);
-
-    if (coalPlant) this.secondaryImagesMap.set(coalPlant.id, 'assets/photos/coal-plant-inside-cut.jpg');
-    if (gasPlant) this.secondaryImagesMap.set(gasPlant.id, 'assets/photos/gas-plant-inside-cut.jpg');
-    if (hydrogenPlant) this.secondaryImagesMap.set(hydrogenPlant.id, 'assets/photos/hydrogen-plant-cut.jpg');
-    if (nuclearPlant) this.secondaryImagesMap.set(nuclearPlant.id, 'assets/photos/nuclear-plant-inside-cut.jpg');
+  recalculate() {
+    this.calculateScalingCost()
+    this.calculateScore()
+    this.toggleProductionCells()
+    this.toggleScoreCells()
   }
 
-  // Method to get the appropriate image URI for a power plant in this component
-  getImageForPlant(powerPlant: BuildingDTO): string {
-    // Return the secondary image if available, otherwise fall back to the original
-    return this.secondaryImagesMap.get(powerPlant.id) || powerPlant.imageUri;
-  }
-
-  private initializeProductionMap() {
-    this.powerPlants.forEach(powerPlant => {
-      this.initialProductionMap.set(powerPlant.name, powerPlant.energyProduction);
-    });
-  }
-
-  private overwriteClassPlant() {
-    this.powerPlants = this.powerPlants.map(plant => {
-      const ownedPowerPlant = this.gameDTO!.buildings.find(building =>
-        building.id === plant.id);
-      return ownedPowerPlant ?? plant;
-    });
-  }
-
-  private selectPowerPlant(name: string) {
-    return this.powerPlants.find(source => source.name === name);
-  }
-
-  processPlantScaling() {
-    if (this.totalScalingCost > this.gameDTO!.funds) {
-      this.toggleModalOpen();
-    } else {
-      this.gameDTO!.funds -= this.totalScalingCost;
-      this.totalScalingCost = 0;
-      this.gameDTOService.setGameDTO(this.gameDTO!)
-      console.log('emitted DTO: {}', this.gameDTO)
+  private toggleProductionCells() {
+    const totalCells = this.cells.length;
+    const productionPercentage = this.coalPlant.energyProduction / this.maximumProduction;
+    const cellsToActivate = Math.round(productionPercentage * totalCells);
+    this.cells.fill(false);
+    for (let i = 0; i < cellsToActivate; i++) {
+      this.cells[i] = true;
     }
   }
 
-  recalculateValues(powerPlant: BuildingDTO, energyProduction: HTMLInputElement): void {
-    this.calculateScalingCost(powerPlant, energyProduction);
-    this.calculateScore(powerPlant, energyProduction);
-  }
-
-  calculateScalingCost(powerPlant: BuildingDTO, energyProductionInput: HTMLInputElement): void {
-    const newProduction = energyProductionInput.valueAsNumber;
-    const initialProduction = this.initialProductionMap.get(powerPlant.name)!;
-    const productionDifference = initialProduction - newProduction;
-    const costChange = productionDifference * this.goldPerProductionUnit;
-    this.totalScalingCost += costChange;
-    this.initialProductionMap.set(powerPlant.name, newProduction);
-  }
-
-  calculateScore(powerPlant: BuildingDTO, energyProduction: HTMLInputElement): void {
-    const productionDifference = this.maximumProduction - energyProduction.valueAsNumber;
-    powerPlant.environmentalScore = productionDifference * this.scorePerProductionUnit;
-  }
-
-  applyGrayScale(powerPlant: BuildingDTO): string {
-    const candidate: BuildingDTO | undefined = this.checkIfPowerPlantIsOwned(powerPlant);
-    if (candidate) {
-      return '';
-    } else {
-      this.toggleDisabled();
-      return 'disabled';
+  private toggleScoreCells() {
+    const totalCells = this.scoreCells.length;
+    const scorePercentage = this.coalPlant.environmentalScore / this.maximumProduction;
+    const cellsToActivate = Math.round(scorePercentage * totalCells);
+    this.scoreCells.fill(false);
+    for (let i = 0; i < cellsToActivate; i++) {
+      const index = totalCells - 1 - i;
+      if (index >= 0) {
+        this.scoreCells[index] = true;
+      }
     }
   }
 
-  toggleDisabled() {
-    this.isDisabled = !this.isDisabled;
+  setColor(cell: boolean): string {
+    return cell ? 'green' : 'gray'
   }
 
-  toggleModalOpen() {
-    this.isModalOpen = !this.isModalOpen;
+  private calculateScalingCost() {
+    this.scalingCost = Math.abs((this.productionStartingValue - this.coalPlant.energyProduction) * this.goldPerProductionUnit)
   }
 
-  private checkIfPowerPlantIsOwned(powerPlant: BuildingDTO) {
-    return this.gameDTO!.buildings.find(building => powerPlant.id === building.id);
+  private calculateScore() {
+    this.coalPlant.environmentalScore = this.maximumProduction - this.coalPlant.energyProduction;
+  }
+
+  private resetErrorMessage() {
+    this.errorMessage = ''
+  }
+
+  private validateFunds(cost: number, gameDTO: GameDTO) {
+    if (cost > gameDTO.funds) {
+      this.errorMessage = "Not enough funds to scale your coal plant"
+    }
+  }
+
+  private updateBuildingsPopIncome() {
+    this.buildingService.updatePurchasableBuildings().subscribe()
   }
 }
 

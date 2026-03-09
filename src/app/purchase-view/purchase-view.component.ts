@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Tile} from "../dtos/tile";
 import {BuildingDTO} from "../dtos/buildingDTO";
-import {FullGameDTO} from "../dtos/fullGameDTO";
-import {GridComponent} from "../game-dto/grid/grid.component";
+import {GameDTO} from "../dtos/gameDTO";
+import {GridComponent} from "../grid/grid.component";
 import {Subscription} from "rxjs";
 import {TileService} from "../services/tile.service";
 import {GameDTOService} from "../services/game-dto.service";
@@ -24,7 +24,7 @@ export class PurchaseViewComponent implements OnInit {
   private tileSubscription = new Subscription()
 
   tile?: Tile
-  gameDTO!: FullGameDTO
+  gameDTO!: GameDTO
   building?: BuildingDTO
 
   constructor(private tileService: TileService,

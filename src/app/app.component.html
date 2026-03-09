@@ -57,5 +57,18 @@
       [eventsInitialDelay]="initialDelaySchedulers"
       [isManualKickOff]="isManualKickOffEvents"
     ></app-event>
+
+    @if (isVictory) {
+      <app-modal
+        [showHeader]="true"
+        [headerClass]="'bg-success'">
+        <div modal-title>
+          <p>You Have Won The Game!</p>
+          <img class="img-fluid">
+        </div>
+        <p>The inhabitants of your city are impressed by your vision</p>
+        <p>and would like you to stay as their environmental advisor</p>
+      </app-modal>
+    }
   }
 </div>

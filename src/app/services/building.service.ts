@@ -1,85 +1,137 @@
 import {Injectable} from '@angular/core';
 import {BuildingDTO} from "../dtos/buildingDTO";
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, Observable} from "rxjs";
-import {MinimizedGameDTO} from "../dtos/minimizedGameDTO";
-import {BuildingRequest} from "../dtos/buildingRequest";
-import {FullGameDTO} from "../dtos/fullGameDTO";
+import {BehaviorSubject, map, Observable} from "rxjs";
 
 import {Tile} from "../dtos/tile";
-import {POWER_LINE_ID} from "../power-line-values";
+import {
+  CATEGORY_COMMERCIAL,
+  CATEGORY_ENERGY_PRODUCTION,
+  CATEGORY_GRID_ASSET,
+  CATEGORY_HOUSING,
+  CATEGORY_PUBLIC_FACILITY,
+  POWER_LINE_ID,
+  TILE_TYPE_COMMERCIAL,
+  TILE_TYPE_GRASSLAND,
+  TILE_TYPE_HOUSING,
+  TILE_TYPE_POWER_PLANT,
+  TILE_TYPE_SEA
+} from "../constants/constants";
+import {BuildingInGame} from "../dtos/buildingInGame";
+import {GameDTO} from "../dtos/gameDTO";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BuildingService {
 
-  private buildingSubject = new BehaviorSubject<BuildingDTO | undefined>(undefined)
-  public building$ = this.buildingSubject.asObservable();
+  private buildingInGameSubject = new BehaviorSubject<BuildingInGame | undefined>(undefined)
+  private allBuildingsSubject = new BehaviorSubject<BuildingDTO[]>([])
+  building$ = this.buildingInGameSubject.asObservable();
+  allBuildings$ = this.allBuildingsSubject.asObservable();
 
-  buildingAPIBaseURL: string = 'http://localhost:8090/';
+  buildingAPIBaseURL: string = 'http://localhost:8093';
 
   constructor(private http: HttpClient) {
   }
 
-  setBuilding(building: BuildingDTO | undefined) {
-    this.buildingSubject.next(building)
+  setBuildingInGame(building: BuildingInGame | undefined) {
+    this.buildingInGameSubject.next(building)
   }
 
-  getBuilding() {
-    return this.buildingSubject.getValue()
+  setBuildings(buildings: BuildingDTO[]) {
+    console.log('setting buildings: {}', buildings)
+    this.allBuildingsSubject.next(buildings)
+  }
+
+  updatePurchasableBuildings(): Observable<void> {
+    return this.findAll().pipe(
+      map(buildings => this.setBuildings(buildings))
+    )
   }
 
   findAll(): Observable<BuildingDTO[]> {
-    return this.http.get<BuildingDTO[]>(this.buildingAPIBaseURL);
+    return this.http.get<BuildingDTO[]>(`${this.buildingAPIBaseURL}/buildings`)
   }
 
-  findAllById(minimizedGameDTO: MinimizedGameDTO) {
-    const ids: number[] = minimizedGameDTO.buildingRequests.map(request => request.buildingId);
-    return this.http.post<BuildingDTO[]>(this.buildingAPIBaseURL + 'ids', ids);
+  collectBuildingsFromTiles(gameDTO: GameDTO): BuildingInGame[] {
+    return gameDTO.tiles.filter(tile => tile.building).map(tile => tile.building!)
   }
 
-  getPowerPlants() {
-    return this.http.get<BuildingDTO[]>(this.buildingAPIBaseURL + 'power-plant');
+  filterBuildingsByZoneType(buildings: BuildingDTO[], tile: Tile): BuildingDTO[] {
+    const publicBuildings = this.filterBuildings(buildings, CATEGORY_PUBLIC_FACILITY)
+      .filter(building => building.id !== 50)
+    let gridAssets = this.filterBuildings(buildings, CATEGORY_GRID_ASSET)
+    if (tile.hasPowerLine) {
+      gridAssets = gridAssets.filter(building => building.id !== POWER_LINE_ID)
+    }
+    let buildingsToReturn: BuildingDTO[]
+    let production: BuildingDTO[]
+    switch (tile.zoneType) {
+      case TILE_TYPE_HOUSING:
+        const housing = this.filterBuildings(buildings, CATEGORY_HOUSING)
+        buildingsToReturn = [...new Map([...publicBuildings, ...gridAssets, ...housing].map(b => [b.id, b])).values()];
+        break;
+      case TILE_TYPE_COMMERCIAL:
+        const commercial = this.filterBuildings(buildings, CATEGORY_COMMERCIAL);
+        buildingsToReturn = [...new Map([...publicBuildings, ...gridAssets, ...commercial].map(b => [b.id, b])).values()];
+        break;
+      case TILE_TYPE_GRASSLAND:
+        production = this.filterBuildings(buildings, CATEGORY_ENERGY_PRODUCTION)
+        const productionOnLand = production.filter(building => building.name !== "Sea-side Wind Turbine")
+        buildingsToReturn = [...new Map([...publicBuildings, ...gridAssets, ...productionOnLand].map(b => [b.id, b])).values()];
+        break;
+      case TILE_TYPE_SEA:
+        production = this.filterBuildings(buildings, CATEGORY_ENERGY_PRODUCTION)
+        const productionAtSea = production.filter(building => building.name === "Sea-side Wind Turbine")
+        buildingsToReturn = productionAtSea;
+        break;
+      case TILE_TYPE_POWER_PLANT:
+        buildingsToReturn = buildings.filter(building => building.id === POWER_LINE_ID);
+        break;
+      default:
+        buildingsToReturn = [];
+    }
+    return this.sortBuildingsByPriority(buildingsToReturn);
   }
 
-  minimizeToBuildingRequests(gameDTO: FullGameDTO): BuildingRequest[] {
-    const requestDTOs: BuildingRequest[] = gameDTO.buildings.map(building => ({
-      buildingId: building?.id,
-      instanceId: building?.instanceId,
-      solarPanelAmount: building?.solarPanelAmount,
-      energyProduction: building?.energyProduction,
-      popularityIncome: building?.popularityIncome,
-      goldIncome: building?.goldIncome,
-      researchIncome: building?.researchIncome,
-      environmentalScore: building?.environmentalScore,
-      gridCapacity: building?.gridCapacity
-    }));
-    console.log("outgoing requests: {}", requestDTOs)
-    return requestDTOs
+  private filterBuildings(buildings: BuildingDTO[], category: string): BuildingDTO[] {
+    return buildings.filter(building => building.category === category)
   }
 
-  mapBuildingsToTiles(tiles: Tile[], buildings: BuildingDTO[]): Tile[] {
-    buildings = buildings.filter(building => building.id !== POWER_LINE_ID);
-    const buildingMap = new Map<number, BuildingDTO>()
-    buildings.forEach((building: BuildingDTO) => {
-      buildingMap.set(building.id, building)
-    })
-    return tiles.map((tile: Tile) => {
-      if (tile.buildingId) {
-        const matchingBuilding = buildingMap.get(tile.buildingId)
-        if (matchingBuilding) {
-          return {
-            ...tile,
-            building: {...matchingBuilding}
-          };
-        }
+  private sortBuildingsByPriority(buildings: BuildingDTO[]): BuildingDTO[] {
+    if (!buildings || buildings.length === 0) {
+      return [];
+    }
+    const categoryPriority = {
+      [CATEGORY_ENERGY_PRODUCTION]: 1,
+      [CATEGORY_HOUSING]: 2,
+      [CATEGORY_COMMERCIAL]: 3,
+      [CATEGORY_GRID_ASSET]: 4,
+      [CATEGORY_PUBLIC_FACILITY]: 5,
+    };
+    const defaultPriority = 999;
+    return [...buildings].sort((a, b) => {
+      const priorityA = categoryPriority[a.category] || defaultPriority;
+      const priorityB = categoryPriority[b.category] || defaultPriority;
+      if (priorityA !== priorityB) {
+        return priorityA - priorityB;
       }
-      return tile
-    })
+      return a.price - b.price;
+    });
   }
 
-  generateInstanceId(building: BuildingDTO) {
-    building.instanceId = Math.floor(Math.random() * 999999) + 1
+  toBuildingInGame(building: BuildingDTO): BuildingInGame {
+    return {
+      ...building,
+      tileId: 0,
+    };
+  }
+
+  findUpdatedBuilding(tile: Tile, gameDTO: GameDTO) {
+    const updatedBuilding = this.collectBuildingsFromTiles(gameDTO)
+      .find(buildingInGame => buildingInGame.tileId === tile.id)!
+    console.log('updated building: {}', updatedBuilding)
+    return updatedBuilding
   }
 }

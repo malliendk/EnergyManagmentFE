@@ -1,14 +1,14 @@
-import {BuildingRequest} from "./buildingRequest";
 import {Tile} from "./tile";
 import {Supervisor} from "./supervisor";
+import {BuildingInGame} from "./buildingInGame";
 
-export interface InitiateGameDTO {
+export interface InitiateDTO {
 
   id: number;
   funds: number;
   popularity: number;
   research: number;
-  buildingRequests: BuildingRequest[];
+  buildings: BuildingInGame[]
   tiles: Tile[];
   supervisor: Supervisor;
 }

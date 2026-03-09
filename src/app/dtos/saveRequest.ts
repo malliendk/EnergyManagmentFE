@@ -1,7 +1,7 @@
-import {InitiateGameDTO} from "./initiateGameDTO";
+import {InitiateDTO} from "./initiateDTO";
 
 export interface SaveRequest {
 
   name: string;
-  initiateDTO: InitiateGameDTO
+  initiateDTO: InitiateDTO
 }
