@@ -37,42 +37,43 @@ export class DaytimeWeatherComponent implements OnInit {
   }
 
   getDayWeatherColor(timeOfDay: string, weatherType: string): string {
-    switch (timeOfDay + ' ' + weatherType) {
-      case TIME_OF_DAY_MORNING + ' ' + WEATHER_TYPE_SUNNY:
-        return 'morning transition'
-      case TIME_OF_DAY_MORNING + ' ' + WEATHER_TYPE_MODERATE:
-        return 'morning moderate'
-      case TIME_OF_DAY_MORNING + ' ' + WEATHER_TYPE_OVERCAST:
-        return 'daytime-overcast'
-      case TIME_OF_DAY_MORNING + ' ' + WEATHER_TYPE_RAINY:
-        return 'daytime-rainy'
-      case TIME_OF_DAY_AFTERNOON + ' ' + WEATHER_TYPE_SUNNY:
-        return 'afternoon transition'
-      case TIME_OF_DAY_AFTERNOON + ' ' + WEATHER_TYPE_MODERATE:
-        return 'afternoon moderate transition'
-      case TIME_OF_DAY_AFTERNOON + ' ' + WEATHER_TYPE_OVERCAST:
-        return 'daytime-overcast'
-      case TIME_OF_DAY_AFTERNOON + ' ' + WEATHER_TYPE_RAINY:
-        return 'daytime-rainy transition'
-      case TIME_OF_DAY_EVENING + ' ' + WEATHER_TYPE_SUNNY:
-        return 'evening transition'
-      case TIME_OF_DAY_EVENING + ' ' + WEATHER_TYPE_MODERATE:
-        return 'evening cloudy transition'
-      case TIME_OF_DAY_EVENING + ' ' + WEATHER_TYPE_OVERCAST:
-        return 'daytime-overcast'
-      case TIME_OF_DAY_EVENING + ' ' + WEATHER_TYPE_RAINY:
-        return 'daytime-rainy'
-      case TIME_OF_DAY_NIGHT + ' ' + WEATHER_TYPE_SUNNY:
-        return 'night'
-      case TIME_OF_DAY_NIGHT + ' ' + WEATHER_TYPE_MODERATE:
-        return 'night cloudy-grey'
-      case TIME_OF_DAY_NIGHT + ' ' + WEATHER_TYPE_OVERCAST:
-        return 'nighttime-overcast'
-      case TIME_OF_DAY_NIGHT + ' ' + WEATHER_TYPE_RAINY:
-        return 'night rainy'
-      default: return ''
+    return 'afternoon sun'
+    //   switch (timeOfDay + ' ' + weatherType) {
+    //     case TIME_OF_DAY_MORNING + ' ' + WEATHER_TYPE_SUNNY:
+    //       return 'morning transition'
+    //     case TIME_OF_DAY_MORNING + ' ' + WEATHER_TYPE_MODERATE:
+    //       return 'morning moderate'
+    //     case TIME_OF_DAY_MORNING + ' ' + WEATHER_TYPE_OVERCAST:
+    //       return 'daytime-overcast'
+    //     case TIME_OF_DAY_MORNING + ' ' + WEATHER_TYPE_RAINY:
+    //       return 'daytime-rainy'
+    //     case TIME_OF_DAY_AFTERNOON + ' ' + WEATHER_TYPE_SUNNY:
+    //       return 'afternoon transition'
+    //     case TIME_OF_DAY_AFTERNOON + ' ' + WEATHER_TYPE_MODERATE:
+    //       return 'afternoon moderate transition'
+    //     case TIME_OF_DAY_AFTERNOON + ' ' + WEATHER_TYPE_OVERCAST:
+    //       return 'daytime-overcast'
+    //     case TIME_OF_DAY_AFTERNOON + ' ' + WEATHER_TYPE_RAINY:
+    //       return 'daytime-rainy transition'
+    //     case TIME_OF_DAY_EVENING + ' ' + WEATHER_TYPE_SUNNY:
+    //       return 'evening transition'
+    //     case TIME_OF_DAY_EVENING + ' ' + WEATHER_TYPE_MODERATE:
+    //       return 'evening cloudy transition'
+    //     case TIME_OF_DAY_EVENING + ' ' + WEATHER_TYPE_OVERCAST:
+    //       return 'daytime-overcast'
+    //     case TIME_OF_DAY_EVENING + ' ' + WEATHER_TYPE_RAINY:
+    //       return 'daytime-rainy'
+    //     case TIME_OF_DAY_NIGHT + ' ' + WEATHER_TYPE_SUNNY:
+    //       return 'night'
+    //     case TIME_OF_DAY_NIGHT + ' ' + WEATHER_TYPE_MODERATE:
+    //       return 'night cloudy-grey'
+    //     case TIME_OF_DAY_NIGHT + ' ' + WEATHER_TYPE_OVERCAST:
+    //       return 'nighttime-overcast'
+    //     case TIME_OF_DAY_NIGHT + ' ' + WEATHER_TYPE_RAINY:
+    //       return 'night rainy'
+    //     default: return ''
+    //   }
     }
-  }
 }
 
 
