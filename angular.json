@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "RequirementsLookup_fe": {
+    "energy-management-fe": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -14,7 +14,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
-              "base": "dist/requirements-lookup-fe"
+              "base": "dist/energy-management-fe"
             },
             "index": "src/index.html",
             "polyfills": [
@@ -65,10 +65,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "RequirementsLookup_fe:build:production"
+              "buildTarget": "energy-management-fe:build:production"
             },
             "development": {
-              "buildTarget": "RequirementsLookup_fe:build:development"
+              "buildTarget": "energy-management-fe:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -76,7 +76,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "RequirementsLookup_fe:build"
+            "buildTarget": "energy-management-fe:build"
           }
         },
         "test": {

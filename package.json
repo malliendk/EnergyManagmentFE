@@ -1,5 +1,5 @@
 {
-  "name": "requirements-lookup-fe",
+  "name": "energy-management-fe",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
